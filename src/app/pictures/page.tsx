@@ -10,7 +10,7 @@ import { useConfigStore } from '@/app/(home)/stores/config-store'
 import type { ImageItem } from '../projects/components/image-upload-dialog'
 import { useRouter } from 'next/navigation'
 export interface Picture { id: string; uploadedAt: string; description?: string; image?: string; images?: string[] }
-const GALLERY_API = 'http://20.187.125.248/api/images/'
+const GALLERY_API = '/gallery-api/api/images/'
 const MAX_RANDOM = 40
 interface GalleryImage { id: number; name: string; tags: string; image_url: string; thumbnail_url: string; uploaded_at: string }
 async function fetchAllGalleryImages(): Promise<GalleryImage[]> {
@@ -35,7 +35,7 @@ export default function Page() {
     try { const all = await fetchAllGalleryImages()
       if (!all.length) { setErr('图站暂无图片'); setP([]); return }
       const picked = shuffleAndPick(all, MAX_RANDOM)
-      setP(picked.map(img => ({id:'gallery-'+img.id,uploadedAt:img.uploaded_at,description:img.name+(img.tags?'  ('+img.tags+')':''),images:[img.thumbnail_url||img.image_url]})))
+      setP(picked.map(img => ({id:'gallery-'+img.id,uploadedAt:img.uploaded_at,description:img.name+(img.tags?'  ('+img.tags+')':''),images:[(img.thumbnail_url||img.image_url).replace("http://20.187.125.248","")]})))
       setOp(p)
     } catch { setErr('无法连接到星瞳图站') } finally { setLoading(false) }
   }, [])
