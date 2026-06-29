@@ -1,7 +1,9 @@
 'use client'
-import { useState, useRef, useEffect, useCallback } from 'react'
+
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
+import initialList from './list.json'
 import { RandomLayout } from './components/random-layout'
 import UploadDialog from './components/upload-dialog'
 import { pushPictures } from './services/push-pictures'
@@ -9,86 +11,277 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import type { ImageItem } from '../projects/components/image-upload-dialog'
 import { useRouter } from 'next/navigation'
-export interface Picture { id: string; uploadedAt: string; description?: string; image?: string; images?: string[] }
-const GALLERY_API = '/gallery-api/api/images/'
-const MAX_RANDOM = 40
-interface GalleryImage { id: number; name: string; tags: string; image_url: string; thumbnail_url: string; uploaded_at: string }
-async function fetchAllGalleryImages(): Promise<GalleryImage[]> {
-  const all: GalleryImage[] = []
-  // 手动翻页，不用 API 返回的 next URL（它指向错误的 127.0.0.1）
-  for (let page = 1; page <= 3; page++) {
-    try {
-      const res = await fetch(GALLERY_API + '?page=' + page)
-      if (!res.ok) break
-      const data = await res.json()
-      all.push(...data.results)
-      if (!data.next) break
-    } catch { break }
-  }
-  return all
+
+export interface Picture {
+	id: string
+	uploadedAt: string
+	description?: string
+	image?: string
+	images?: string[]
 }
-function shuffleAndPick<T>(a: T[], n: number): T[] {
-  const c = [...a]; for (let i = c.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [c[i],c[j]]=[c[j],c[i]] }
-  return c.slice(0,n)
-}
+
 export default function Page() {
-  const [p, setP] = useState<Picture[]>([]); const [op, setOp] = useState<Picture[]>([])
-  const [edit, setEdit] = useState(false); const [saving, setSaving] = useState(false)
-  const [uploadOpen, setUploadOpen] = useState(false); const [loading, setLoading] = useState(true)
-  const [imgs, setImgs] = useState<Map<string,ImageItem>>(new Map()); const [err, setErr] = useState<string|null>(null)
-  const keyRef = useRef<HTMLInputElement>(null); const router = useRouter()
-  const { isAuth, setPrivateKey } = useAuthStore(); const { siteContent } = useConfigStore()
-  const hideEdit = siteContent.hideEditButton ?? false
-  const load = useCallback(async () => {
-    setLoading(true); setErr(null)
-    try { const all = await fetchAllGalleryImages()
-      if (!all.length) { setErr('图站暂无图片'); setP([]); return }
-      const picked = shuffleAndPick(all, MAX_RANDOM)
-      setP(picked.map(img => ({id:'gallery-'+img.id,uploadedAt:img.uploaded_at,description:img.name+(img.tags?'  ('+img.tags+')':''),images:[(img.thumbnail_url||img.image_url).replace("http://20.187.125.248","")]})))
-      setOp(p)
-    } catch { setErr('无法连接到星瞳图站') } finally { setLoading(false) }
-  }, [])
-  useEffect(() => { load() }, [load])
-  const handleUpload = ({images,description}:{images:ImageItem[];description:string}) => {
-    if (!images.length) { toast.error('请至少选择一张图片'); return }
-    const id = Date.now()+'-'+Math.random().toString(16).slice(2)
-    const np: Picture = {id, uploadedAt: new Date().toISOString(), description: description.trim()||undefined, images: images.map(im => im.type==='url'?im.url:im.previewUrl)}
-    const nm = new Map(imgs); images.forEach((im,i) => { if(im.type==='file') nm.set(id+'::'+i,im) })
-    setP(prev => [...prev, np]); setImgs(nm); setUploadOpen(false)
-  }
-  const handleDelete = (pid:string, idx:number|'single') => {
-    setP(prev => prev.map(pic => {if(pic.id!==pid) return pic; if(idx==='single') return null; if(pic.images?.length){const ni=pic.images.filter((_,i)=>i!==idx);return ni.length?{...pic,images:ni}:null}return pic}).filter(Boolean) as Picture[])
-    setImgs(prev => { const n = new Map(prev)
-      if(idx==='single') { for(const k of n.keys()) if(k.startsWith(pid+'::')) n.delete(k) }
-      else { n.delete(pid+'::'+idx); for(const k of n.keys()){const m=k.match(new RegExp('^'+pid+'::(\\d+)$'));if(m&&Number(m[1])>idx){n.set(pid+'::'+(Number(m[1])-1),n.get(k));n.delete(k)}}}
-      return n
-    })
-  }
-  const handleDelGroup = (pic:Picture) => { if(!confirm('确定删除？')) return; setP(prev=>prev.filter(p=>p.id!==pic.id)) }
-  const handleKey = async (f:File) => { try{const t=await f.text();setPrivateKey(t);await save()}catch{toast.error('读取密钥文件失败')} }
-  const handleSaveClick = () => { if(!isAuth)keyRef.current?.click();else save() }
-  const save = async () => {
-    setSaving(true)
-    try { await pushPictures({pictures:p,imageItems:imgs}); setOp(p); setImgs(new Map()); setEdit(false); toast.success('保存成功！') }
-    catch(e:any){toast.error('保存失败: '+(e?.message||'未知错误'))} finally{setSaving(false)}
-  }
-  const cancel = () => { setP(op); setImgs(new Map()); setEdit(false) }
-  useEffect(() => {
-    const h = (e:KeyboardEvent) => { if(!edit&&(e.ctrlKey||e.metaKey)&&e.key===','){e.preventDefault();setEdit(true)} }
-    window.addEventListener('keydown',h); return ()=>window.removeEventListener('keydown',h)
-  }, [edit])
-  if(loading) return <><div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>正在加载星瞳图站图片...</div><input ref={keyRef} type='file' accept='.pem' className='hidden' onChange={async e=>{const f=e.target.files?.[0];if(f)await handleKey(f);if(e.currentTarget)e.currentTarget.value=''}}/></>
-  return <><input ref={keyRef} type='file' accept='.pem' className='hidden' onChange={async e=>{const f=e.target.files?.[0];if(f)await handleKey(f);if(e.currentTarget)e.currentTarget.value=''}}/>
-    {err ? <div className='flex min-h-screen flex-col items-center justify-center gap-4 text-center'><div className='text-secondary text-sm'>{err}</div><motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={load} className='brand-btn rounded-xl px-6 py-2 text-sm'>重试</motion.button></div>
-    : <><RandomLayout pictures={p} isEditMode={edit} onDeleteSingle={handleDelete} onDeleteGroup={handleDelGroup}/>{!p.length&&<div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>暂无图片</div>}</>}
-    <motion.div initial={{opacity:0,scale:0.6}} animate={{opacity:1,scale:1}} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
-      {!err&&<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={load} className='rounded-xl border bg-white/60 px-4 py-2 text-sm backdrop-blur-sm hover:bg-white/80' title='重新随机加载一批'>🔄 换一批</motion.button>}
-      {edit ? <><motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>router.push('/image-toolbox')} className='rounded-xl border bg-blue-50 px-4 py-2 text-sm text-blue-700'>压缩工具</motion.button>
-      <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={cancel} disabled={saving} className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>取消</motion.button>
-      <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setUploadOpen(true)} className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>上传</motion.button>
-      <motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={handleSaveClick} disabled={saving} className='brand-btn px-6'>{saving?'保存中...':'保存'}</motion.button></>
-      : !hideEdit&&<motion.button whileHover={{scale:1.05}} whileTap={{scale:0.95}} onClick={()=>setEdit(true)} className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm hover:bg-white/80'>编辑</motion.button>}
-    </motion.div>
-    {uploadOpen&&<UploadDialog onClose={()=>setUploadOpen(false)} onSubmit={handleUpload}/>}
-  </>
+	const [pictures, setPictures] = useState<Picture[]>(initialList as Picture[])
+	const [originalPictures, setOriginalPictures] = useState<Picture[]>(initialList as Picture[])
+	const [isEditMode, setIsEditMode] = useState(false)
+	const [isSaving, setIsSaving] = useState(false)
+	const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
+	const [imageItems, setImageItems] = useState<Map<string, ImageItem>>(new Map())
+	const keyInputRef = useRef<HTMLInputElement>(null)
+	const router = useRouter()
+
+	const { isAuth, setPrivateKey } = useAuthStore()
+	const { siteContent } = useConfigStore()
+	const hideEditButton = siteContent.hideEditButton ?? false
+
+	const handleUploadSubmit = ({ images, description }: { images: ImageItem[]; description: string }) => {
+		const now = new Date().toISOString()
+
+		if (images.length === 0) {
+			toast.error('请至少选择一张图片')
+			return
+		}
+
+		const id = `${Date.now()}-${Math.random().toString(16).slice(2)}`
+		const desc = description.trim() || undefined
+
+		const imageUrls = images.map(imageItem => (imageItem.type === 'url' ? imageItem.url : imageItem.previewUrl))
+
+		const newPicture: Picture = {
+			id,
+			uploadedAt: now,
+			description: desc,
+			images: imageUrls
+		}
+
+		const newMap = new Map(imageItems)
+
+		images.forEach((imageItem, index) => {
+			if (imageItem.type === 'file') {
+				newMap.set(`${id}::${index}`, imageItem)
+			}
+		})
+
+		setPictures(prev => [...prev, newPicture])
+		setImageItems(newMap)
+		setIsUploadDialogOpen(false)
+	}
+
+	const handleDeleteSingleImage = (pictureId: string, imageIndex: number | 'single') => {
+		setPictures(prev => {
+			return prev
+				.map(picture => {
+					if (picture.id !== pictureId) return picture
+
+					// 如果是 single image，删除整个 Picture
+					if (imageIndex === 'single') {
+						return null
+					}
+
+					// 如果是 images 数组中的图片
+					if (picture.images && picture.images.length > 0) {
+						const newImages = picture.images.filter((_, idx) => idx !== imageIndex)
+						// 如果删除后数组为空，删除整个 Picture
+						if (newImages.length === 0) {
+							return null
+						}
+						return {
+							...picture,
+							images: newImages
+						}
+					}
+
+					return picture
+				})
+				.filter((p): p is Picture => p !== null)
+		})
+
+		// 更新 imageItems Map
+		setImageItems(prev => {
+			const next = new Map(prev)
+			if (imageIndex === 'single') {
+				// 删除所有相关的文件项
+				for (const key of next.keys()) {
+					if (key.startsWith(`${pictureId}::`)) {
+						next.delete(key)
+					}
+				}
+			} else {
+				// 删除特定索引的文件项
+				next.delete(`${pictureId}::${imageIndex}`)
+				
+				// 重新索引：删除索引 imageIndex 后，后面的索引需要前移
+				// 例如：删除索引 1，原来的索引 2 变成 1，索引 3 变成 2
+				const keysToUpdate: Array<{ oldKey: string; newKey: string }> = []
+				for (const key of next.keys()) {
+					if (key.startsWith(`${pictureId}::`)) {
+						const [, indexStr] = key.split('::')
+						const oldIndex = Number(indexStr)
+						if (!isNaN(oldIndex) && oldIndex > imageIndex) {
+							const newIndex = oldIndex - 1
+							keysToUpdate.push({
+								oldKey: key,
+								newKey: `${pictureId}::${newIndex}`
+							})
+						}
+					}
+				}
+				
+				// 执行重新索引
+				for (const { oldKey, newKey } of keysToUpdate) {
+					const value = next.get(oldKey)
+					if (value) {
+						next.set(newKey, value)
+						next.delete(oldKey)
+					}
+				}
+			}
+			return next
+		})
+	}
+
+	const handleDeleteGroup = (picture: Picture) => {
+		if (!confirm('确定要删除这一组图片吗？')) return
+
+		setPictures(prev => prev.filter(p => p.id !== picture.id))
+		setImageItems(prev => {
+			const next = new Map(prev)
+			for (const key of next.keys()) {
+				if (key.startsWith(`${picture.id}::`)) {
+					next.delete(key)
+				}
+			}
+			return next
+		})
+	}
+
+	const handleChoosePrivateKey = async (file: File) => {
+		try {
+			const text = await file.text()
+			setPrivateKey(text)
+			await handleSave()
+		} catch (error) {
+			console.error('Failed to read private key:', error)
+			toast.error('读取密钥文件失败')
+		}
+	}
+
+	const handleSaveClick = () => {
+		if (!isAuth) {
+			keyInputRef.current?.click()
+		} else {
+			handleSave()
+		}
+	}
+
+	const handleSave = async () => {
+		setIsSaving(true)
+
+		try {
+			await pushPictures({
+				pictures,
+				imageItems
+			})
+
+			setOriginalPictures(pictures)
+			setImageItems(new Map())
+			setIsEditMode(false)
+			toast.success('保存成功！')
+		} catch (error: any) {
+			console.error('Failed to save:', error)
+			toast.error(`保存失败: ${error?.message || '未知错误'}`)
+		} finally {
+			setIsSaving(false)
+		}
+	}
+
+	const handleCancel = () => {
+		setPictures(originalPictures)
+		setImageItems(new Map())
+		setIsEditMode(false)
+	}
+
+	const buttonText = isAuth ? '保存' : '导入密钥'
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!isEditMode && (e.ctrlKey || e.metaKey) && e.key === ',') {
+				e.preventDefault()
+				setIsEditMode(true)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [isEditMode])
+
+	return (
+		<>
+			<input
+				ref={keyInputRef}
+				type='file'
+				accept='.pem'
+				className='hidden'
+				onChange={async e => {
+					const f = e.target.files?.[0]
+					if (f) await handleChoosePrivateKey(f)
+					if (e.currentTarget) e.currentTarget.value = ''
+				}}
+			/>
+
+			<RandomLayout pictures={pictures} isEditMode={isEditMode} onDeleteSingle={handleDeleteSingleImage} onDeleteGroup={handleDeleteGroup} />
+
+			{pictures.length === 0 && (
+				<div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>
+					还没有上传图片，点击右上角「编辑」后即可开始上传。
+				</div>
+			)}
+
+			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
+				{isEditMode ? (
+					<>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => router.push('/image-toolbox')}
+							className='rounded-xl border bg-blue-50 px-4 py-2 text-sm text-blue-700'>
+							压缩工具
+						</motion.button>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={handleCancel}
+							disabled={isSaving}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							取消
+						</motion.button>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => setIsUploadDialogOpen(true)}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							上传
+						</motion.button>
+						<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
+							{isSaving ? '保存中...' : buttonText}
+						</motion.button>
+					</>
+				) : (
+					!hideEditButton && (
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => setIsEditMode(true)}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
+							编辑
+						</motion.button>
+					)
+				)}
+			</motion.div>
+
+			{isUploadDialogOpen && <UploadDialog onClose={() => setIsUploadDialogOpen(false)} onSubmit={handleUploadSubmit} />}
+		</>
+	)
 }
