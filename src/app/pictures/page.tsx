@@ -14,8 +14,17 @@ const GALLERY_API = '/gallery-api/api/images/'
 const MAX_RANDOM = 40
 interface GalleryImage { id: number; name: string; tags: string; image_url: string; thumbnail_url: string; uploaded_at: string }
 async function fetchAllGalleryImages(): Promise<GalleryImage[]> {
-  const all: GalleryImage[] = []; let url: string|null = GALLERY_API
-  while (url) { const res = await fetch(url); if (!res.ok) break; const d = await res.json(); all.push(...d.results); url = d.next }
+  const all: GalleryImage[] = []
+  // 手动翻页，不用 API 返回的 next URL（它指向错误的 127.0.0.1）
+  for (let page = 1; page <= 3; page++) {
+    try {
+      const res = await fetch(GALLERY_API + '?page=' + page)
+      if (!res.ok) break
+      const data = await res.json()
+      all.push(...data.results)
+      if (!data.next) break
+    } catch { break }
+  }
   return all
 }
 function shuffleAndPick<T>(a: T[], n: number): T[] {
