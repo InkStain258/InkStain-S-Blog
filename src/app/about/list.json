@@ -1,5 +1,5 @@
 {
 	"title": "关于本站",
-	"description": "一个基于 Github 的现代化博客系统",
-	"content": "📦网站基于 Github 仓库完全存储，所有内容版本可控\n\n🚀无后端，无 serverless function，纯静态站点\n\n✏️文章通过可视化 UI 直接编辑并提交到 Github 仓库\n\n🔑所有用户都可以编辑，提交需要 Owner 的 Private Key\n\n## 技术栈\n\n- Next.js\n- React\n- TypeScript\n- Tailwind CSS\n- Motion\n- Github API"
+	"description": "InkStain 的技术杂谈 — 关注 AGI、ACG、文学文艺、数字人文",
+	"content": "📦 网站基于 YYsuni 的开源博客框架搭建，所有内容通过 GitHub 仓库存储，版本可控\n\n🚀 无后端，无 serverless function，纯静态站点\n\n✏️ 文章通过可视化 UI 直接编辑并提交到 Github 仓库\n\n🔑 所有用户都可以编辑，提交需要 Owner 的 Private Key\n\n## 博客定位\n\n这里是一个技术杂谈空间，关注但不限于以下领域：\n\n- **AGI / AI** — 大模型、智能体、AI 应用开发\n- **ACG** — 动画、漫画、游戏文化与技术\n- **文学文艺** — 古典文学、数字人文、文本可视化\n- **前端开发** — React、TypeScript、Web 技术探索\n\n## 技术栈\n\n- Next.js 16\n- React 19\n- TypeScript\n- Tailwind CSS 4\n- Motion (Framer Motion)\n- Cloudflare Pages\n- GitHub API\n- Shiki (代码高亮)\n- KaTeX (数学公式)\n- Zustand (状态管理)\n- SWR (数据请求)"
 }

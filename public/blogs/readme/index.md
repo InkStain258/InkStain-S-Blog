@@ -1,4 +1,4 @@
-> blog 前端网站（yysuni.com）已链接到 public 仓库
+> blog 前端网站已链接到 GitHub 仓库（InkStain-S-Blog）
 
 该项目使用 Github App 管理项目内容，请保管好后续创建的 **Private key**，不要上传到公开网上。
 
@@ -14,8 +14,8 @@
 
 ```ts
 export const GITHUB_CONFIG = {
-	OWNER: process.env.NEXT_PUBLIC_GITHUB_OWNER || 'yysuni',
-	REPO: process.env.NEXT_PUBLIC_GITHUB_REPO || '2025-blog-public',
+	OWNER: process.env.NEXT_PUBLIC_GITHUB_OWNER || 'InkStain258',
+	REPO: process.env.NEXT_PUBLIC_GITHUB_REPO || 'InkStain-S-Blog',
 	BRANCH: process.env.NEXT_PUBLIC_GITHUB_BRANCH || 'main',
 	APP_ID: process.env.NEXT_PUBLIC_GITHUB_APP_ID || '-'
 } as const

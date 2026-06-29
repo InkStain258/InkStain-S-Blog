@@ -215,8 +215,8 @@
 	},
 	{
 		"name": "Webp 转换压缩",
-		"logo": "https://www.yysuni.com/images/avatar.png",
-		"url": "https://www.yysuni.com/image-toolbox",
+		"logo": "/images/avatar.png",
+		"url": "/image-toolbox",
 		"description": "无限压缩，快且方便，可以直接对比效果",
 		"tags": [
 			"图片"
@@ -255,7 +255,7 @@
 	},
 	{
 		"name": "Tearable UI",
-		"logo": "blob:https://www.yysuni.com/eb24e1ef-6988-4e8f-9915-51ab70a5fcd0",
+		"logo": "/images/share/bfd0d5d3f6fd9811.webp",
 		"url": "https://pushmatrix.github.io/tearable/",
 		"description": "将页面交互，变成一张张可以撕破的画布",
 		"tags": [

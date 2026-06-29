@@ -1,104 +1,65 @@
 [
 	{
-		"name": "Pixel Motion",
+		"name": "geo-tools",
 		"year": 2025,
-		"description": "网页端像素绘画工具，支持组件化画布，多画布同时绘画，色彩变量",
-		"image": "https://pixel-motion.yysuni.com/favicon.svg",
-		"url": "https://pixel-motion.yysuni.com/",
-		"tags": [
-			"像素画",
-			"React",
-			"Figma",
-			"阮周刊"
-		]
-	},
-	{
-		"name": "Path Motion",
-		"year": 2025,
-		"description": "在线 svg path 工具，针对 path 绘制、压缩、运动等功能",
-		"image": "https://path-motion.yysuni.com/favicon.svg",
-		"url": "https://path-motion.yysuni.com/canvas",
-		"tags": [
-			"SVG",
-			"Path",
-			"Motion",
-			"阮周刊"
-		],
-		"github": "https://github.com/YYsuni/path-motion"
-	},
-	{
-		"name": "JSON Viewer",
-		"year": 2023,
-		"description": "React 的 JSON 查看/编辑组件，组件的实现方式依赖于 html 原生逻辑，比较轻量化。第二个用心的组件，学习了前辈的包装方式，介绍方式，网站样式。用户也慢慢多了起来。",
-		"image": "https://jv.yysuni.com/favicon.svg",
-		"url": "https://jv.yysuni.com/",
-		"tags": [
-			"React",
-			"JSON",
-			"Viewer",
-			"阮周刊"
-		],
-		"github": "https://github.com/YYsuni/react18-json-view",
-		"npm": "https://www.npmjs.com/package/react18-json-view"
-	},
-	{
-		"name": "第一版 Blog 网站",
-		"year": 2023,
-		"description": "最开始是觉得掘金这种网站写文章挺好的。后面还是想写一个自己网站，体现自己的风格。MDX 还可以自己写组件到 blog，直接交互，多好。。。没想到为以后埋下了坑。",
-		"image": "https://blog-archive.yysuni.com/favicons/android-chrome-512x512.png",
-		"url": "https://blog-archive.yysuni.com/",
-		"tags": [
-			"Next.js",
-			"MDX"
-		]
-	},
-	{
-		"name": "Blockies",
-		"year": 2023,
-		"description": " Blockies React组件，SVG 实现，用于生成区块链地址的图标。这是我的第一个有人用的组件，虽然人不多",
+		"description": "地理工具集 — 地形生成、等高线渲染、地图可视化",
 		"image": "/images/blockies.svg",
-		"url": "https://blockies-react-svg.vercel.app/",
-		"tags": [
-			"React",
-			"SVG",
-			"Blockies"
-		],
-		"github": "https://github.com/YYsuni/blockies-react-svg",
-		"npm": "https://www.npmjs.com/package/blockies-react-svg"
+		"url": "https://github.com/InkStain258/geo-tools",
+		"tags": ["TypeScript", "React", "地理可视化"],
+		"github": "https://github.com/InkStain258/geo-tools"
 	},
 	{
-		"name": "Vue3 组件库",
-		"year": 2021,
-		"description": "比较让人怀念的一个组件库了，那个时候每个前端程序员都想做一套自己的组件库，我也是。写出来的时候特别让自己开心，觉得好看，舒服。那时也第一次学会免费的 github/gitee pages 部署页面，但也倒腾半天，现在用 vercel 重新上线放着吧。",
-		"image": "/images/vue-kit.webp",
-		"url": "http://archive-suni.vercel.app/#/",
-		"tags": [
-			"Vue",
-			"Library"
-		],
-		"github": "https://github.com/YYsuni/archive-suni"
+		"name": "Xingtong Image Collection",
+		"year": 2025,
+		"description": "星瞳图片 AI 二创素材库，收集整理虚拟偶像星瞳的图片资源",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/Xingtong_Image_Collection",
+		"tags": ["星瞳", "AI", "素材库"],
+		"github": "https://github.com/InkStain258/Xingtong_Image_Collection"
 	},
 	{
-		"name": "箭头生成小工具",
-		"year": 2026,
-		"image": "/images/project/03c08b1832f36f02.png",
-		"url": "https://currve-arrow.yysuni.com/",
-		"description": "实时生成弧线箭头 SVG，可用于图表绘制，也可用于设计取材。没想到这也被周刊看上。",
-		"tags": [
-			"arrow",
-			"阮周刊"
-		],
-		"github": "https://github.com/YYsuni/curve-arrow",
-		"npm": "https://www.npmjs.com/package/curve-arrow"
+		"name": "Xingtong RVC",
+		"year": 2025,
+		"description": "个人训练的虚拟偶像星瞳的 RVC 模型和特征库，用于 AI 语音合成",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/Xingtong_RVC",
+		"tags": ["RVC", "AI语音", "星瞳"],
+		"github": "https://github.com/InkStain258/Xingtong_RVC"
 	},
 	{
-		"name": "Python3.12 教程",
-		"year": 2026,
-		"image": "https://python-docs.yysuni.com/favicon.svg",
-		"url": "https://python-docs.yysuni.com/docs",
-		"description": "官方教程看起来并不友好，我自己借助 AI 并后续时常整理的一份教程，可以看着我的学习笔记，也可以当作一份教程。",
-		"tags": [
-			"教程"
-		]
+		"name": "醉翁亭记视觉文化网站",
+		"year": 2025,
+		"description": "《醉翁亭记》视觉化呈现，探索古典文学的数字叙事表达",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/-Zuiweng-Pavilion-Essay-Visual-Culture-Website",
+		"tags": ["古典文学", "数字人文", "可视化"],
+		"github": "https://github.com/InkStain258/-Zuiweng-Pavilion-Essay-Visual-Culture-Website"
+	},
+	{
+		"name": "学记双语精读",
+		"year": 2025,
+		"description": "《学记》双语精读网站，多模态视角下的古典文本数字叙事研究",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/Xueji-Bilingual-Intensive-Reading",
+		"tags": ["古典文学", "数字人文", "教育"],
+		"github": "https://github.com/InkStain258/Xueji-Bilingual-Intensive-Reading"
+	},
+	{
+		"name": "中小学古诗文",
+		"year": 2025,
+		"description": "中小学古诗文整理与可视化项目",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/Ancient-Poems-and-Texts-for-Primary-and-Secondary-Schools",
+		"tags": ["古诗文", "教育", "可视化"],
+		"github": "https://github.com/InkStain258/Ancient-Poems-and-Texts-for-Primary-and-Secondary-Schools"
+	},
+	{
+		"name": "星瞳全屏弹幕可视化",
+		"year": 2025,
+		"description": "星瞳演唱会全屏弹幕数据可视化，实时弹幕分析与展示",
+		"image": "/images/blockies.svg",
+		"url": "https://github.com/InkStain258/Xingtong-concert-full-screen-bullet-comments-visualization",
+		"tags": ["数据可视化", "弹幕", "星瞳"],
+		"github": "https://github.com/InkStain258/Xingtong-concert-full-screen-bullet-comments-visualization"
 	}
 ]
