@@ -1,1 +1,15 @@
-[]
+[
+	{
+		"name": "inkstain的星瞳图站",
+		"logo": "blob:https://ink-stain-s-blog-ndd3.vercel.app/86c15442-18be-4e65-bf5f-5653c6eee423",
+		"url": "https://inkstain258.github.io/Xingtong_Image_Collection/",
+		"description": "InkStain的星瞳图站",
+		"tags": [
+			"ACG",
+			"Image",
+			"xingtong",
+			"lora"
+		],
+		"stars": 3
+	}
+]
