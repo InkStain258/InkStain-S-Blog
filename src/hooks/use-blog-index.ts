@@ -4,9 +4,13 @@ import type { BlogIndexItem } from '@/app/blog/types'
 
 export type { BlogIndexItem } from '@/app/blog/types'
 
-// 改进 fetcher，抛出状态码以便处理 404
+const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/public'
+
 const fetcher = async (url: string) => {
-	const res = await fetch(url, { cache: 'no-store' })
+	let res = await fetch(url, { cache: 'no-store' })
+	if (!res.ok) {
+		res = await fetch(RAW + url)
+	}
 	if (!res.ok) {
 		const error: any = new Error('Fetch failed')
 		error.status = res.status

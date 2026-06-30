@@ -9,10 +9,8 @@ export type LoadedBlog = {
 	cover?: string
 }
 
-/**
- * Load blog data from public/blogs/{slug}
- * Used by both view page and edit page
- */
+const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/public'
+
 export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	if (!slug) {
 		throw new Error('Slug is required')
@@ -20,7 +18,10 @@ export async function loadBlog(slug: string): Promise<LoadedBlog> {
 
 	// Load config.json
 	let config: BlogConfig = {}
-	const configRes = await fetch(`/blogs/${encodeURIComponent(slug)}/config.json`)
+	let configRes = await fetch(`/blogs/${encodeURIComponent(slug)}/config.json`).catch(() => null)
+	if (!configRes || !configRes.ok) {
+		configRes = await fetch(`${RAW}/blogs/${encodeURIComponent(slug)}/config.json`)
+	}
 	if (configRes.ok) {
 		try {
 			config = await configRes.json()
@@ -30,7 +31,10 @@ export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	}
 
 	// Load index.md
-	const mdRes = await fetch(`/blogs/${encodeURIComponent(slug)}/index.md`)
+	let mdRes = await fetch(`/blogs/${encodeURIComponent(slug)}/index.md`).catch(() => null)
+	if (!mdRes || !mdRes.ok) {
+		mdRes = await fetch(`${RAW}/blogs/${encodeURIComponent(slug)}/index.md`)
+	}
 	if (!mdRes.ok) {
 		throw new Error('Blog not found')
 	}
