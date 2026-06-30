@@ -51,7 +51,7 @@ export async function pushSiteContent(
 		const contentBase64 = await fileToBase64NoPrefix(avatarItem.file)
 		const blobData = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, contentBase64, 'base64')
 		treeItems.push({
-			path: 'public/images/avatar.png',
+			path: 'public/images/avatar.png',// CLOUDFLARE_FIX
 			mode: '100644',
 			type: 'blob',
 			sha: blobData.sha
@@ -106,7 +106,7 @@ export async function pushSiteContent(
 			if (!bgConfig) continue
 
 			// Only upload if URL starts with /images/background/ (local file)
-			if (!bgConfig.url.startsWith('/images/background/')) continue
+			if (!bgConfig.url.startsWith('https://raw.githubusercontent.com/') && !bgConfig.url.startsWith('/images/background/')) continue
 
 			const normalizedUrlPath = bgConfig.url.startsWith('/') ? bgConfig.url : `/${bgConfig.url}`
 			const path = `public${normalizedUrlPath}`
@@ -150,7 +150,7 @@ export async function pushSiteContent(
 			if (!button) continue
 
 			// Only upload if URL starts with /images/social-buttons/ (local file)
-			if (!button.value.startsWith('/images/social-buttons/')) continue
+			if (!button.value.startsWith('https://raw.githubusercontent.com/') && !button.value.startsWith('/images/social-buttons/')) continue
 
 			const normalizedUrlPath = button.value.startsWith('/') ? button.value : `/${button.value}`
 			const path = `public${normalizedUrlPath}`

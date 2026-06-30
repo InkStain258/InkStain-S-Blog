@@ -75,7 +75,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 			const hash = img.hash || (await hashFileSHA256(img.file))
 			const ext = getFileExt(img.file.name)
 			const filename = `${hash}${ext}`
-			const publicPath = `/blogs/${form.slug}/${filename}`
+			const publicPath = `https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/blogs/${form.slug}/${filename}`
 
 			if (!uploadedHashes.has(hash)) {
 				const path = `${basePath}/${filename}`
