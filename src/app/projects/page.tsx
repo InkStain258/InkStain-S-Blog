@@ -8,6 +8,7 @@ import CreateDialog from './components/create-dialog'
 import { pushProjects } from './services/push-projects'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
+import initialList from "./list.json"
 import type { ImageItem } from './components/image-upload-dialog'
 
 /* nginx proxies to GitHub raw */

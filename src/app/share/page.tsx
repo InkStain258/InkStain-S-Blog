@@ -8,6 +8,7 @@ import CreateDialog from './components/create-dialog'
 import { pushShares } from './services/push-shares'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
+import initialList from "./list.json"
 import type { Share } from './components/share-card'
 import type { LogoItem } from './components/logo-upload-dialog'
 

@@ -7,6 +7,7 @@ import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
 import Link from 'next/link'
 import { HomeDraggableLayer } from './home-draggable-layer'
+import initialList from '@/app/share/list.json'
 
 type ShareItem = {
 	name: string
@@ -17,8 +18,6 @@ type ShareItem = {
 	stars: number
 }
 
-/* nginx proxies to GitHub raw */
-
 export default function ShareCard() {
 	const center = useCenterStore()
 	const { cardStyles, siteContent } = useConfigStore()
@@ -27,12 +26,20 @@ export default function ShareCard() {
 	const hiCardStyles = cardStyles.hiCard
 	const socialButtonsStyles = cardStyles.socialButtons
 
+	// Use build-time import as initial data, then try to update from GitHub raw
 	useEffect(() => {
+		if (initialList.length > 0) {
+			const idx = Math.floor(Math.random() * initialList.length)
+			setRandomItem(initialList[idx] as ShareItem)
+		}
+		// Async update from GitHub raw (works on both Vercel and CF Tunnel)
 		fetch("https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/share/list.json")
 			.then(r => r.json())
 			.then(list => {
-				const idx = Math.floor(Math.random() * list.length)
-				setRandomItem(list[idx])
+				if (list && list.length > 0) {
+					const idx = Math.floor(Math.random() * list.length)
+					setRandomItem(list[idx])
+				}
 			})
 			.catch(() => {})
 	}, [])

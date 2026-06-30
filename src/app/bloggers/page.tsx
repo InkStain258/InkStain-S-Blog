@@ -8,6 +8,7 @@ import CreateDialog from './components/create-dialog'
 import { pushBloggers } from './services/push-bloggers'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
+import initialList from "./list.json"
 import type { AvatarItem } from './components/avatar-upload-dialog'
 
 /* nginx proxies to GitHub raw */
