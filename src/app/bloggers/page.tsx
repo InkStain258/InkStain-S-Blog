@@ -30,7 +30,7 @@ export default function Page() {
 	const loadData = useCallback(async () => {
 		setIsLoading(true)
 		try {
-			const res = await fetch("/blogger-list.json")
+			const res = await fetch("https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/bloggers/list.json")
 			if (!res.ok) throw new Error('Failed')
 			setBloggers(await res.json())
 		} catch { toast.error('加载数据失败') }

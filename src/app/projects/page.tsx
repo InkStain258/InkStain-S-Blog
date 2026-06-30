@@ -30,7 +30,7 @@ export default function Page() {
 	const loadProjects = useCallback(async () => {
 		setIsLoading(true)
 		try {
-			const res = await fetch("/project-list.json")
+			const res = await fetch("https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/projects/list.json")
 			if (!res.ok) throw new Error('Failed')
 			setProjects(await res.json())
 		} catch {

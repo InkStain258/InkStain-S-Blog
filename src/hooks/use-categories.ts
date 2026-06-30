@@ -6,7 +6,7 @@ export type CategoriesConfig = {
 	categories: string[]
 }
 
-/* nginx proxies /blogs/ to GitHub raw */
+// nginx proxies /blogs/ to GitHub raw on CF Tunnel
 
 const fetcher = async (url: string): Promise<CategoriesConfig> => {
 	let res = await fetch(url, { cache: 'no-store' })

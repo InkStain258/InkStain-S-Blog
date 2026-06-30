@@ -4,7 +4,7 @@ import type { BlogIndexItem } from '@/app/blog/types'
 
 export type { BlogIndexItem } from '@/app/blog/types'
 
-/* nginx proxies /blogs/ to GitHub raw */
+// nginx proxies /blogs/ to GitHub raw on CF Tunnel
 
 const fetcher = async (url: string) => {
 	let res = await fetch(url, { cache: 'no-store' })

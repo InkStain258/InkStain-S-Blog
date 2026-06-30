@@ -36,7 +36,7 @@ export async function pushPictures(params: PushPicturesParams): Promise<void> {
 				const hash = imageItem.hash || (await hashFileSHA256(imageItem.file))
 				const ext = getFileExt(imageItem.file.name)
 				const filename = `${hash}${ext}`
-				const publicPath = `/images/pictures/${filename}`
+				const publicPath = `https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/pictures/${filename}`
 
 				if (!uploadedHashes.has(hash)) {
 					const path = `public/images/pictures/${filename}`
@@ -108,9 +108,9 @@ export async function pushPictures(params: PushPicturesParams): Promise<void> {
 
 			// 找出不再使用的图片 URL
 			for (const url of previousImageUrls) {
-				if (!currentImageUrls.has(url) && url.startsWith('/images/pictures/')) {
+				if (!currentImageUrls.has(url) && url.startsWith('https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/pictures/')) {
 					// 这是一个本地图片文件，需要删除
-					const filename = url.replace('/images/pictures/', '')
+					const filename = url.replace('https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/pictures/', '')
 					const path = `public/images/pictures/${filename}`
 					treeItems.push({
 						path,

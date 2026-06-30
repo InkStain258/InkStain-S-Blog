@@ -12,7 +12,7 @@ import type { Share } from './components/share-card'
 import type { LogoItem } from './components/logo-upload-dialog'
 
 // Load from GitHub raw via nginx proxy on CF Tunnel
-const LIST_URL = '/share-list.json'
+const LIST_URL = "https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/share/list.json"
 
 export default function Page() {
 	const [shares, setShares] = useState<Share[]>([])

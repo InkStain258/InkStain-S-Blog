@@ -9,7 +9,7 @@ export type LoadedBlog = {
 	cover?: string
 }
 
-/* nginx proxies /blogs/ to GitHub raw */
+// nginx proxies /blogs/ to GitHub raw on CF Tunnel
 
 export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	if (!slug) {
