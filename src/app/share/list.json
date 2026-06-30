@@ -11,5 +11,15 @@
 			"lora"
 		],
 		"stars": 5
+	},
+	{
+		"name": "林小夏的房间",
+		"logo": "blob:https://ink-stain-s-blog-ndd3.vercel.app/b2261fe0-43c7-4c3f-a5de-a998f2a72680",
+		"url": "http://nebula-lyq.top/",
+		"description": "赖神的技术杂谈",
+		"tags": [
+			"博客"
+		],
+		"stars": 3
 	}
 ]
