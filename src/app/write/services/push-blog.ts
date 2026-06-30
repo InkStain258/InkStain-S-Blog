@@ -157,7 +157,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 	)
 	const indexBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(indexJson), 'base64')
 	treeItems.push({
-		path: `public/blogs/index.json',
+		path: 'public/blogs/index.json',
 		mode: '100644',
 		type: 'blob',
 		sha: indexBlob.sha
