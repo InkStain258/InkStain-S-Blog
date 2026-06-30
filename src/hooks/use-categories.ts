@@ -6,8 +6,13 @@ export type CategoriesConfig = {
 	categories: string[]
 }
 
+const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/public'
+
 const fetcher = async (url: string): Promise<CategoriesConfig> => {
-	const res = await fetch(url, { cache: 'no-store' })
+	let res = await fetch(url, { cache: 'no-store' })
+	if (!res.ok) {
+		res = await fetch(RAW + url)
+	}
 	if (!res.ok) {
 		return { categories: [] }
 	}
@@ -33,4 +38,3 @@ export function useCategories() {
 		error
 	}
 }
-
