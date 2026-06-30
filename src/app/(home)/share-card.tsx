@@ -17,7 +17,7 @@ type ShareItem = {
 	stars: number
 }
 
-const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/share/list.json'
+/* nginx proxies to GitHub raw */
 
 export default function ShareCard() {
 	const center = useCenterStore()
@@ -28,7 +28,7 @@ export default function ShareCard() {
 	const socialButtonsStyles = cardStyles.socialButtons
 
 	useEffect(() => {
-		fetch(RAW)
+		fetch("/share-list.json")
 			.then(r => r.json())
 			.then(list => {
 				const idx = Math.floor(Math.random() * list.length)

@@ -38,7 +38,7 @@ export async function pushBloggers(params: PushBloggersParams): Promise<void> {
 				const hash = avatarItem.hash || (await hashFileSHA256(avatarItem.file))
 				const ext = getFileExt(avatarItem.file.name)
 				const filename = `${hash}${ext}`
-				const publicPath = `https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/blogger/${filename}`
+				const publicPath = `/images/blogger/${filename}`
 
 				if (!uploadedHashes.has(hash)) {
 					const path = `public/images/blogger/${filename}`

@@ -36,7 +36,7 @@ export async function pushPictures(params: PushPicturesParams): Promise<void> {
 				const hash = imageItem.hash || (await hashFileSHA256(imageItem.file))
 				const ext = getFileExt(imageItem.file.name)
 				const filename = `${hash}${ext}`
-				const publicPath = `https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/pictures/${filename}`
+				const publicPath = `/images/pictures/${filename}`
 
 				if (!uploadedHashes.has(hash)) {
 					const path = `public/images/pictures/${filename}`

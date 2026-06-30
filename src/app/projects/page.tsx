@@ -10,7 +10,7 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import type { ImageItem } from './components/image-upload-dialog'
 
-const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/projects/list.json'
+/* nginx proxies to GitHub raw */
 
 export default function Page() {
 	const [projects, setProjects] = useState<Project[]>([])
@@ -30,7 +30,7 @@ export default function Page() {
 	const loadProjects = useCallback(async () => {
 		setIsLoading(true)
 		try {
-			const res = await fetch(RAW)
+			const res = await fetch("/project-list.json")
 			if (!res.ok) throw new Error('Failed')
 			setProjects(await res.json())
 		} catch {

@@ -11,7 +11,8 @@ import { useConfigStore } from '@/app/(home)/stores/config-store'
 import type { Share } from './components/share-card'
 import type { LogoItem } from './components/logo-upload-dialog'
 
-const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/src/app/share/list.json'
+// Load from GitHub raw via nginx proxy on CF Tunnel
+const LIST_URL = '/share-list.json'
 
 export default function Page() {
 	const [shares, setShares] = useState<Share[]>([])
@@ -20,6 +21,7 @@ export default function Page() {
 	const [isSaving, setIsSaving] = useState(false)
 	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
+	const [editingShare, setEditingShare] = useState<Share | null>(null)
 	const [logoItems, setLogoItems] = useState<Map<string, LogoItem>>(new Map())
 	const keyInputRef = useRef<HTMLInputElement>(null)
 
@@ -27,120 +29,57 @@ export default function Page() {
 	const { siteContent } = useConfigStore()
 	const hideEditButton = siteContent.hideEditButton ?? false
 
-	// Load latest share list from GitHub raw
 	const loadShares = useCallback(async () => {
 		setIsLoading(true)
 		try {
-			const res = await fetch(RAW)
-			if (!res.ok) throw new Error('Failed to load')
-			const data = await res.json()
-			setShares(data)
-			setOriginalShares(data)
-		} catch {
-			toast.error('加载友链数据失败')
-		} finally {
-			setIsLoading(false)
-		}
+			const res = await fetch(LIST_URL)
+			if (!res.ok) throw new Error()
+			setShares(await res.json())
+		} catch { setShares([]) }
+		finally { setIsLoading(false) }
 	}, [])
 
 	useEffect(() => { loadShares() }, [loadShares])
 
-	const handleUpdate = (updatedShare: Share, oldShare: Share, logoItem?: LogoItem) => {
-		setShares(prev => prev.map(s => (s.url === oldShare.url ? updatedShare : s)))
-		if (logoItem) {
-			setLogoItems(prev => {
-				const newMap = new Map(prev)
-				newMap.set(updatedShare.url, logoItem)
-				return newMap
-			})
-		}
+	const handleUpdate = (u: Share, o: Share, l?: LogoItem) => {
+		setShares(p => p.map(s => s.url === o.url ? u : s))
+		if (l) setLogoItems(p => { const n = new Map(p); n.set(u.url, l); return n })
 	}
 
-	const handleAdd = () => { setEditingShare(null); setIsCreateDialogOpen(true) }
-
-	const [editingShare, setEditingShare] = useState<Share | null>(null)
-
-	const handleSaveShare = (updatedShare: Share) => {
-		if (editingShare) {
-			setShares(prev => prev.map(s => (s.url === editingShare.url ? updatedShare : s)))
-		} else {
-			setShares(prev => [...prev, updatedShare])
-		}
+	const handleSaveShare = (u: Share) => {
+		if (editingShare) setShares(p => p.map(s => s.url === editingShare.url ? u : s))
+		else setShares(p => [...p, u])
 	}
-
-	const handleDelete = (share: Share) => {
-		if (confirm(`确定要删除 ${share.name} 吗？`)) {
-			setShares(prev => prev.filter(s => s.url !== share.url))
-		}
-	}
-
-	const handleChoosePrivateKey = async (file: File) => {
-		try {
-			const text = await file.text()
-			setPrivateKey(text)
-			await handleSave()
-		} catch {
-			toast.error('读取密钥文件失败')
-		}
-	}
-
-	const handleSaveClick = () => {
-		if (!isAuth) keyInputRef.current?.click()
-		else handleSave()
-	}
-
+	const handleDelete = (s: Share) => { if (confirm('确定删除？')) setShares(p => p.filter(x => x.url !== s.url)) }
+	const handleChoosePrivateKey = async (f: File) => { try { setPrivateKey(await f.text()); await handleSave() } catch { toast.error('密钥文件错误') } }
+	const handleSaveClick = () => { if (!isAuth) keyInputRef.current?.click(); else handleSave() }
 	const handleSave = async () => {
 		setIsSaving(true)
-		try {
-			await pushShares({ shares, logoItems })
-			setOriginalShares(shares)
-			setLogoItems(new Map())
-			setIsEditMode(false)
-			toast.success('保存成功！')
-		} catch (e: any) {
-			toast.error(`保存失败: ${e?.message || '未知错误'}`)
-		} finally { setIsSaving(false) }
+		try { await pushShares({ shares, logoItems }); setOriginalShares(shares); setLogoItems(new Map()); setIsEditMode(false); toast.success('保存成功！') }
+		catch (e: any) { toast.error('保存失败: ' + (e?.message || '未知错误')) } finally { setIsSaving(false) }
 	}
-
-	const handleCancel = () => {
-		setShares(originalShares)
-		setLogoItems(new Map())
-		setIsEditMode(false)
-	}
-
+	const handleCancel = () => { setShares(originalShares); setLogoItems(new Map()); setIsEditMode(false) }
 	const buttonText = isAuth ? '保存' : '导入密钥'
 
 	useEffect(() => {
-		const h = (e: KeyboardEvent) => {
-			if (!isEditMode && (e.ctrlKey || e.metaKey) && e.key === ',') { e.preventDefault(); setIsEditMode(true) }
-		}
-		window.addEventListener('keydown', h)
-		return () => window.removeEventListener('keydown', h)
+		const h = (e: KeyboardEvent) => { if (!isEditMode && (e.ctrlKey || e.metaKey) && e.key === ',') { e.preventDefault(); setIsEditMode(true) } }
+		window.addEventListener('keydown', h); return () => window.removeEventListener('keydown', h)
 	}, [isEditMode])
 
-	return (
-		<>
-			<input ref={keyInputRef} type='file' accept='.pem' className='hidden'
-				onChange={async e => { const f = e.target.files?.[0]; if (f) await handleChoosePrivateKey(f); if (e.currentTarget) e.currentTarget.value = '' }} />
-			{isLoading ? (
-				<div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>加载友链数据...</div>
-			) : (
-				<GridView shares={shares} isEditMode={isEditMode} onUpdate={handleUpdate} onDelete={handleDelete} />
+	return <>
+		<input ref={keyInputRef} type='file' accept='.pem' className='hidden' onChange={async e => { const f = e.target.files?.[0]; if (f) await handleChoosePrivateKey(f); if (e.currentTarget) e.currentTarget.value = '' }} />
+		{isLoading ? <div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>加载友链数据...</div> : (
+			<GridView shares={shares} isEditMode={isEditMode} onUpdate={handleUpdate} onDelete={handleDelete} />
+		)}
+		<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
+			{isEditMode ? <>
+				<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCancel} disabled={isSaving} className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>取消</motion.button>
+				<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { setEditingShare(null); setIsCreateDialogOpen(true) }} className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>添加</motion.button>
+				<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>{isSaving ? '保存中...' : buttonText}</motion.button>
+			</> : !hideEditButton && (
+				<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsEditMode(true)} className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>编辑</motion.button>
 			)}
-			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
-				{isEditMode ? <>
-					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCancel} disabled={isSaving}
-						className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>取消</motion.button>
-					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleAdd} disabled={isSaving}
-						className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>添加</motion.button>
-					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
-						{isSaving ? '保存中...' : buttonText}</motion.button>
-				</> : !hideEditButton && (
-					<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsEditMode(true)}
-						className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>编辑</motion.button>
-				)}
-			</motion.div>
-			{isCreateDialogOpen && <CreateDialog share={editingShare} onClose={() => setIsCreateDialogOpen(false)} onSave={handleSaveShare} />}
-		</>
-	)
+		</motion.div>
+		{isCreateDialogOpen && <CreateDialog share={editingShare} onClose={() => setIsCreateDialogOpen(false)} onSave={handleSaveShare} />}
+	</>
 }

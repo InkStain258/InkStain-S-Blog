@@ -4,12 +4,12 @@ import type { BlogIndexItem } from '@/app/blog/types'
 
 export type { BlogIndexItem } from '@/app/blog/types'
 
-const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/public'
+/* nginx proxies /blogs/ to GitHub raw */
 
 const fetcher = async (url: string) => {
 	let res = await fetch(url, { cache: 'no-store' })
 	if (!res.ok) {
-		res = await fetch(RAW + url)
+		res = await fetch(url)
 	}
 	if (!res.ok) {
 		const error: any = new Error('Fetch failed')

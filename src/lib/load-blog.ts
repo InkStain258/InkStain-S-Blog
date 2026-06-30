@@ -9,7 +9,7 @@ export type LoadedBlog = {
 	cover?: string
 }
 
-const RAW = 'https://raw.githubusercontent.com/InkStain258/InkStain-S-Blog/main/public'
+/* nginx proxies /blogs/ to GitHub raw */
 
 export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	if (!slug) {
@@ -20,7 +20,7 @@ export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	let config: BlogConfig = {}
 	let configRes = await fetch(`/blogs/${encodeURIComponent(slug)}/config.json`).catch(() => null)
 	if (!configRes || !configRes.ok) {
-		configRes = await fetch(`${RAW}/blogs/${encodeURIComponent(slug)}/config.json`)
+		configRes = await fetch(`/blogs/${encodeURIComponent(slug)}/config.json`)
 	}
 	if (configRes.ok) {
 		try {
@@ -33,7 +33,7 @@ export async function loadBlog(slug: string): Promise<LoadedBlog> {
 	// Load index.md
 	let mdRes = await fetch(`/blogs/${encodeURIComponent(slug)}/index.md`).catch(() => null)
 	if (!mdRes || !mdRes.ok) {
-		mdRes = await fetch(`${RAW}/blogs/${encodeURIComponent(slug)}/index.md`)
+		mdRes = await fetch(`/blogs/${encodeURIComponent(slug)}/index.md`)
 	}
 	if (!mdRes.ok) {
 		throw new Error('Blog not found')

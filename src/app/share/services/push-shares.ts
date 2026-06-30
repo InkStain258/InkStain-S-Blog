@@ -38,7 +38,7 @@ export async function pushShares(params: PushSharesParams): Promise<void> {
 				const hash = logoItem.hash || (await hashFileSHA256(logoItem.file))
 				const ext = getFileExt(logoItem.file.name)
 				const filename = `${hash}${ext}`
-				const publicPath = `https://raw.githubusercontent.com/${GITHUB_CONFIG.OWNER}/${GITHUB_CONFIG.REPO}/main/public/images/share/${filename}`
+				const publicPath = `/images/share/${filename}`
 
 				if (!uploadedHashes.has(hash)) {
 					const path = `public/images/share/${filename}`
