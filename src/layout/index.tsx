@@ -9,6 +9,13 @@ import { useSize, useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { ScrollTopButton } from '@/components/scroll-top-button'
 import MusicCard from '@/components/music-card'
+import SplashScreen from '@/components/splash-screen'
+import PageTransition from '@/components/page-transition'
+import ClickEffect from '@/components/click-effect'
+import Fireflies from '@/components/fireflies'
+import SakuraPetals from '@/components/sakura-petals'
+import DanmakuBackground from '@/components/danmaku-bg'
+import WeatherWidget from '@/components/weather-widget'
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
@@ -23,6 +30,13 @@ export default function Layout({ children }: PropsWithChildren) {
 
 	return (
 		<>
+			<SplashScreen />
+			<ClickEffect />
+			{/* Cherry blossoms in the background (light theme) */}
+			<SakuraPetals />
+			{/* Danmaku text scrolling */}
+			<DanmakuBackground />
+
 			<Toaster
 				position='bottom-right'
 				richColors
@@ -53,10 +67,15 @@ export default function Layout({ children }: PropsWithChildren) {
 			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
 
 			<main className='relative z-10 h-full'>
-				{children}
+				<PageTransition>{children}</PageTransition>
 				<NavCard />
 
 				{!maxSM && cardStyles.musicCard?.enabled !== false && <MusicCard />}
+				{!maxSM && (
+					<div className="fixed bottom-6 left-6 z-40 w-36">
+						<WeatherWidget />
+					</div>
+				)}
 			</main>
 
 			{maxSM && init && <ScrollTopButton className='bg-brand/20 fixed right-6 bottom-8 z-50 shadow-md' />}
