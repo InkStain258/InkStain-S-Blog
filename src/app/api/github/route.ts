@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-async function handler(req: Request) {
+export async function POST(req: Request) {
   try {
     const contentType = req.headers.get('content-type') || ''
     let code = ''
@@ -24,10 +24,15 @@ async function handler(req: Request) {
       return NextResponse.json({ error: 'Missing code or client_id' }, { status: 400 })
     }
 
-    // Use the origin as redirect_uri base if not provided or if it's a trycloudflare URL
-    const origin = req.headers.get('origin') || 'https://ink-stain-s-blog.vercel.app'
-    if (!redirectUri || redirectUri.includes('trycloudflare.com')) {
-      redirectUri = origin + '/'
+    // Clean redirect_uri: strip query params, ensure it's the canonical domain
+    if (redirectUri) {
+      try {
+        const u = new URL(redirectUri)
+        redirectUri = u.origin + u.pathname
+      } catch {}
+    }
+    if (!redirectUri) {
+      redirectUri = 'https://ink-stain-s-blog.vercel.app/'
     }
 
     const body = new URLSearchParams({
@@ -53,5 +58,3 @@ async function handler(req: Request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-
-export { handler as POST }

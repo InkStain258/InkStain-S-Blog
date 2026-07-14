@@ -18,13 +18,19 @@ export default function GitalkComments() {
     if (!containerRef.current) return
     if (!GITALK_CLIENT_ID) return
 
+    // Clean OAuth code from URL BEFORE Gitalk captures location.href
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('code')) {
+      url.searchParams.delete('code')
+      url.searchParams.delete('state')
+      window.history.replaceState({}, document.title, url.toString())
+    }
+
     containerRef.current.innerHTML = ''
 
-    // Use the canonical Vercel domain as redirect_uri base,
-    // appending the pathname for unique per-article Issues.
     const redirectUri = 'https://ink-stain-s-blog.vercel.app' + pathname
 
-    const gitalk = new (Gitalk as any)({
+    const gitalk = new Gitalk({
       clientID: GITALK_CLIENT_ID,
       clientSecret: GITALK_CLIENT_ID,
       repo: GITALK_REPO,
@@ -36,26 +42,17 @@ export default function GitalkComments() {
       title: document.title,
     })
 
-    // Override the OAuth redirect URI to use the canonical domain
-    const origOpen = window.open
     gitalk.render(containerRef.current)
 
-    // After render, fix all OAuth links to use the correct redirect_uri
+    // Fix all OAuth links to use canonical redirect URI
     setTimeout(() => {
       const links = containerRef.current?.querySelectorAll('a[href*="github.com/login/oauth"]')
       links?.forEach(a => {
-        const url = new URL(a.getAttribute('href') || '')
-        url.searchParams.set('redirect_uri', redirectUri)
-        a.setAttribute('href', url.toString())
+        const hrefUrl = new URL(a.getAttribute('href') || '')
+        hrefUrl.searchParams.set('redirect_uri', redirectUri)
+        a.setAttribute('href', hrefUrl.toString())
       })
-    }, 100)
-
-    // Clean OAuth code from URL after callback
-    const url = new URL(window.location.href)
-    if (url.searchParams.has('code')) {
-      url.searchParams.delete('code')
-      window.history.replaceState({}, document.title, url.toString())
-    }
+    }, 200)
   }, [pathname])
 
   if (!GITALK_CLIENT_ID) return null
