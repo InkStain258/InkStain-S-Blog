@@ -5,14 +5,10 @@ import { usePathname } from 'next/navigation'
 import 'gitalk/dist/gitalk.css'
 import Gitalk from 'gitalk'
 
-// Gitalk 配置（通过环境变量注入，有合理默认值）
-const GITALK_CONFIG = {
-  clientID: process.env.NEXT_PUBLIC_GITALK_CLIENT_ID || '',
-  clientSecret: process.env.NEXT_PUBLIC_GITALK_CLIENT_SECRET || '',
-  repo: process.env.NEXT_PUBLIC_GITALK_REPO || 'InkStain-S-Blog',
-  owner: process.env.NEXT_PUBLIC_GITALK_OWNER || 'InkStain258',
-  admin: (process.env.NEXT_PUBLIC_GITALK_ADMIN || 'InkStain258').split(','),
-}
+const GITALK_CLIENT_ID = process.env.NEXT_PUBLIC_GITALK_CLIENT_ID || 'Ov23lixBE1JBA4I67AMe'
+const GITALK_REPO = process.env.NEXT_PUBLIC_GITALK_REPO || 'InkStain-S-Blog'
+const GITALK_OWNER = process.env.NEXT_PUBLIC_GITALK_OWNER || 'InkStain258'
+const GITALK_ADMIN = (process.env.NEXT_PUBLIC_GITALK_ADMIN || 'InkStain258').split(',')
 
 export default function GitalkComments() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -20,32 +16,34 @@ export default function GitalkComments() {
 
   useEffect(() => {
     if (!containerRef.current) return
-    if (!GITALK_CONFIG.clientID) return // 未配置 OAuth App 时不渲染
+    if (!GITALK_CLIENT_ID) return
 
     containerRef.current.innerHTML = ''
 
     const gitalk = new Gitalk({
-      clientID: GITALK_CONFIG.clientID,
-      clientSecret: GITALK_CONFIG.clientSecret,
-      repo: GITALK_CONFIG.repo,
-      owner: GITALK_CONFIG.owner,
-      admin: GITALK_CONFIG.admin,
+      clientID: GITALK_CLIENT_ID,
+      clientSecret: GITALK_CLIENT_ID, // 客户端不需要 secret，由服务端 /api/github 代理处理
+      repo: GITALK_REPO,
+      owner: GITALK_OWNER,
+      admin: GITALK_ADMIN,
       proxy: '/api/github',
       id: (pathname.replace(/\/$/, '') || '/').substring(0, 49),
       distractionFreeMode: false,
-      title: `Comments: ${document.title}`,
+      title: typeof document !== 'undefined' ? document.title : '',
     })
 
     gitalk.render(containerRef.current)
 
-    const url = new URL(window.location.href)
-    if (url.searchParams.has('code')) {
-      url.searchParams.delete('code')
-      window.history.replaceState({}, document.title, url.toString())
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      if (url.searchParams.has('code')) {
+        url.searchParams.delete('code')
+        window.history.replaceState({}, document.title, url.toString())
+      }
     }
   }, [pathname])
 
-  if (!GITALK_CONFIG.clientID) return null
+  if (!GITALK_CLIENT_ID) return null
 
   return (
     <div className="mt-12 w-full max-w-[800px] mx-auto px-4">
