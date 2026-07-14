@@ -8,6 +8,9 @@ import { BlogPreview } from '@/components/blog-preview'
 import { loadBlog, type BlogConfig } from '@/lib/load-blog'
 import { useReadArticles } from '@/hooks/use-read-articles'
 import LiquidGrass from '@/components/liquid-grass'
+import dynamic from 'next/dynamic'
+
+const GitalkComments = dynamic(() => import('@/components/gitalk-comments'), { ssr: false })
 
 export default function Page() {
 	const params = useParams() as { id?: string | string[] }
@@ -91,6 +94,9 @@ export default function Page() {
 			</motion.button>
 
 			{slug === 'liquid-grass' && <LiquidGrass />}
+
+			{/* Gitalk 评论区 */}
+			<GitalkComments />
 		</>
 	)
 }
