@@ -1,15 +1,37 @@
 @theme {
-	--color-primary: #334f52;
-	--color-secondary: #7b888e;
-	--color-brand-secondary: #1fc9e7;
-	--color-bg: #eeeeee;
-	--color-border: #fff;
-	--color-brand: #35bfab;
-	--color-card: #ffffff66;
-	--color-article: #ffffffcc;
+  --color-primary: var(--ink-primary);
+  --color-secondary: var(--ink-secondary);
+  --color-brand-secondary: var(--ink-brand-secondary);
+  --color-bg: var(--ink-bg);
+  --color-border: var(--ink-border);
+  --color-brand: var(--ink-brand);
+  --color-card: var(--ink-card);
+  --color-article: var(--ink-article);
 
-	--font-averia: 'Averia Gruesa Libre', sans-serif;
-	--font-sans:
-		'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, BlinkMacSystemFont, 'Helvetica Neue',
-		'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+  --font-averia: 'Averia Gruesa Libre', sans-serif;
+  --font-sans:
+    'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, BlinkMacSystemFont, 'Helvetica Neue',
+    'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+}
+
+:root {
+  --ink-primary: #334f52;
+  --ink-secondary: #7b888e;
+  --ink-brand-secondary: #1fc9e7;
+  --ink-bg: #eeeeee;
+  --ink-border: #fff;
+  --ink-brand: #35bfab;
+  --ink-card: #ffffff66;
+  --ink-article: #ffffffcc;
+}
+
+.dark {
+  --ink-primary: #e0e0e0;
+  --ink-secondary: #8892b0;
+  --ink-brand-secondary: #2fcbe7;
+  --ink-bg: #1a1a2e;
+  --ink-border: #2a2a4a;
+  --ink-brand: #2fcbe7;
+  --ink-card: #16213e88;
+  --ink-article: #1e2a3a88;
 }

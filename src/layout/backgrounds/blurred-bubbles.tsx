@@ -13,6 +13,8 @@ import { makeNoise2D, rand } from './utils'
 export default function BlurredBubblesBackground({
 	count = 6,
 	colors = siteContent.backgroundColors,
+	darkColors,
+	isDark,
 	minRadius = 250,
 	maxRadius = 400,
 	bottomBandStart = 0.8,

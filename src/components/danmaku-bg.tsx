@@ -25,7 +25,7 @@ export default function DanmakuBackground() {
         @keyframes dm-left { 0% { right:-100%; transform:translateX(100%) } 100% { right:100%; transform:translateX(-100%) } }
       `}</style>
       {items.map(item => (
-        <div key={item.id} className="absolute whitespace-nowrap text-white/20 font-bold text-lg tracking-wider select-none"
+        <div key={item.id} className="absolute whitespace-nowrap text-black/10 dark:text-white/15 font-bold text-lg tracking-wider select-none"
           style={{ top: `${item.top}%`, right: '-100%',
             animation: `dm-left ${item.duration}s linear ${item.delay}s infinite` }}>
           {item.text}

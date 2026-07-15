@@ -16,12 +16,16 @@ import Fireflies from '@/components/fireflies'
 import SakuraPetals from '@/components/sakura-petals'
 import DanmakuBackground from '@/components/danmaku-bg'
 import WeatherWidget from '@/components/weather-widget'
+import ThemeToggle from '@/components/theme-toggle'
+import { useTheme } from '@/hooks/use-theme'
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
 	const { maxSM, init } = useSize()
+	const { theme } = useTheme()
+	const isDark = theme === 'dark'
 
 	const backgroundImages = (siteContent.backgroundImages ?? []) as Array<{ id: string; url: string }>
 	const currentBackgroundImageId = siteContent.currentBackgroundImageId
@@ -32,9 +36,12 @@ export default function Layout({ children }: PropsWithChildren) {
 		<>
 			<SplashScreen />
 			<ClickEffect />
-			{/* Cherry blossoms in the background (light theme) */}
-			<SakuraPetals />
-			{/* Danmaku text scrolling */}
+			<ThemeToggle />
+
+			{/* Sakura only in light mode; Fireflies only in dark mode */}
+			{!isDark && <SakuraPetals />}
+			{isDark && <Fireflies />}
+
 			<DanmakuBackground />
 
 			<Toaster
@@ -47,20 +54,14 @@ export default function Layout({ children }: PropsWithChildren) {
 					error: <OctagonXIcon className='size-4' />,
 					loading: <Loader2Icon className='size-4 animate-spin' />
 				}}
-				style={
-					{
-						'--border-radius': '12px'
-					} as React.CSSProperties
-				}
+				style={{ '--border-radius': '12px' } as React.CSSProperties}
 			/>
 			{currentBackgroundImage && (
 				<div
 					className='fixed inset-0 z-0 overflow-hidden'
 					style={{
 						backgroundImage: `url(${currentBackgroundImage.url})`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat'
+						backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'
 					}}
 				/>
 			)}
@@ -69,7 +70,6 @@ export default function Layout({ children }: PropsWithChildren) {
 			<main className='relative z-10 h-full'>
 				<PageTransition>{children}</PageTransition>
 				<NavCard />
-
 				{!maxSM && cardStyles.musicCard?.enabled !== false && <MusicCard />}
 				{!maxSM && (
 					<div className="fixed bottom-6 left-6 z-40 w-36">

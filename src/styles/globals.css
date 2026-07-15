@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 @import 'katex/dist/katex.min.css';
 @import './theme.css';
 @import './article.css';
@@ -175,4 +176,88 @@
 	.heartbeat {
 		animation: heartbeat-frame 0.8s ease-in-out;
 	}
+}
+
+/* ===== Dark mode overrides ===== */
+.dark .card {
+  box-shadow:
+    0 40px 50px -32px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.dark .text-linear {
+  background: linear-gradient(to right bottom, #fff3 0%, #6661), linear-gradient(to right bottom, var(--color-brand) 40%, var(--color-brand-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark html li[data-sonner-toast][data-styled='true'] {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(30, 30, 50, 0.6) !important;
+  backdrop-filter: blur(12px);
+  color: #e0e0e0 !important;
+}
+
+.dark .shadow {
+  box-shadow: 0 40px 50px -32px rgba(0, 0, 0, 0.3);
+}
+
+.dark .brand-btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* BlurredBubbles: dim the bubbles in dark mode */
+.dark canvas,
+.dark .fixed.inset-0.z-10 {
+  opacity: 0.6;
+}
+
+/* Blog article content */
+.dark .prose {
+  color: var(--ink-primary);
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose strong {
+  color: #f0f0f0;
+}
+
+.dark .prose a {
+  color: var(--color-brand);
+}
+
+.dark .prose code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+}
+
+.dark .prose pre {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .prose blockquote {
+  border-left-color: var(--color-brand);
+  color: #aaa;
+}
+
+.dark .prose table {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .prose th {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .prose td {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Dim background bubbles significantly in dark mode */
+.dark .fixed.inset-0.z-0 {
+  filter: blur(50px) brightness(0.3) !important;
 }
