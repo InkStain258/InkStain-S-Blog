@@ -186,4 +186,4 @@
 
 # 《文心雕龙》的基本结构
 
-![Screenshot_20240304_093827_com.orion.notein](blob:https://ink-stain-s-blog.vercel.app/d4872a10-629b-4177-b0e0-4300edced193)
+![Screenshot_20240304_093827_com.orion.notein](blob:https://ink-stain-s-blog.vercel.app/5646375d-e23c-4696-a73a-bcd9bc667306)
