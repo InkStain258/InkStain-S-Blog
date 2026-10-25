@@ -5,6 +5,7 @@ import { pushBlog } from '../services/push-blog'
 import { deleteBlog } from '../services/delete-blog'
 import { useWriteStore } from '../stores/write-store'
 import { useAuthStore } from '@/hooks/use-auth'
+import { clearDraft } from '@/lib/draft'
 
 export function usePublish() {
 	const { loading, setLoading, form, cover, images, mode, originalSlug } = useWriteStore()
@@ -30,6 +31,7 @@ export function usePublish() {
 			})
 
 			const successMsg = mode === 'edit' ? '更新成功' : '发布成功'
+			clearDraft()
 			toast.success(successMsg)
 		} catch (err: any) {
 			console.error(err)

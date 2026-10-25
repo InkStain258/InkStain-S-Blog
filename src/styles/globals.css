@@ -349,3 +349,59 @@
 @media (prefers-reduced-motion: reduce) {
   .cursor-glow { display: none; }
 }
+
+/* ===== 正文图片：模糊占位 → 淡入 ===== */
+.prose img[data-loaded='0'] {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.01);
+}
+.prose img[data-loaded='1'] {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  transition:
+    opacity 0.55s ease,
+    filter 0.55s ease,
+    transform 0.55s ease;
+}
+
+/* ===== 首页卡片悬浮光泽 ===== */
+.card.squircle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.3) 48%, transparent 62%);
+  background-size: 220% 100%;
+  background-position: 140% 0;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.card.squircle:hover::after {
+  opacity: 1;
+  animation: card-sheen 1.1s ease-out;
+}
+@keyframes card-sheen {
+  from {
+    background-position: 140% 0;
+  }
+  to {
+    background-position: -40% 0;
+  }
+}
+.dark .card.squircle::after {
+  background-image: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.12) 48%, transparent 62%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card.squircle:hover::after {
+    animation: none;
+    opacity: 0;
+  }
+  .prose img[data-loaded='0'] {
+    filter: none;
+  }
+}

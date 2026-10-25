@@ -7,7 +7,8 @@ import { Toaster } from 'sonner'
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from 'lucide-react'
 import { useSize, useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
-import { ScrollTopButton } from '@/components/scroll-top-button'
+import BackToTop from '@/components/back-to-top'
+import ProseImageEnhancer from '@/components/prose-image-enhancer'
 import MusicCard from '@/components/music-card'
 import SplashScreen from '@/components/splash-screen'
 import PageTransition from '@/components/page-transition'
@@ -28,7 +29,7 @@ export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
-	const { maxSM, init } = useSize()
+	const { maxSM } = useSize()
 	const { theme } = useTheme()
 	const isDark = theme === 'dark'
 	const pathname = usePathname()
@@ -78,6 +79,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
 
 			<main className='relative z-10 h-full'>
+				<ProseImageEnhancer />
 				<PageTransition>{children}</PageTransition>
 				<SiteFooter />
 				<NavCard />
@@ -89,7 +91,7 @@ export default function Layout({ children }: PropsWithChildren) {
 				)}
 			</main>
 
-			{maxSM && init && <ScrollTopButton className='bg-brand/20 fixed right-6 bottom-8 z-50 shadow-md' />}
+			<BackToTop />
 		</>
 	)
 }

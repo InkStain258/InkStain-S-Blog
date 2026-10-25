@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { toast } from 'sonner'
 import { hashFileSHA256 } from '@/lib/file-utils'
+import { compressImages } from '@/lib/image-compress'
 import { loadBlog } from '@/lib/load-blog'
 import type { PublishForm, ImageItem } from '../types'
 
@@ -85,6 +86,9 @@ export const useWriteStore = create<WriteStore>((set, get) => ({
 		const arr = Array.from(files).filter(f => f.type.startsWith('image/'))
 		if (arr.length === 0) return []
 
+		// 上传前压缩：最长边 1600px、WebP，显著减小仓库体积
+		const compressed = await compressImages(arr)
+
 		const existingHashes = new Map<string, ImageItem>(
 			images
 				.filter((it): it is Extract<ImageItem, { type: 'file'; hash?: string }> => it.type === 'file' && (it as any).hash)
@@ -92,7 +96,7 @@ export const useWriteStore = create<WriteStore>((set, get) => ({
 		)
 
 		const computed = await Promise.all(
-			arr.map(async file => {
+			compressed.map(async file => {
 				const hash = await hashFileSHA256(file)
 				return { file, hash }
 			})

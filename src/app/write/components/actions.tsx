@@ -7,7 +7,7 @@ import { usePreviewStore } from '../stores/preview-store'
 import { usePublish } from '../hooks/use-publish'
 
 export function WriteActions() {
-	const { loading, mode, form, loadBlogForEdit, originalSlug, updateForm } = useWriteStore()
+	const { loading, mode, form, loadBlogForEdit, originalSlug, updateForm, images } = useWriteStore()
 	const { openPreview } = usePreviewStore()
 	const { isAuth, onChoosePrivateKey, onPublish, onDelete } = usePublish()
 	const [saving, setSaving] = useState(false)
@@ -15,10 +15,47 @@ export function WriteActions() {
 	const mdInputRef = useRef<HTMLInputElement>(null)
 	const router = useRouter()
 
+	/** 发布前检查，避免推送出错后才在 Vercel 上看到问题 */
+	const validate = () => {
+		if (!form.title.trim()) {
+			toast.error('请先填写标题')
+			return false
+		}
+		const slug = form.slug.trim()
+		if (!slug) {
+			toast.error('请填写 slug（建议格式 xx-xx）')
+			return false
+		}
+		if (/\s/.test(slug)) {
+			toast.error('slug 不能包含空格，请用短横线连接')
+			return false
+		}
+		if (!/^[\w-]+$/.test(slug)) {
+			toast.error('slug 只能包含字母、数字、下划线或短横线')
+			return false
+		}
+		if (!form.md.trim()) {
+			toast.error('正文还是空的')
+			return false
+		}
+		// 检查正文引用了已被删除的本地图片
+		const referenced = Array.from(form.md.matchAll(/local-image:([\w-]+)/g)).map(m => m[1])
+		if (referenced.length) {
+			const valid = new Set(images.filter(i => i.type === 'file').map(i => i.id))
+			const missing = referenced.filter(id => !valid.has(id))
+			if (missing.length) {
+				toast.error(`有 ${missing.length} 张图片已被删除，请先清理正文中的引用`)
+				return false
+			}
+		}
+		return true
+	}
+
 	const handleImportOrPublish = () => {
 		if (!isAuth) {
 			keyInputRef.current?.click()
 		} else {
+			if (!validate()) return
 			onPublish()
 		}
 	}

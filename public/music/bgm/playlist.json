@@ -1,0 +1,120 @@
+[
+  {
+    "file": "/music/bgm/lofi-lion-tame-the-beast.mp3",
+    "title": "Lofi Lion Tame The Beast",
+    "artist": "Unknown",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "source": "https://archive.org/details/lofi-lion-tame-the-beast",
+    "identifier": "lofi-lion-tame-the-beast",
+    "duration": 171,
+    "size": 2738527
+  },
+  {
+    "file": "/music/bgm/torley-wong-the-final-selection-230-diverse-mp3s.mp3",
+    "title": "Torley Wong - The Final Selection",
+    "artist": "Torley Wong",
+    "license": "http://creativecommons.org/licenses/by-sa/3.0/us/",
+    "source": "https://archive.org/details/Torley_Wong_-_The_Final_Selection",
+    "identifier": "Torley_Wong_-_The_Final_Selection",
+    "duration": 188,
+    "size": 3013730
+  },
+  {
+    "file": "/music/bgm/solo-piano-7.mp3",
+    "title": "solo piano 7",
+    "artist": "Torley",
+    "license": "http://creativecommons.org/licenses/by-sa/3.0/us/",
+    "source": "https://archive.org/details/solo-piano-7",
+    "identifier": "solo-piano-7",
+    "duration": 186,
+    "size": 3035463
+  },
+  {
+    "file": "/music/bgm/nullbomb-creatures-2005-2006.mp3",
+    "title": "Nullbomb creatures 2005-2006",
+    "artist": "Unknown",
+    "license": "http://creativecommons.org/licenses/by/2.5/",
+    "source": "https://archive.org/details/nullbomb",
+    "identifier": "nullbomb",
+    "duration": 189,
+    "size": 3024559,
+    "genre": "electronic"
+  },
+  {
+    "file": "/music/bgm/mixg031-intoxicated-piano-vice-versa.mp3",
+    "title": "Intoxicated Piano - Vice Versa",
+    "artist": "Unknown",
+    "license": "http://creativecommons.org/licenses/by-nc/3.0/",
+    "source": "https://archive.org/details/MIXG031",
+    "identifier": "MIXG031",
+    "duration": 205,
+    "size": 5618758,
+    "genre": "pop"
+  },
+  {
+    "file": "/music/bgm/the-maze-of-shadows.mp3",
+    "title": "The Maze of Shadows",
+    "artist": "BLUnderwood",
+    "license": "http://creativecommons.org/licenses/by-nc/2.5/",
+    "source": "https://archive.org/details/BLUnderwood_The_Maze_of_Shadows",
+    "identifier": "BLUnderwood_The_Maze_of_Shadows",
+    "duration": 191,
+    "size": 3052501,
+    "genre": "ambient"
+  },
+  {
+    "file": "/music/bgm/mixg032-various-artists-retrovision.mp3",
+    "title": "Various Artists - Retrovision",
+    "artist": "Unknown",
+    "license": "http://creativecommons.org/licenses/by-nc/3.0/",
+    "source": "https://archive.org/details/MIXG032",
+    "identifier": "MIXG032",
+    "duration": 173,
+    "size": 4393602,
+    "genre": "retro"
+  },
+  {
+    "file": "/music/bgm/r-stevie-moore-tra-la-la-la-phooey-csr008.mp3",
+    "title": "R. Stevie Moore - Tra La La La Phooey!",
+    "artist": "R. Stevie Moore",
+    "license": "http://creativecommons.org/licenses/by-nc/1.0/",
+    "source": "https://archive.org/details/csr008",
+    "identifier": "csr008",
+    "duration": 212,
+    "size": 3386090,
+    "genre": "Acoustic"
+  },
+  {
+    "file": "/music/bgm/eclipse.mp3",
+    "title": "Eclipse",
+    "artist": "Macroform",
+    "license": "http://creativecommons.org/licenses/by-nc/3.0/",
+    "source": "https://archive.org/details/Eclipse",
+    "identifier": "Eclipse",
+    "duration": 206,
+    "size": 3295362,
+    "genre": "IDM"
+  },
+  {
+    "file": "/music/bgm/2006-journey.mp3",
+    "title": "2006 / Journey",
+    "artist": "Antony Raijekov",
+    "license": "http://creativecommons.org/licenses/by-nc/3.0/",
+    "source": "https://archive.org/details/antony_raijekov-journey",
+    "identifier": "antony_raijekov-journey",
+    "duration": 189,
+    "size": 3024117,
+    "genre": "Trip-Hop"
+  },
+  {
+    "file": "/music/bgm/mixg016-th-e-n-d-metaphors.mp3",
+    "title": "Th.e n.d – Metaphors",
+    "artist": "Unknown",
+    "license": "http://creativecommons.org/licenses/by-nc/3.0/",
+    "source": "https://archive.org/details/MIXG016",
+    "identifier": "MIXG016",
+    "duration": 258,
+    "size": 4520072,
+    "genre": "downtempo"
+  }
+]

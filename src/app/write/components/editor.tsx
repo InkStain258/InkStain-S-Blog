@@ -1,129 +1,132 @@
 import { motion } from 'motion/react'
 import { useWriteStore } from '../stores/write-store'
 import { INIT_DELAY } from '@/consts'
-import { useRef } from 'react'
-
-const defaultText = 'text'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { runMdAction, type MdAction } from '@/lib/md-insert'
+import type { MdTemplate } from '@/lib/md-templates'
+import { DRAFT_KEY } from '@/lib/draft'
+import { EditorToolbar } from './editor-toolbar'
 
 export function WriteEditor() {
 	const { form, updateForm, images, addFiles } = useWriteStore()
 	const textareaRef = useRef<HTMLTextAreaElement>(null)
+	const [savedAt, setSavedAt] = useState<string | null>(null)
+	const [dragging, setDragging] = useState(false)
 
-	const insertText = (text: string) => {
-		const textarea = textareaRef.current
-		if (!textarea) return
-
-		textarea.focus()
-		// Use execCommand to preserve undo/redo stack
-		const success = document.execCommand('insertText', false, text)
-
-		if (!success) {
-			// Fallback for browsers that don't support execCommand
-			const { selectionStart, selectionEnd, value } = textarea
-			const before = value.substring(0, selectionStart)
-			const after = value.substring(selectionEnd)
-			updateForm({ md: before + text + after })
-			setTimeout(() => {
-				textarea.setSelectionRange(selectionStart + text.length, selectionStart + text.length)
-				textarea.focus()
-			}, 0)
-		}
+	/** 统一的写回入口：更新文本并在下一帧恢复选区 */
+	const apply = (next: string, selStart: number, selEnd: number) => {
+		const ta = textareaRef.current
+		updateForm({ md: next })
+		if (!ta) return
+		requestAnimationFrame(() => {
+			ta.focus()
+			ta.setSelectionRange(selStart, selEnd)
+		})
 	}
+
+	const handleAction = (action: MdAction) => {
+		const ta = textareaRef.current
+		if (!ta) return
+		runMdAction(action, ta, apply)
+	}
+
+	const handleTemplate = (tpl: MdTemplate) => {
+		const ta = textareaRef.current
+		const current = form.md || ''
+		const prefix = current && !current.endsWith('\n\n') ? (current.endsWith('\n') ? '\n' : '\n\n') : ''
+		const next = current + prefix + tpl.body
+		updateForm({ md: next })
+		requestAnimationFrame(() => {
+			ta?.focus()
+			ta?.setSelectionRange(next.length, next.length)
+		})
+	}
+
+	// 字数统计（去掉代码块与标记符）
+	const words = useMemo(() => {
+		const plain = (form.md || '')
+			.replace(/```[\s\S]*?```/g, '')
+			.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+			.replace(/[#>*_`~\-\[\]()]/g, '')
+			.replace(/\s/g, '')
+		return plain.length
+	}, [form.md])
+
+	// 草稿自动保存
+	useEffect(() => {
+		if (!form.md && !form.title) return
+		const timer = setTimeout(() => {
+			try {
+				localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...form, _savedAt: Date.now() }))
+				const now = new Date()
+				setSavedAt(`${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`)
+			} catch {
+				/* 隐私模式下忽略 */
+			}
+		}, 1200)
+		return () => clearTimeout(timer)
+	}, [form])
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		const textarea = textareaRef.current
 		if (!textarea) return
 
-		const { selectionStart, selectionEnd, value } = textarea
-		const selectedText = value.substring(selectionStart, selectionEnd)
+		if (e.ctrlKey || e.metaKey) {
+			if (e.key === 'b') {
+				e.preventDefault()
+				runMdAction('bold', textarea, apply)
+				return
+			}
+			if (e.key === 'i') {
+				e.preventDefault()
+				runMdAction('italic', textarea, apply)
+				return
+			}
+			if (e.key === 'k') {
+				e.preventDefault()
+				runMdAction('link', textarea, apply)
+				return
+			}
+			if (e.key === 's') {
+				e.preventDefault()
+				return
+			}
+		}
 
-		// Ctrl/Cmd + B: Toggle Bold
-		if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+		// Tab / Shift+Tab 缩进
+		if (e.key === 'Tab') {
 			e.preventDefault()
-			const before = value.substring(0, selectionStart)
-			const after = value.substring(selectionEnd)
-
-			// Check if already bold
-			const isBold = before.endsWith('**') && after.startsWith('**')
-
-			if (isBold && selectedText) {
-				// Remove bold - select including markers and replace
-				textarea.setSelectionRange(selectionStart - 2, selectionEnd + 2)
-				insertText(selectedText)
+			const { selectionStart, selectionEnd, value } = textarea
+			if (!e.shiftKey) {
+				apply(value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd), selectionStart + 1, selectionStart + 1)
 			} else {
-				// Add bold
-				const text = selectedText || defaultText
-				insertText(`**${text}**`)
-				if (!selectedText) {
-					setTimeout(() => {
-						textarea.setSelectionRange(selectionStart + 2, selectionStart + 2 + defaultText.length)
-					}, 0)
+				const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+				if (value.startsWith('\t', lineStart)) {
+					apply(value.slice(0, lineStart) + value.slice(lineStart + 1), Math.max(lineStart, selectionStart - 1), Math.max(lineStart, selectionEnd - 1))
 				}
 			}
 			return
 		}
 
-		// Ctrl/Cmd + I: Toggle Italic
-		if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
-			e.preventDefault()
-			const before = value.substring(0, selectionStart)
-			const after = value.substring(selectionEnd)
-
-			// Check if already italic
-			const isItalic = before.endsWith('*') && after.startsWith('*') && !(before.endsWith('**') && after.startsWith('**'))
-
-			if (isItalic && selectedText) {
-				// Remove italic and replace
-				textarea.setSelectionRange(selectionStart - 1, selectionEnd + 1)
-				insertText(selectedText)
-			} else {
-				// Add italic
-				const text = selectedText || defaultText
-				insertText(`*${text}*`)
-				if (!selectedText) {
-					// Select the default text
-					setTimeout(() => {
-						textarea.setSelectionRange(selectionStart + 1, selectionStart + 1 + defaultText.length)
-					}, 0)
-				}
-			}
-			return
-		}
-
-		// Ctrl/Cmd + K: Link
-		if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-			e.preventDefault()
-			const text = selectedText || defaultText
-			insertText(`[${text}](url)`)
-			// Select 'url' part
-			setTimeout(() => {
-				const urlStart = selectionStart + text.length + 3
-				textarea.setSelectionRange(urlStart, urlStart + 3)
-			}, 0)
-			return
-		}
-
-		// Tab: Indent
-		if (e.key === 'Tab' && !e.shiftKey) {
-			e.preventDefault()
-			insertText('\t')
-			return
-		}
-
-		// Shift + Tab: Outdent
-		if (e.key === 'Tab' && e.shiftKey) {
-			e.preventDefault()
+		// Enter 自动延续列表
+		if (e.key === 'Enter' && !e.shiftKey) {
+			const { selectionStart, value } = textarea
 			const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-			const line = value.substring(lineStart, value.indexOf('\n', selectionStart))
-
-			if (line.startsWith('\t')) {
-				textarea.setSelectionRange(lineStart, lineStart + 1)
-				insertText('')
-			} else if (line.startsWith('  ')) {
-				textarea.setSelectionRange(lineStart, lineStart + 2)
-				insertText('')
+			const line = value.slice(lineStart, selectionStart)
+			const m = line.match(/^(\s*)(- \[[ xX]\] |[-*+] |\d+\. )/)
+			if (m) {
+				const [, indent, marker] = m
+				// 空列表项回车则结束列表
+				if (line.trim() === marker.trim()) {
+					e.preventDefault()
+					apply(value.slice(0, lineStart) + '\n' + value.slice(selectionStart), lineStart + 1, lineStart + 1)
+					return
+				}
+				e.preventDefault()
+				const nextMarker = /^\d+\. $/.test(marker) ? `${parseInt(marker) + 1}. ` : marker
+				const insert = `\n${indent}${nextMarker}`
+				apply(value.slice(0, selectionStart) + insert + value.slice(selectionStart), selectionStart + insert.length, selectionStart + insert.length)
 			}
-			return
 		}
 	}
 
@@ -136,23 +139,33 @@ export function WriteEditor() {
 			const item = items[i]
 			if (item.type.startsWith('image/')) {
 				const file = item.getAsFile()
-				if (file) {
-					imageFiles.push(file)
-				}
+				if (file) imageFiles.push(file)
 			}
 		}
 
 		if (imageFiles.length > 0) {
 			e.preventDefault()
-
-			const resultImages = await addFiles(imageFiles).catch(() => [])
-
-			if (resultImages && resultImages.length > 0) {
-				// 为所有处理后的图片（包括新添加和已存在的）生成 markdown
-				const markdowns = resultImages.map(item => (item.type === 'url' ? `![](${item.url})` : `![](local-image:${item.id})`)).join('\n')
-				insertText(markdowns)
-			}
+			await insertImages(imageFiles)
 		}
+	}
+
+	const insertImages = async (files: File[]) => {
+		const ta = textareaRef.current
+		const resultImages = await addFiles(files).catch(() => [])
+		if (!resultImages?.length || !ta) return
+		const markdowns = resultImages.map(item => (item.type === 'url' ? `![](${item.url})` : `![](local-image:${item.id})`)).join('\n')
+		const { selectionStart, selectionEnd, value } = ta
+		const prefix = value && !value.endsWith('\n') ? '\n' : ''
+		const text = prefix + markdowns + '\n'
+		apply(value.slice(0, selectionStart) + text + value.slice(selectionEnd), selectionStart + text.length, selectionStart + text.length)
+	}
+
+	const handleDrop = async (e: React.DragEvent<HTMLTextAreaElement>) => {
+		const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'))
+		if (!files.length) return
+		e.preventDefault()
+		setDragging(false)
+		await insertImages(files)
 	}
 
 	return (
@@ -177,15 +190,35 @@ export function WriteEditor() {
 					onChange={e => updateForm({ slug: e.target.value })}
 				/>
 			</div>
-			<textarea
-				ref={textareaRef}
-				placeholder='Markdown 内容'
-				className='bg-card h-[650px] w-full flex-1 resize-none rounded-xl border p-4 text-sm'
-				value={form.md}
-				onChange={e => updateForm({ md: e.target.value })}
-				onKeyDown={handleKeyDown}
-				onPaste={handlePaste}
-			/>
+
+			<EditorToolbar onAction={handleAction} onTemplate={handleTemplate} words={words} savedAt={savedAt} />
+
+			<div className='relative flex-1'>
+				<textarea
+					ref={textareaRef}
+					placeholder='Markdown 内容'
+					className={`bg-card h-[600px] w-full resize-none rounded-xl border p-4 text-sm transition-shadow ${
+						dragging ? 'ring-brand/60 ring-2' : ''
+					}`}
+					value={form.md}
+					onChange={e => updateForm({ md: e.target.value })}
+					onKeyDown={handleKeyDown}
+					onPaste={handlePaste}
+					onDragOver={e => {
+						if (Array.from(e.dataTransfer.items || []).some(i => i.kind === 'file')) {
+							e.preventDefault()
+							setDragging(true)
+						}
+					}}
+					onDragLeave={() => setDragging(false)}
+					onDrop={handleDrop}
+				/>
+				{dragging && (
+					<div className='border-brand/60 bg-brand/5 text-brand pointer-events-none absolute inset-0 grid place-items-center rounded-xl border-2 border-dashed text-sm'>
+						松开即可插入图片
+					</div>
+				)}
+			</div>
 		</motion.div>
 	)
 }
