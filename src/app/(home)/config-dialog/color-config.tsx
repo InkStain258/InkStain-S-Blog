@@ -151,7 +151,10 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 	return (
 		<div className='space-y-6'>
 			<div>
-				<label className='mb-2 block text-sm font-medium'>基础颜色</label>
+				<div className='cfg-section-head'>
+					<span className='cfg-section-title'>基础颜色</span>
+					<span className='cfg-section-hint'>主题色管按钮与强调，卡面色决定玻璃质感</span>
+				</div>
 				<div className='grid grid-cols-2 gap-4'>
 					<div className='flex items-center gap-3'>
 						<ColorPicker value={formData.theme?.colorBrand ?? '#35bfab'} onChange={handleBrandColorChange} />
@@ -195,21 +198,24 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 			</div>
 
 			<div>
-				<div className='mb-2 flex items-center justify-between gap-3'>
-					<label className='block text-sm font-medium'>背景颜色</label>
+				<div className='mb-3 flex items-end justify-between gap-3'>
+					<div className='cfg-section-head mb-0'>
+						<span className='cfg-section-title'>背景色板</span>
+						<span className='cfg-section-hint'>首页飘浮气泡用的颜色</span>
+					</div>
 					<div className='flex gap-2'>
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handleRandomizeColors}
-							className='rounded-lg border bg-white/60 px-3 py-1 text-xs whitespace-nowrap'>
+							className='text-secondary hover:text-brand hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
 							随机配色
 						</motion.button>
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handleAddColor}
-							className='rounded-lg border bg-white/60 px-3 py-1 text-xs whitespace-nowrap'>
+							className='text-secondary hover:text-brand hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
 							+ 添加颜色
 						</motion.button>
 					</div>
@@ -232,23 +238,27 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 				</div>
 			</div>
 
-			<div className='flex flex-col gap-3'>
+			<div className='flex flex-col gap-2.5'>
+				<div className='cfg-section-head'>
+					<span className='cfg-section-title'>预设配色</span>
+					<span className='cfg-section-hint'>一键换一套，点完还能继续微调</span>
+				</div>
 				{COLOR_PRESETS.map(preset => (
 					<button
 						key={preset.name}
 						onClick={() => handlePresetChange(preset)}
-						className='flex items-center gap-3 rounded-lg border bg-white/60 p-3 transition-colors hover:bg-white/80'>
+						className='hover:border-brand/30 group flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-all hover:translate-x-0.5'>
 						<div className='flex items-center gap-2'>
 							<div
-								className='h-10 w-10 rounded-lg border-2 border-white/20 shadow-sm'
+								className='h-8 w-8 rounded-lg shadow-sm ring-1 ring-black/10 dark:ring-white/15'
 								style={{ backgroundColor: preset.theme.colorBrand ?? DEFAULT_THEME_COLORS.colorBrand }}
 							/>
 							{preset.backgroundColors.map((color, index) => (
-								<div key={index} className='h-10 w-10 rounded-lg border-2 border-white/20 shadow-sm' style={{ backgroundColor: color }} />
+								<div key={index} className='h-8 w-8 rounded-lg shadow-sm ring-1 ring-black/10 dark:ring-white/15' style={{ backgroundColor: color }} />
 							))}
 						</div>
 
-						<span className='text-sm font-medium whitespace-nowrap'>{preset.name}</span>
+						<span className='group-hover:text-brand text-[13px] font-medium whitespace-nowrap transition-colors'>{preset.name}</span>
 					</button>
 				))}
 			</div>

@@ -44,24 +44,32 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 
 	return (
 		<div className='overflow-x-auto'>
-			<div className='flex items-center justify-between'>
-				<div className='text-secondary text-sm'>（偏移代表相对中心的偏移）</div>
+			<div className='flex items-end justify-between gap-3'>
+				<div>
+					<div className='cfg-section-head mb-1'>
+						<span className='cfg-section-title'>卡片尺寸与位置</span>
+						<span className='cfg-section-hint'>偏移是相对画布中心的偏移量，留空表示自动</span>
+					</div>
+				</div>
 				<div className='flex shrink-0 items-center gap-2 whitespace-nowrap'>
-					<button type='button' onClick={handleReset} className='bg-card rounded-xl border px-3 py-1.5 text-xs font-medium'>
+					<button
+						type='button'
+						onClick={handleReset}
+						className='text-secondary hover:text-primary hover:border-brand/40 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors'>
 						重置
 					</button>
 					<button
 						type='button'
 						onClick={handleStartManualLayout}
 						disabled={editing}
-						className='bg-card rounded-xl border px-3 py-1.5 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-50'>
+							className='text-brand hover:bg-brand/10 border-brand/30 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'>
 						{editing ? '主页正在编辑中' : '进入主页拖拽布局'}
 					</button>
 				</div>
 			</div>
 			<table className='mt-3 w-full border-collapse text-sm whitespace-nowrap'>
-				<thead>
-					<tr className='border-b text-xs text-gray-500'>
+				<thead className='sticky top-0 z-10 backdrop-blur'>
+					<tr className='border-b text-[11px] tracking-wide text-secondary uppercase'>
 						<th className='px-3 py-2 text-left font-medium'>卡片</th>
 						<th className='px-3 py-2 text-left font-medium'>宽度</th>
 						<th className='px-3 py-2 text-left font-medium'>高度</th>
@@ -73,8 +81,12 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 				</thead>
 				<tbody>
 					{Object.entries(cardStylesData).map(([key, cardStyle]: [string, any]) => (
-						<tr key={key} className='border-b last:border-0'>
-							<td className='px-3 py-2 align-middle whitespace-nowrap'>{CARD_LABELS[key] ?? key.replace(/([A-Z])/g, ' $1').trim()}</td>
+						<tr
+							key={key}
+							className={`border-b transition-colors last:border-0 hover:bg-black/[0.02] dark:hover:bg-white/[0.04] ${
+								cardStyle.enabled === false ? 'opacity-40' : ''
+							}`}>
+							<td className='text-[12.5px] px-3 py-2 align-middle font-medium whitespace-nowrap'>{CARD_LABELS[key] ?? key.replace(/([A-Z])/g, ' $1').trim()}</td>
 
 							<td className='px-3 py-2'>
 								{cardStyle.width !== undefined ? (
@@ -90,10 +102,10 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 												}
 											}))
 										}
-										className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
+										className='no-spinner w-full text-center text-xs tabular-nums'
 									/>
 								) : (
-									<span className='text-xs text-gray-400'>-</span>
+									<span className='text-secondary text-xs opacity-50'>—</span>
 								)}
 							</td>
 							<td className='px-3 py-2'>
@@ -110,10 +122,10 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 												}
 											}))
 										}
-										className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
+										className='no-spinner w-full text-center text-xs tabular-nums'
 									/>
 								) : (
-									<span className='text-xs text-gray-400'>-</span>
+									<span className='text-secondary text-xs opacity-50'>—</span>
 								)}
 							</td>
 							<td className='px-3 py-2'>
@@ -129,14 +141,14 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 											}
 										}))
 									}
-									className='bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
+									className='w-full text-center text-xs tabular-nums'
 								/>
 							</td>
 							<td className='px-3 py-2'>
 								<input
 									type='number'
 									value={cardStyle.offsetX ?? ''}
-									placeholder='null'
+									placeholder='自动'
 									onChange={e => {
 										const value = e.target.value === '' ? null : parseInt(e.target.value) || 0
 										setCardStylesData(prev => ({
@@ -147,14 +159,14 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 											}
 										}))
 									}}
-									className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
+									className='no-spinner w-full text-center text-xs tabular-nums'
 								/>
 							</td>
 							<td className='px-3 py-2'>
 								<input
 									type='number'
 									value={cardStyle.offsetY ?? ''}
-									placeholder='null'
+									placeholder='自动'
 									onChange={e => {
 										const value = e.target.value === '' ? null : parseInt(e.target.value) || 0
 										setCardStylesData(prev => ({
@@ -165,7 +177,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 											}
 										}))
 									}}
-									className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
+									className='no-spinner w-full text-center text-xs tabular-nums'
 								/>
 							</td>
 							<td className='px-3 py-2'>
@@ -181,7 +193,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 											}
 										}))
 									}
-									className='accent-brand h-4 w-4 rounded border-gray-300'
+									className='h-3.5 w-3.5 rounded'
 								/>
 							</td>
 						</tr>

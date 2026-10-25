@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { INIT_DELAY } from '@/consts'
 import { useMarkdownRender } from '@/hooks/use-markdown-render'
 import { useSize } from '@/hooks/use-size'
+import PostNav from '@/components/post-nav'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
@@ -66,6 +67,8 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 					{summary && summaryInContent && <div className='text-secondary mt-6 cursor-text text-center text-sm'>“{summary}”</div>}
 
 					<div className='prose mt-6 max-w-none cursor-text'>{content}</div>
+
+					<PostNav slug={slug} />
 				</div>
 			</motion.article>
 

@@ -113,7 +113,6 @@ export function BackgroundImagesSection({ formData, setFormData, backgroundImage
 	return (
 		<div>
 			<div className='mb-2 flex items-center justify-between'>
-				<label className='block text-sm font-medium'>背景图片</label>
 				{formData.currentBackgroundImageId && formData.currentBackgroundImageId.trim() && (
 					<button
 						type='button'

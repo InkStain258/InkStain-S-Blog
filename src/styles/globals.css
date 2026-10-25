@@ -483,3 +483,115 @@
     transform: none;
   }
 }
+
+/* ===== 站点设置面板：统一表单控件 ===== */
+.cfg label {
+  color: var(--color-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.cfg input[type='text'],
+.cfg input[type='url'],
+.cfg input[type='email'],
+.cfg textarea {
+  /* 不要写 width: 100%——这些输入框有的在 flex 行里（flex-1），强制宽度会把同行挤坏 */
+  min-width: 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 90%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 55%, transparent);
+  color: var(--color-primary);
+  font-size: 13px;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
+}
+.cfg input[type='number'],
+.cfg select {
+  padding: 6px 8px;
+  border-radius: 9px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 90%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 55%, transparent);
+  color: var(--color-primary);
+  font-size: 12.5px;
+}
+.cfg input:focus,
+.cfg textarea:focus,
+.cfg select:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brand) 15%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+}
+.cfg input::placeholder,
+.cfg textarea::placeholder {
+  color: var(--color-secondary);
+  opacity: 0.5;
+}
+.cfg textarea {
+  line-height: 1.65;
+  resize: vertical;
+}
+.cfg input[type='checkbox'] {
+  accent-color: var(--color-brand);
+}
+
+/* 小节 */
+.cfg-section + .cfg-section {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+}
+.cfg-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.cfg-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.01em;
+}
+.cfg-section-hint {
+  font-size: 11px;
+  color: var(--color-secondary);
+  opacity: 0.7;
+}
+
+/* ===== 正文排版：中文阅读的呼吸感 ===== */
+.prose p,
+.prose li {
+  line-height: 1.92;
+  letter-spacing: 0.012em;
+}
+.prose h2 {
+  padding-bottom: 0.32em;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 55%, transparent);
+}
+.prose h3 {
+  letter-spacing: 0.015em;
+}
+.prose a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.prose a:hover {
+  background-size: 100% 1px;
+}
+.prose hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, color-mix(in srgb, var(--color-border) 90%, transparent), transparent);
+  margin: 2.6em 0;
+}
+::selection {
+  background: color-mix(in srgb, var(--color-brand) 28%, transparent);
+}

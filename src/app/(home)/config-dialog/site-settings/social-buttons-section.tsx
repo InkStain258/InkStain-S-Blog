@@ -143,7 +143,6 @@ export function SocialButtonsSection({ formData, setFormData, socialButtonImageU
 
 	return (
 		<div>
-			<label className='mb-2 block text-sm font-medium'>社交按钮</label>
 			{buttons.length === 0 && <p className='mb-2 text-xs text-gray-500'>暂未配置社交按钮，点击下方「+」添加。</p>}
 			<div className='space-y-2 whitespace-nowrap'>
 				{sortedButtons.map((button, index) => (

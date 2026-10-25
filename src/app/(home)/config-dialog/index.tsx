@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
+import { X, Eye, Save, KeyRound, LayoutGrid, Palette, Settings2 } from 'lucide-react'
 import { DialogModal } from '@/components/dialog-modal'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '../stores/config-store'
@@ -78,6 +79,19 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			})
 		}
 	}, [faviconItem, avatarItem, artImageUploads, backgroundImageUploads, socialButtonImageUploads])
+
+	// 有改动才让「保存」显得有必要
+	const dirty = useMemo(() => {
+		return (
+			JSON.stringify(formData) !== JSON.stringify(originalData) ||
+			JSON.stringify(cardStylesData) !== JSON.stringify(originalCardStyles) ||
+			!!faviconItem ||
+			!!avatarItem ||
+			Object.keys(artImageUploads).length > 0 ||
+			Object.keys(backgroundImageUploads).length > 0 ||
+			Object.keys(socialButtonImageUploads).length > 0
+		)
+	}, [formData, originalData, cardStylesData, originalCardStyles, faviconItem, avatarItem, artImageUploads, backgroundImageUploads, socialButtonImageUploads])
 
 	const handleChoosePrivateKey = async (file: File) => {
 		try {
@@ -201,7 +215,6 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	}
 
 	const handlePreview = () => {
-		console.log('formData', formData)
 		setSiteContent(formData)
 		setCardStyles(cardStylesData)
 		regenerateBubbles()
@@ -219,12 +232,12 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		onClose()
 	}
 
-	const buttonText = isAuth ? '保存' : '导入密钥'
+	const buttonText = isAuth ? '保存' : '导入密钥并保存'
 
-	const tabs: { id: TabType; label: string }[] = [
-		{ id: 'site', label: '网站设置' },
-		{ id: 'color', label: '色彩配置' },
-		{ id: 'layout', label: '首页布局' }
+	const tabs: { id: TabType; label: string; icon: typeof Settings2 }[] = [
+		{ id: 'site', label: '网站设置', icon: Settings2 },
+		{ id: 'color', label: '色彩', icon: Palette },
+		{ id: 'layout', label: '首页布局', icon: LayoutGrid }
 	]
 
 	return (
@@ -241,62 +254,119 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				}}
 			/>
 
-			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none max-h-[90vh] min-h-[600px] w-[640px] overflow-y-auto'>
-				<div className='mb-6 flex items-center justify-between'>
-					<div className='flex gap-1'>
-						{tabs.map(tab => (
+			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none w-[840px] max-w-[94vw] overflow-hidden !rounded-[28px]'>
+				<div className='flex h-[min(84vh,820px)] flex-col'>
+					{/* ---------- 顶部：标题 + 分段标签 ---------- */}
+					<header className='shrink-0 border-b pb-3.5'>
+						<div className='flex items-start justify-between gap-4'>
+							<div>
+								<h2 className='text-[17px] font-semibold tracking-tight'>站点设置</h2>
+								<p className='text-secondary mt-1 text-[12px] leading-relaxed'>改动会提交到 GitHub 仓库，保存后一两分钟生效。</p>
+							</div>
 							<button
-								key={tab.id}
-								onClick={() => setActiveTab(tab.id)}
-								className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-									activeTab === tab.id ? 'text-brand' : 'text-secondary hover:text-primary'
-								}`}>
-								{tab.label}
-								{activeTab === tab.id && <div className='bg-brand absolute right-0 bottom-0 left-0 h-0.5' />}
+								type='button'
+								onClick={handleCancel}
+								aria-label='关闭'
+								className='text-secondary hover:text-primary -mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/10'>
+								<X className='h-4 w-4' />
 							</button>
-						))}
-					</div>
-					<div className='flex gap-3'>
-						<motion.button
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							onClick={handlePreview}
-							className='bg-card rounded-xl border px-6 py-2 text-sm'>
-							预览
-						</motion.button>
-						<motion.button
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							onClick={handleCancel}
-							disabled={isSaving}
-							className='bg-card rounded-xl border px-6 py-2 text-sm'>
-							取消
-						</motion.button>
-						<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
-							{isSaving ? '保存中...' : buttonText}
-						</motion.button>
-					</div>
-				</div>
+						</div>
 
-				<div className='min-h-[200px]'>
-					{activeTab === 'site' && (
-						<SiteSettings
-							formData={formData}
-							setFormData={setFormData}
-							faviconItem={faviconItem}
-							setFaviconItem={setFaviconItem}
-							avatarItem={avatarItem}
-							setAvatarItem={setAvatarItem}
-							artImageUploads={artImageUploads}
-							setArtImageUploads={setArtImageUploads}
-							backgroundImageUploads={backgroundImageUploads}
-							setBackgroundImageUploads={setBackgroundImageUploads}
-							socialButtonImageUploads={socialButtonImageUploads}
-							setSocialButtonImageUploads={setSocialButtonImageUploads}
-						/>
-					)}
-					{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
-					{activeTab === 'layout' && <HomeLayout cardStylesData={cardStylesData} setCardStylesData={setCardStylesData} onClose={onClose} />}
+						<div className='bg-secondary/[0.06] mt-5 flex w-fit items-center gap-1 rounded-xl p-1'>
+							{tabs.map(tab => {
+								const active = activeTab === tab.id
+								const Icon = tab.icon
+								return (
+									<button
+										key={tab.id}
+										type='button'
+										onClick={() => setActiveTab(tab.id)}
+										className={`relative flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-[12.5px] font-medium transition-colors ${
+											active ? 'text-brand' : 'text-secondary hover:text-primary'
+										}`}>
+										{active && (
+											<motion.span
+												layoutId='cfg-tab-pill'
+												className='bg-card absolute inset-0 rounded-lg shadow-sm'
+												transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+											/>
+										)}
+										<Icon className='relative z-10 h-3.5 w-3.5' />
+										<span className='relative z-10'>{tab.label}</span>
+									</button>
+								)
+							})}
+						</div>
+					</header>
+
+					{/* ---------- 内容：独立滚动 ---------- */}
+					<div
+						className='cfg scrollbar-none -mx-1 mt-0 flex-1 overflow-y-auto px-1 pt-5 pb-2'
+						style={{ boxShadow: 'inset 0 10px 12px -12px rgba(0,0,0,0.35)' }}>
+						{activeTab === 'site' && (
+							<SiteSettings
+								formData={formData}
+								setFormData={setFormData}
+								faviconItem={faviconItem}
+								setFaviconItem={setFaviconItem}
+								avatarItem={avatarItem}
+								setAvatarItem={setAvatarItem}
+								artImageUploads={artImageUploads}
+								setArtImageUploads={setArtImageUploads}
+								backgroundImageUploads={backgroundImageUploads}
+								setBackgroundImageUploads={setBackgroundImageUploads}
+								socialButtonImageUploads={socialButtonImageUploads}
+								setSocialButtonImageUploads={setSocialButtonImageUploads}
+							/>
+						)}
+						{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
+						{activeTab === 'layout' && <HomeLayout cardStylesData={cardStylesData} setCardStylesData={setCardStylesData} onClose={onClose} />}
+					</div>
+
+					{/* ---------- 底部：操作区 ---------- */}
+					<footer className='mt-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-t pt-4'>
+						<p className='text-secondary flex items-center gap-1.5 text-[11px]'>
+							{isAuth ? (
+								<>
+									<span className='h-1.5 w-1.5 rounded-full bg-emerald-500' />
+									已授权，保存会直接推送到仓库
+								</>
+							) : (
+								<>
+									<KeyRound className='h-3 w-3' />
+									首次保存需要导入私钥，之后自动记住
+								</>
+							)}
+							{dirty && <span className='text-brand ml-1'>· 有未保存的改动</span>}
+						</p>
+
+						<div className='flex items-center gap-2'>
+							<button
+								type='button'
+								onClick={handlePreview}
+								className='text-secondary hover:text-primary hover:border-brand/40 inline-flex h-9 items-center gap-1.5 rounded-xl border px-3.5 text-[12.5px] transition-colors'>
+								<Eye className='h-3.5 w-3.5' />
+								预览
+							</button>
+							<button
+								type='button'
+								onClick={handleCancel}
+								disabled={isSaving}
+								className='text-secondary hover:text-primary inline-flex h-9 items-center rounded-xl px-3.5 text-[12.5px] transition-colors disabled:opacity-40'>
+								取消
+							</button>
+							<motion.button
+								type='button'
+								whileHover={{ scale: 1.02 }}
+								whileTap={{ scale: 0.97 }}
+								onClick={handleSaveClick}
+								disabled={isSaving}
+								className='brand-btn inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-[12.5px] disabled:opacity-50'>
+								<Save className='h-3.5 w-3.5' />
+								{isSaving ? '保存中…' : buttonText}
+							</motion.button>
+						</div>
+					</footer>
 				</div>
 			</DialogModal>
 		</>

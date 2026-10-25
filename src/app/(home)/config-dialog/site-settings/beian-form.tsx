@@ -10,7 +10,6 @@ interface BeianFormProps {
 export function BeianForm({ formData, setFormData }: BeianFormProps) {
 	return (
 		<div className='space-y-2'>
-			<label className='mb-2 block text-sm font-medium'>备案信息</label>
 			<div className='grid grid-cols-2 gap-2'>
 				<div>
 					<label className='mb-1 block text-xs text-gray-600'>备案号</label>

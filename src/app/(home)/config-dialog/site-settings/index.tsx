@@ -27,6 +27,27 @@ interface SiteSettingsProps {
 	setSocialButtonImageUploads: React.Dispatch<React.SetStateAction<SocialButtonImageUploads>>
 }
 
+function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+	return (
+		<section className='cfg-section'>
+			<div className='cfg-section-head'>
+				<span className='cfg-section-title'>{title}</span>
+				{hint && <span className='cfg-section-hint'>{hint}</span>}
+			</div>
+			{children}
+		</section>
+	)
+}
+
+function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+	return (
+		<label className='flex cursor-pointer items-center gap-2 text-[12.5px] leading-none'>
+			<input type='checkbox' checked={checked} onChange={e => onChange(e.target.checked)} className='h-3.5 w-3.5 rounded' />
+			<span>{label}</span>
+		</label>
+	)
+}
+
 export function SiteSettings({
 	formData,
 	setFormData,
@@ -42,91 +63,63 @@ export function SiteSettings({
 	setSocialButtonImageUploads
 }: SiteSettingsProps) {
 	return (
-		<div className='space-y-6'>
-			<FaviconAvatarUpload faviconItem={faviconItem} setFaviconItem={setFaviconItem} avatarItem={avatarItem} setAvatarItem={setAvatarItem} />
+		<div>
+			<Section title='图标与头像' hint='favicon 建议 512×512，头像用正方形'>
+				<FaviconAvatarUpload faviconItem={faviconItem} setFaviconItem={setFaviconItem} avatarItem={avatarItem} setAvatarItem={setAvatarItem} />
+			</Section>
 
-			<SiteMetaForm formData={formData} setFormData={setFormData} />
+			<Section title='站点信息'>
+				<SiteMetaForm formData={formData} setFormData={setFormData} />
+			</Section>
 
-			<BeianForm formData={formData} setFormData={setFormData} />
+			<Section title='备案' hint='没有就留空'>
+				<BeianForm formData={formData} setFormData={setFormData} />
+			</Section>
 
-			<SocialButtonsSection
-				formData={formData}
-				setFormData={setFormData}
-				socialButtonImageUploads={socialButtonImageUploads}
-				setSocialButtonImageUploads={setSocialButtonImageUploads}
-			/>
+			<Section title='社交按钮' hint='列表顺序即首页展示顺序'>
+				<SocialButtonsSection
+					formData={formData}
+					setFormData={setFormData}
+					socialButtonImageUploads={socialButtonImageUploads}
+					setSocialButtonImageUploads={setSocialButtonImageUploads}
+				/>
+			</Section>
 
-			<ArtImagesSection formData={formData} setFormData={setFormData} artImageUploads={artImageUploads} setArtImageUploads={setArtImageUploads} />
+			<Section title='首页轮播图' hint='拖进来的图片会压缩后存进仓库'>
+				<ArtImagesSection formData={formData} setFormData={setFormData} artImageUploads={artImageUploads} setArtImageUploads={setArtImageUploads} />
+			</Section>
 
-			<BackgroundImagesSection
-				formData={formData}
-				setFormData={setFormData}
-				backgroundImageUploads={backgroundImageUploads}
-				setBackgroundImageUploads={setBackgroundImageUploads}
-			/>
+			<Section title='页面背景'>
+				<BackgroundImagesSection
+					formData={formData}
+					setFormData={setFormData}
+					backgroundImageUploads={backgroundImageUploads}
+					setBackgroundImageUploads={setBackgroundImageUploads}
+				/>
+			</Section>
 
-			<div className='flex gap-3'>
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
-						checked={formData.clockShowSeconds ?? false}
-						onChange={e => setFormData({ ...formData, clockShowSeconds: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
-					/>
-					<span className='text-sm font-medium'>时钟显示秒数</span>
-				</label>
-
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
-						checked={formData.summaryInContent ?? false}
-						onChange={e => setFormData({ ...formData, summaryInContent: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
-					/>
-					<span className='text-sm font-medium'>摘要放入内容</span>
-				</label>
-
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
+			<Section title='显示选项'>
+				<div className='grid grid-cols-2 gap-x-6 gap-y-3.5'>
+					<Toggle checked={formData.clockShowSeconds ?? false} onChange={v => setFormData({ ...formData, clockShowSeconds: v })} label='时钟显示秒数' />
+					<Toggle checked={formData.summaryInContent ?? false} onChange={v => setFormData({ ...formData, summaryInContent: v })} label='摘要放入正文' />
+					<Toggle
 						checked={formData.hideEditButton ?? false}
-						onChange={e => setFormData({ ...formData, hideEditButton: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
+						onChange={v => setFormData({ ...formData, hideEditButton: v })}
+						label='隐藏编辑按钮（快捷键 ⌘/Ctrl + ,）'
 					/>
-					<span className='text-sm font-medium'>隐藏编辑按钮（编辑快捷键 ctrl/cmd + ,）</span>
-				</label>
-			</div>
-			<div className='flex gap-3'>
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
+					<Toggle checked={formData.enableCategories ?? false} onChange={v => setFormData({ ...formData, enableCategories: v })} label='启用文章分类' />
+					<Toggle checked={formData.enableChristmas ?? false} onChange={v => setFormData({ ...formData, enableChristmas: v })} label='开启圣诞装饰' />
+					<Toggle
 						checked={formData.isCachePem ?? false}
-						onChange={e => setFormData({ ...formData, isCachePem: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
+						onChange={v => setFormData({ ...formData, isCachePem: v })}
+						label='缓存私钥（已加密，仍有风险）'
 					/>
-					<span className='text-sm font-medium'>缓存PEM(已加密，但存在风险)</span>
-				</label>
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
-						checked={formData.enableCategories ?? false}
-						onChange={e => setFormData({ ...formData, enableCategories: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
-					/>
-					<span className='text-sm font-medium'>启用文章分类</span>
-				</label>
-				<label className='flex items-center gap-2'>
-					<input
-						type='checkbox'
-						checked={formData.enableChristmas ?? false}
-						onChange={e => setFormData({ ...formData, enableChristmas: e.target.checked })}
-						className='accent-brand h-4 w-4 rounded'
-					/>
-					<span className='text-sm font-medium'>开启圣诞节</span>
-				</label>
-			</div>
+				</div>
+			</Section>
 
-			<HatSection formData={formData} setFormData={setFormData} />
+			<Section title='彩蛋' hint='首页头像上的小装饰'>
+				<HatSection formData={formData} setFormData={setFormData} />
+			</Section>
 		</div>
 	)
 }
