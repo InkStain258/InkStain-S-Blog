@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion } from 'motion/react'
+import clsx from 'clsx'
+import { ChevronUp, RefreshCw, KeyRound } from 'lucide-react'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
 /** 本地一言池：古典文论 + 技术格言，不依赖外部 API */
@@ -40,10 +42,22 @@ export default function SiteFooter() {
 	const { siteContent } = useConfigStore()
 	const [qi, setQi] = useState(0)
 	const [mounted, setMounted] = useState(false)
+	const [open, setOpen] = useState(false)
+	const [canHover, setCanHover] = useState(true)
 
 	useEffect(() => {
 		setQi(Math.floor(Math.random() * QUOTES.length))
 		setMounted(true)
+
+		// 触屏设备没有 hover，页脚常驻展开
+		const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
+		const apply = () => {
+			setCanHover(mq.matches)
+			if (!mq.matches) setOpen(true)
+		}
+		apply()
+		mq.addEventListener('change', apply)
+		return () => mq.removeEventListener('change', apply)
 	}, [])
 
 	// 首页是拖拽卡片画布，不放页脚
@@ -56,114 +70,184 @@ export default function SiteFooter() {
 	const quote = QUOTES[qi % QUOTES.length]
 	const year = new Date().getFullYear()
 
+	const expanded = open || !canHover
+
 	return (
 		<motion.footer
 			initial={{ opacity: 0, y: 24 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, amount: 0.2 }}
 			transition={{ duration: 0.5, ease: 'easeOut' }}
-			className='relative z-10 mx-auto mt-20 w-full max-w-[1140px] px-6 pb-12 max-sm:px-4'>
-			<div className='bg-card overflow-hidden rounded-[32px] border backdrop-blur-md'>
-				{/* 顶部渐变装饰线 */}
-				<div className='h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--color-brand)] to-transparent opacity-60' />
+			className='relative z-10 mx-auto mt-16 w-full max-w-[1140px] px-6 pb-10 max-sm:px-4'>
+			<div
+				className='relative h-14'
+				onMouseEnter={() => canHover && setOpen(true)}
+				onMouseLeave={() => canHover && setOpen(false)}
+				onFocus={() => canHover && setOpen(true)}
+				onBlur={e => {
+					if (canHover && !e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false)
+				}}>
+				{/* ---------------- 展开态 ---------------- */}
+				<motion.div
+					initial={false}
+					animate={{ opacity: expanded ? 1 : 0, y: expanded ? 0 : 18, scale: expanded ? 1 : 0.985 }}
+					transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+					aria-hidden={!expanded}
+					className={clsx(
+						'bg-card absolute inset-x-0 bottom-0 overflow-hidden rounded-[28px] border shadow-[0_26px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur-md',
+						!expanded && 'pointer-events-none'
+					)}>
+					<div className='h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--color-brand)] to-transparent opacity-60' />
 
-				<div className='grid gap-10 p-8 sm:grid-cols-2 lg:grid-cols-4 max-sm:p-6'>
-					{/* 品牌区 */}
-					<div className='lg:col-span-2'>
-						<div className='flex items-center gap-3'>
-							<Image src='/images/avatar.png' alt={name} width={48} height={48} className='ring-brand/30 h-12 w-12 rounded-full object-cover ring-2' />
-							<div>
-								<div className='text-base font-semibold'>{name}</div>
-								<div className='text-secondary text-xs'>技术杂谈 · AGI / ACG / 文学文艺</div>
+					<div className='grid gap-10 p-8 sm:grid-cols-2 lg:grid-cols-4 max-sm:p-6'>
+						{/* 品牌区 */}
+						<div className='lg:col-span-2'>
+							<div className='flex items-center gap-3'>
+								<Image
+									src='/images/avatar.png'
+									alt={name}
+									width={48}
+									height={48}
+									className='ring-brand/30 h-12 w-12 rounded-full object-cover ring-2'
+								/>
+								<div>
+									<div className='text-base font-semibold'>{name}</div>
+									<div className='text-secondary text-xs'>技术杂谈 · AGI / ACG / 文学文艺</div>
+								</div>
 							</div>
+							<p className='text-secondary mt-4 max-w-md text-sm leading-relaxed'>{description}</p>
+
+							{/* 一言 */}
+							<button
+								type='button'
+								onClick={() => setQi(i => (i + 1) % QUOTES.length)}
+								title='换一句'
+								className='group border-brand/20 bg-brand/5 hover:bg-brand/10 mt-5 w-full max-w-md rounded-2xl border p-4 text-left transition-colors'>
+								<div className='text-sm leading-relaxed'>
+									<span className='text-brand mr-1'>「</span>
+									{mounted ? quote.text : QUOTES[0].text}
+									<span className='text-brand ml-1'>」</span>
+								</div>
+								<div className='text-secondary mt-2 flex items-center justify-between text-[11px]'>
+									<span>— {mounted ? quote.from : QUOTES[0].from}</span>
+									<span className='flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100'>
+										<RefreshCw className='h-3 w-3' />
+										换一句
+									</span>
+								</div>
+							</button>
 						</div>
-						<p className='text-secondary mt-4 max-w-md text-sm leading-relaxed'>{description}</p>
 
-						{/* 一言 */}
-						<button
-							type='button'
-							onClick={() => setQi(i => (i + 1) % QUOTES.length)}
-							title='换一句'
-							className='group border-brand/20 bg-brand/5 hover:bg-brand/10 mt-5 w-full max-w-md rounded-2xl border p-4 text-left transition-colors'>
-							<div className='text-sm leading-relaxed'>
-								<span className='text-brand mr-1'>「</span>
-								{mounted ? quote.text : QUOTES[0].text}
-								<span className='text-brand ml-1'>」</span>
-							</div>
-							<div className='text-secondary mt-2 flex items-center justify-between text-[11px]'>
-								<span>— {mounted ? quote.from : QUOTES[0].from}</span>
-								<span className='opacity-0 transition-opacity group-hover:opacity-100'>换一句 ↻</span>
-							</div>
-						</button>
-					</div>
-
-					{/* 导航 */}
-					<div>
-						<div className='mb-4 text-xs font-semibold tracking-wider uppercase opacity-50'>导航</div>
-						<ul className='space-y-2.5'>
-							{NAV_LINKS.map(l => (
-								<li key={l.href}>
-									<Link href={l.href} className='text-secondary hover:text-brand text-sm transition-colors'>
-										{l.label}
-									</Link>
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{/* 连接 */}
-					<div>
-						<div className='mb-4 text-xs font-semibold tracking-wider uppercase opacity-50'>连接</div>
-						<ul className='space-y-2.5'>
-							{socials.map(s => (
-								<li key={s.id}>
-									<a
-										href={s.type === 'email' ? `mailto:${s.value}` : s.value}
-										target={s.type === 'email' ? undefined : '_blank'}
-										rel='noreferrer'
-										className='text-secondary hover:text-brand text-sm transition-colors'>
-										{s.label || (s.type === 'email' ? '邮箱' : s.type)}
-									</a>
-								</li>
-							))}
-							<li>
-								<a href='/rss.xml' className='text-secondary hover:text-brand text-sm transition-colors'>
-									RSS 订阅
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-
-				{/* 技术栈 */}
-				<div className='flex flex-wrap gap-2 px-8 pb-6 max-sm:px-6'>
-					{TECH.map(t => (
-						<span key={t} className='border-brand/15 bg-brand/5 text-secondary rounded-full border px-3 py-1 text-[11px]'>
-							{t}
-						</span>
-					))}
-				</div>
-
-				{/* 版权栏 */}
-				<div className='border-t px-8 py-5 max-sm:px-6'>
-					<div className='text-secondary flex flex-col items-center justify-between gap-2 text-xs sm:flex-row'>
+						{/* 导航 */}
 						<div>
-							© {year} {name} · 保留所有权利
+							<div className='mb-4 text-xs font-semibold tracking-wider uppercase opacity-50'>导航</div>
+							<ul className='space-y-2.5'>
+								{NAV_LINKS.map(l => (
+									<li key={l.href}>
+										<Link href={l.href} className='text-secondary hover:text-brand text-sm transition-colors'>
+											{l.label}
+										</Link>
+									</li>
+								))}
+							</ul>
 						</div>
-						<div className='flex items-center gap-3'>
-							<span>Powered by Next.js</span>
-							{beian?.text ? (
-								beian.link ? (
-									<a href={beian.link} target='_blank' rel='noreferrer' className='hover:text-brand transition-colors'>
-										{beian.text}
+
+						{/* 连接 */}
+						<div>
+							<div className='mb-4 text-xs font-semibold tracking-wider uppercase opacity-50'>连接</div>
+							<ul className='space-y-2.5'>
+								{socials.map(s => (
+									<li key={s.id}>
+										<a
+											href={s.type === 'email' ? `mailto:${s.value}` : s.value}
+											target={s.type === 'email' ? undefined : '_blank'}
+											rel='noreferrer'
+											className='text-secondary hover:text-brand text-sm transition-colors'>
+											{s.label || (s.type === 'email' ? '邮箱' : s.type)}
+										</a>
+									</li>
+								))}
+								<li>
+									<a href='/rss.xml' className='text-secondary hover:text-brand text-sm transition-colors'>
+										RSS 订阅
 									</a>
-								) : (
-									<span>{beian.text}</span>
-								)
-							) : null}
+								</li>
+							</ul>
 						</div>
 					</div>
-				</div>
+
+					{/* 技术栈 */}
+					<div className='flex flex-wrap gap-2 px-8 pb-6 max-sm:px-6'>
+						{TECH.map(t => (
+							<span key={t} className='border-brand/15 bg-brand/5 text-secondary rounded-full border px-3 py-1 text-[11px]'>
+								{t}
+							</span>
+						))}
+					</div>
+
+					{/* 版权栏 */}
+					<div className='border-t px-8 py-5 max-sm:px-6'>
+						<div className='text-secondary flex flex-col items-center justify-between gap-2 text-xs sm:flex-row'>
+							<div>
+								© {year} {name} · 保留所有权利
+							</div>
+							<div className='flex items-center gap-3'>
+								<Link href='/guestbook/manage' className='hover:text-brand flex items-center gap-1 transition-colors'>
+									<KeyRound className='h-3 w-3' />
+									留言审核
+								</Link>
+								<span className='opacity-40'>·</span>
+								<span>Powered by Next.js</span>
+								{beian?.text ? (
+									beian.link ? (
+										<a href={beian.link} target='_blank' rel='noreferrer' className='hover:text-brand transition-colors'>
+											{beian.text}
+										</a>
+									) : (
+										<span>{beian.text}</span>
+									)
+								) : null}
+							</div>
+						</div>
+					</div>
+				</motion.div>
+
+				{/* ---------------- 收起态 ---------------- */}
+				<motion.div
+					initial={false}
+					animate={{ opacity: expanded ? 0 : 1, y: expanded ? 10 : 0 }}
+					transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+					aria-hidden={expanded}
+					className={clsx(
+						'bg-card absolute inset-x-0 bottom-0 flex h-14 items-center justify-between rounded-2xl border px-5 backdrop-blur-md',
+						expanded && 'pointer-events-none'
+					)}>
+					<div className='flex min-w-0 items-center gap-3'>
+						<Image src='/images/avatar.png' alt={name} width={28} height={28} className='ring-brand/30 h-7 w-7 rounded-full object-cover ring-2' />
+						<span className='truncate text-[13px] font-medium'>{name}</span>
+						<span className='text-secondary hidden text-[11px] opacity-60 sm:inline'>© {year}</span>
+					</div>
+
+					<div className='flex shrink-0 items-center gap-3'>
+						<Link
+							href='/guestbook/manage'
+							title='留言审核'
+							className='text-secondary hover:text-brand flex items-center gap-1 text-[11px] transition-colors'>
+							<KeyRound className='h-3.5 w-3.5' />
+							<span className='hidden sm:inline'>审核</span>
+						</Link>
+						<Link href='/blog' className='text-secondary hover:text-brand hidden text-[11px] transition-colors sm:inline'>
+							博客
+						</Link>
+						<Link href='/guestbook' className='text-secondary hover:text-brand hidden text-[11px] transition-colors sm:inline'>
+							留言板
+						</Link>
+						<span className='text-secondary flex items-center gap-1 text-[11px] opacity-45'>
+							<ChevronUp className='h-3.5 w-3.5 animate-bounce' style={{ animationDuration: '2.4s' }} />
+							悬停展开
+						</span>
+					</div>
+				</motion.div>
 			</div>
 		</motion.footer>
 	)

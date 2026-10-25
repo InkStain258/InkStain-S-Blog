@@ -20,6 +20,8 @@ export type GuestMessage = {
 	content: string
 	createdAt: string
 	status: GuestStatus
+	/** 站长的回复，回复后与留言一起展示 */
+	reply?: { content: string; at: string }
 }
 
 export type SubmitInput = {
@@ -96,7 +98,8 @@ function decodeIssue(issue: any): GuestMessage | null {
 		contact: meta.contact || undefined,
 		content,
 		createdAt: meta.at || issue.created_at,
-		status: labels.includes(LABEL_APPROVED) ? 'approved' : 'pending'
+		status: labels.includes(LABEL_APPROVED) ? 'approved' : 'pending',
+		reply: meta.reply?.content ? { content: String(meta.reply.content), at: String(meta.reply.at || '') } : undefined
 	}
 }
 
@@ -258,4 +261,46 @@ export function clientIp(headers: Headers): string {
 	const fwd = headers.get('x-forwarded-for') || ''
 	const first = fwd.split(',')[0]?.trim()
 	return first || headers.get('x-real-ip') || 'unknown'
+}
+
+/** 写入/修改站长回复（空字符串表示删除回复） */
+export async function setReply(id: string, content: string): Promise<void> {
+	const text = content.trim().slice(0, 500)
+	if (useLocalDriver()) {
+		const all = readLocal()
+		const idx = all.findIndex(m => m.id === id)
+		if (idx < 0) throw new Error('留言不存在')
+		if (text) all[idx].reply = { content: text, at: new Date().toISOString() }
+		else delete all[idx].reply
+		writeLocal(all)
+		return
+	}
+
+	const url = `https://api.github.com/repos/${REPO}/issues/${id}`
+	const res = await fetch(url, { headers: ghHeaders(), cache: 'no-store' })
+	if (!res.ok) throw new Error(`GitHub ${res.status}`)
+	const issue = await res.json()
+	const body: string = issue?.body || ''
+	const m = body.match(META_RE)
+	let meta: any = {}
+	if (m) {
+		try {
+			meta = JSON.parse(m[1])
+		} catch {
+			meta = {}
+		}
+	}
+	if (text) meta.reply = { content: text, at: new Date().toISOString() }
+	else delete meta.reply
+
+	const plain = body.replace(META_RE, '').trim()
+	const patch = await fetch(url, {
+		method: 'PATCH',
+		headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ body: `<!--gb:${JSON.stringify(meta)}-->
+
+${plain}
+` })
+	})
+	if (!patch.ok) throw new Error(`GitHub ${patch.status}`)
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { listMessages, setStatus } from '@/lib/guestbook'
+import { listMessages, setReply, setStatus } from '@/lib/guestbook'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,12 +33,17 @@ export async function POST(req: Request) {
 
 	const id = String(body?.id || '')
 	const action = body?.action
-	if (!id || !['approve', 'reject', 'pending'].includes(action)) {
+	if (!id || !['approve', 'reject', 'pending', 'reply'].includes(action)) {
 		return NextResponse.json({ ok: false, error: '参数不合法' }, { status: 400 })
 	}
 
 	try {
-		if (action === 'approve') await setStatus(id, 'approved')
+		if (action === 'reply') {
+			const reply = typeof body?.reply === 'string' ? body.reply.trim().slice(0, 500) : ''
+			await setReply(id, reply)
+			// 有回复就意味着要展示出去
+			if (reply) await setStatus(id, 'approved')
+		} else if (action === 'approve') await setStatus(id, 'approved')
 		else if (action === 'pending') await setStatus(id, 'pending')
 		else await setStatus(id, 'rejected')
 		return NextResponse.json({ ok: true })

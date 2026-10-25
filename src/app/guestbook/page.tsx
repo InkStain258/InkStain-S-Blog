@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import Link from 'next/link'
-import { Send, Loader2, MessageSquareQuote, Clock3, ShieldCheck, Sparkles } from 'lucide-react'
+import { Send, Loader2, MessageSquareQuote, Clock3, ShieldCheck, Sparkles, CornerDownRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { INIT_DELAY } from '@/consts'
 
@@ -14,6 +14,7 @@ type GuestMessage = {
 	content: string
 	createdAt: string
 	status: 'pending' | 'approved'
+	reply?: { content: string; at: string }
 }
 
 function timeAgo(iso: string) {
@@ -241,6 +242,20 @@ export default function GuestbookPage() {
 										<span className='text-secondary text-[10px] opacity-60'>{timeAgo(m.createdAt)}</span>
 									</div>
 									<p className='mt-1 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
+									{m.reply && (
+										<motion.div
+											initial={{ opacity: 0, y: -4 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ delay: 0.08 }}
+											className='border-brand/40 bg-brand/[0.06] mt-2.5 rounded-r-xl border-l-2 px-3 py-2'>
+											<div className='text-brand flex items-center gap-1 text-[10px] font-medium'>
+												<CornerDownRight className='h-3 w-3' />
+												站长回复
+												{m.reply.at && <span className='text-secondary ml-1 font-normal opacity-60'>{timeAgo(m.reply.at)}</span>}
+											</div>
+											<p className='mt-1 text-[12.5px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
+										</motion.div>
+									)}
 								</div>
 							</div>
 						</motion.article>

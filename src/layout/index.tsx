@@ -10,6 +10,7 @@ import { useConfigStore } from '@/app/(home)/stores/config-store'
 import BackToTop from '@/components/back-to-top'
 import ProseImageEnhancer from '@/components/prose-image-enhancer'
 import CodeBlockEnhancer from '@/components/code-block-enhancer'
+import RandomRoam from '@/components/random-roam'
 import MusicCard from '@/components/music-card'
 import SplashScreen from '@/components/splash-screen'
 import PageTransition from '@/components/page-transition'
@@ -82,6 +83,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			<main className='relative z-10 h-full'>
 				<ProseImageEnhancer />
 				<CodeBlockEnhancer />
+				<RandomRoam />
 				<PageTransition>{children}</PageTransition>
 				<SiteFooter />
 				<NavCard />
