@@ -2,8 +2,11 @@
 
 import { useEffect, useRef } from 'react'
 
+/** 光晕直径（px），改这一个值即可 */
+const SIZE = 200
+
 /**
- * 鼠标跟随氛围光：一团柔和的品牌色光晕平滑跟随光标。
+ * 鼠标跟随氛围光：一小团柔和的品牌色光晕平滑跟随光标。
  * 触屏设备与「减少动态效果」偏好下自动禁用。
  */
 export default function CursorGlow() {
@@ -17,6 +20,7 @@ export default function CursorGlow() {
 		const el = ref.current
 		if (!el) return
 
+		const half = SIZE / 2
 		let tx = window.innerWidth / 2
 		let ty = window.innerHeight / 2
 		let cx = tx
@@ -30,9 +34,9 @@ export default function CursorGlow() {
 		}
 
 		const loop = () => {
-			cx += (tx - cx) * 0.12
-			cy += (ty - cy) * 0.12
-			el.style.transform = `translate3d(${cx - 190}px, ${cy - 190}px, 0)`
+			cx += (tx - cx) * 0.14
+			cy += (ty - cy) * 0.14
+			el.style.transform = `translate3d(${cx - half}px, ${cy - half}px, 0)`
 			raf = requestAnimationFrame(loop)
 		}
 
@@ -49,9 +53,11 @@ export default function CursorGlow() {
 		<div
 			ref={ref}
 			aria-hidden
-			className='cursor-glow pointer-events-none fixed top-0 left-0 z-[5] h-[380px] w-[380px] rounded-full opacity-0 blur-[55px]'
+			className='cursor-glow pointer-events-none fixed top-0 left-0 z-[5] rounded-full opacity-0 blur-[32px]'
 			style={{
-				background: 'radial-gradient(circle, color-mix(in srgb, var(--color-brand) 55%, transparent) 0%, transparent 66%)',
+				width: SIZE,
+				height: SIZE,
+				background: 'radial-gradient(circle, color-mix(in srgb, var(--color-brand) 38%, transparent) 0%, transparent 62%)',
 				willChange: 'transform',
 				transition: 'opacity 600ms ease'
 			}}

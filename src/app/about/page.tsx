@@ -10,6 +10,7 @@ import { useConfigStore } from '@/app/(home)/stores/config-store'
 import LikeButton from '@/components/like-button'
 import GithubSVG from '@/svgs/github.svg'
 import initialData from './list.json'
+import SiteStats from '@/components/site-stats'
 
 export default function Page() {
 	const [data, setData] = useState<AboutData>(initialData as AboutData)
@@ -152,15 +153,17 @@ export default function Page() {
 						)
 					) : (
 						<>
-							<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='mb-12 text-center'>
+							<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='mb-10 text-center'>
 								<h1 className='mb-4 text-4xl font-bold'>{data.title}</h1>
 								<p className='text-secondary text-lg'>{data.description}</p>
 							</motion.div>
 
+							<SiteStats />
+
 							{loading ? (
 								<div className='text-secondary text-center'>加载中...</div>
 							) : (
-								<motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className='card relative p-6'>
+								<motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className='card relative mt-8 p-6'>
 									<div className='prose prose-sm max-w-none'>{content}</div>
 								</motion.div>
 							)}
