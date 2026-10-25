@@ -323,7 +323,7 @@
   opacity: 0;
 }
 .dark .cursor-glow {
-  filter: blur(80px);
+  filter: blur(50px);
 }
 
 /* 正文图片可点击放大 */

@@ -32,7 +32,7 @@ export default function CursorGlow() {
 		const loop = () => {
 			cx += (tx - cx) * 0.12
 			cy += (ty - cy) * 0.12
-			el.style.transform = `translate3d(${cx - 300}px, ${cy - 300}px, 0)`
+			el.style.transform = `translate3d(${cx - 190}px, ${cy - 190}px, 0)`
 			raf = requestAnimationFrame(loop)
 		}
 
@@ -49,9 +49,9 @@ export default function CursorGlow() {
 		<div
 			ref={ref}
 			aria-hidden
-			className='cursor-glow pointer-events-none fixed top-0 left-0 z-[5] h-[600px] w-[600px] rounded-full opacity-0 blur-[70px]'
+			className='cursor-glow pointer-events-none fixed top-0 left-0 z-[5] h-[380px] w-[380px] rounded-full opacity-0 blur-[55px]'
 			style={{
-				background: 'radial-gradient(circle, var(--color-brand) 0%, transparent 68%)',
+				background: 'radial-gradient(circle, color-mix(in srgb, var(--color-brand) 55%, transparent) 0%, transparent 66%)',
 				willChange: 'transform',
 				transition: 'opacity 600ms ease'
 			}}
