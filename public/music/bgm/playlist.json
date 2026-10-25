@@ -2,16 +2,17 @@
   {
     "file": "/music/bgm/lofi-lion-tame-the-beast.mp3",
     "title": "Lofi Lion Tame The Beast",
-    "artist": "Unknown",
+    "artist": "LOFI LION",
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "source": "https://archive.org/details/lofi-lion-tame-the-beast",
     "identifier": "lofi-lion-tame-the-beast",
     "duration": 171,
-    "size": 2738527
+    "size": 2738527,
+    "genre": "lofi"
   },
   {
     "file": "/music/bgm/torley-wong-the-final-selection-230-diverse-mp3s.mp3",
-    "title": "Torley Wong - The Final Selection",
+    "title": "The Final Selection",
     "artist": "Torley Wong",
     "license": "http://creativecommons.org/licenses/by-sa/3.0/us/",
     "source": "https://archive.org/details/Torley_Wong_-_The_Final_Selection",
@@ -22,17 +23,18 @@
   {
     "file": "/music/bgm/solo-piano-7.mp3",
     "title": "solo piano 7",
-    "artist": "Torley",
+    "artist": "Torley Wong",
     "license": "http://creativecommons.org/licenses/by-sa/3.0/us/",
     "source": "https://archive.org/details/solo-piano-7",
     "identifier": "solo-piano-7",
     "duration": 186,
-    "size": 3035463
+    "size": 3035463,
+    "genre": "piano"
   },
   {
     "file": "/music/bgm/nullbomb-creatures-2005-2006.mp3",
     "title": "Nullbomb creatures 2005-2006",
-    "artist": "Unknown",
+    "artist": "",
     "license": "http://creativecommons.org/licenses/by/2.5/",
     "source": "https://archive.org/details/nullbomb",
     "identifier": "nullbomb",
@@ -42,8 +44,8 @@
   },
   {
     "file": "/music/bgm/mixg031-intoxicated-piano-vice-versa.mp3",
-    "title": "Intoxicated Piano - Vice Versa",
-    "artist": "Unknown",
+    "title": "Vice Versa",
+    "artist": "Intoxicated Piano",
     "license": "http://creativecommons.org/licenses/by-nc/3.0/",
     "source": "https://archive.org/details/MIXG031",
     "identifier": "MIXG031",
@@ -64,8 +66,8 @@
   },
   {
     "file": "/music/bgm/mixg032-various-artists-retrovision.mp3",
-    "title": "Various Artists - Retrovision",
-    "artist": "Unknown",
+    "title": "Retrovision",
+    "artist": "Various Artists",
     "license": "http://creativecommons.org/licenses/by-nc/3.0/",
     "source": "https://archive.org/details/MIXG032",
     "identifier": "MIXG032",
@@ -75,7 +77,7 @@
   },
   {
     "file": "/music/bgm/r-stevie-moore-tra-la-la-la-phooey-csr008.mp3",
-    "title": "R. Stevie Moore - Tra La La La Phooey!",
+    "title": "Tra La La La Phooey!",
     "artist": "R. Stevie Moore",
     "license": "http://creativecommons.org/licenses/by-nc/1.0/",
     "source": "https://archive.org/details/csr008",
@@ -108,8 +110,8 @@
   },
   {
     "file": "/music/bgm/mixg016-th-e-n-d-metaphors.mp3",
-    "title": "Th.e n.d – Metaphors",
-    "artist": "Unknown",
+    "title": "Metaphors",
+    "artist": "Th.e n.d",
     "license": "http://creativecommons.org/licenses/by-nc/3.0/",
     "source": "https://archive.org/details/MIXG016",
     "identifier": "MIXG016",

@@ -4,7 +4,6 @@ import { motion } from 'motion/react'
 import { ANIMATION_DELAY, INIT_DELAY } from '@/consts'
 import LikeButton from '@/components/like-button'
 import { BlogToc } from '@/components/blog-toc'
-import { ScrollTopButton } from '@/components/scroll-top-button'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
 type TocItem = {
@@ -50,8 +49,6 @@ export function BlogSidebar({ cover, summary, toc, slug }: BlogSidebarProps) {
 			<BlogToc toc={toc} delay={INIT_DELAY + ANIMATION_DELAY * 3} />
 
 			<LikeButton slug={slug} delay={(INIT_DELAY + ANIMATION_DELAY * 4) * 1000} />
-
-			<ScrollTopButton delay={INIT_DELAY + ANIMATION_DELAY * 5} />
 		</div>
 	)
 }
