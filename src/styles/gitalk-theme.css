@@ -27,8 +27,15 @@
 }
 
 .gitalk-host .gt-counts {
+	display: inline-flex;
+	align-items: center;
+	padding: 3px 12px;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--color-brand) 12%, transparent);
+	font-size: 12px;
 	font-weight: 600;
-	color: var(--color-primary);
+	color: var(--color-brand) !important;
+	line-height: 1.6;
 }
 
 .gitalk-host .gt-link,
