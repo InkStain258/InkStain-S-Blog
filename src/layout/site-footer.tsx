@@ -28,6 +28,7 @@ const NAV_LINKS = [
 	{ href: '/blog', label: '博客' },
 	{ href: '/projects', label: '项目' },
 	{ href: '/share', label: '友链' },
+	{ href: '/guestbook', label: '留言板' },
 	{ href: '/pictures', label: '图集' },
 	{ href: '/about', label: '关于' }
 ]

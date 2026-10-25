@@ -46,3 +46,5 @@ next-env.d.ts
 
 #vscode
 .history/
+# 留言板本地数据（文件驱动，不提交）
+/.data

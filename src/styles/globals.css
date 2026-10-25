@@ -415,3 +415,71 @@
 .dark .ink-menu {
   background-color: #16213e !important;
 }
+
+/* ===== 正文代码块：语言标签 + 复制按钮 ===== */
+.prose pre.code-block {
+  position: relative;
+  padding-top: 2.1rem;
+}
+.code-bar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.6rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.code-lang {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  opacity: 0.5;
+}
+.code-copy {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+  background: color-mix(in srgb, var(--color-card) 85%, transparent);
+  font-size: 10px;
+  color: var(--color-secondary);
+  opacity: 0;
+  transform: translateY(-3px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+  cursor: pointer;
+}
+.code-copy svg {
+  width: 11px;
+  height: 11px;
+}
+.prose pre.code-block:hover .code-copy {
+  opacity: 1;
+  transform: none;
+}
+.code-copy:hover {
+  color: var(--color-brand);
+  border-color: color-mix(in srgb, var(--color-brand) 45%, transparent);
+}
+.code-copy.copied {
+  opacity: 1;
+  color: var(--color-brand);
+}
+.dark .code-copy {
+  background: rgba(22, 33, 62, 0.85);
+}
+@media (hover: none) {
+  .code-copy {
+    opacity: 1;
+    transform: none;
+  }
+}
