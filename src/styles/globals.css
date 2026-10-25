@@ -261,3 +261,57 @@
 .dark .fixed.inset-0.z-0 {
   filter: blur(50px) brightness(0.3) !important;
 }
+
+/* ===== Dark mode: fix hardcoded light backgrounds ===== */
+/* Any element with bg-white/N gets a dark translucent surface in dark mode */
+.dark [class*="bg-white/"] {
+  background-color: rgba(30, 41, 66, 0.55) !important;
+}
+.dark [class*="hover:bg-white/"]:hover {
+  background-color: rgba(45, 58, 88, 0.75) !important;
+}
+.dark .bg-white {
+  background-color: rgba(30, 41, 66, 0.7) !important;
+}
+.dark .bg-gray-200 {
+  background-color: rgba(60, 72, 100, 0.7) !important;
+}
+.dark .hover\:bg-gray-300:hover {
+  background-color: rgba(75, 88, 118, 0.8) !important;
+}
+
+/* Fix dark text on dark backgrounds */
+.dark .text-gray-600,
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900 {
+  color: #b8c2d8 !important;
+}
+.dark .text-slate-600,
+.dark .text-slate-700,
+.dark .text-slate-800,
+.dark .text-slate-900 {
+  color: #c8d2e4 !important;
+}
+.dark .text-black {
+  color: #e8ecf4 !important;
+}
+
+/* Inputs / textareas in dark mode */
+.dark input,
+.dark textarea {
+  background-color: rgba(30, 41, 66, 0.6);
+  color: #e8ecf4;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #6b7a94;
+}
+
+/* Code blocks and inline code */
+.dark pre,
+.dark code {
+  background-color: rgba(10, 15, 30, 0.7) !important;
+  color: #d8e2f0 !important;
+}
