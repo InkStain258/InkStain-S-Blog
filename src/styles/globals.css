@@ -405,3 +405,13 @@
     filter: none;
   }
 }
+
+/* ===== 模板下拉等浮层：必须完全不透明 =====
+   注意 .dark .bg-white 把半透明底写成了 !important，
+   所以浮层不能靠 bg-white/dark:bg-* 组合，必须自带类并同样 !important。 */
+.ink-menu {
+  background-color: #ffffff !important;
+}
+.dark .ink-menu {
+  background-color: #16213e !important;
+}
