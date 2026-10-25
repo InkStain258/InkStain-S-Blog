@@ -1,0 +1,446 @@
+/* ============================================================
+   Gitalk 评论区美化主题
+   在 gitalk/dist/gitalk.css 之后加载，覆盖其工业化默认样式。
+   全部使用站点 CSS 变量，自动适配亮/暗主题。
+   ============================================================ */
+
+.gitalk-host .gt-container {
+	font-family: inherit;
+	font-size: 14px;
+	color: var(--color-primary);
+}
+
+.gitalk-host .gt-container * {
+	box-sizing: border-box;
+}
+
+/* ---------- 顶部统计栏 ---------- */
+.gitalk-host .gt-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 14px !important;
+	margin: 0 0 20px !important;
+	border-bottom: 1px dashed color-mix(in srgb, var(--color-secondary) 35%, transparent) !important;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.gitalk-host .gt-counts {
+	font-weight: 600;
+	color: var(--color-primary);
+}
+
+.gitalk-host .gt-link,
+.gitalk-host .gt-link-counts {
+	border-bottom: none !important;
+	color: var(--color-primary) !important;
+	text-decoration: none !important;
+}
+
+.gitalk-host .gt-link-counts:hover {
+	color: var(--color-brand) !important;
+}
+
+.gitalk-host .gt-user {
+	font-size: 12px;
+	color: var(--color-secondary);
+}
+
+.gitalk-host .gt-user-inner {
+	color: var(--color-secondary) !important;
+}
+
+.gitalk-host .gt-user .gt-ico {
+	opacity: 0.6;
+}
+
+/* ---------- 头像 ---------- */
+.gitalk-host .gt-avatar img {
+	border-radius: 999px !important;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+	transition: transform 0.25s ease;
+}
+
+.gitalk-host .gt-header-avatar:hover img {
+	transform: scale(1.06) rotate(-3deg);
+}
+
+/* ---------- 输入区 ---------- */
+.gitalk-host .gt-header {
+	margin-bottom: 8px;
+}
+
+.gitalk-host .gt-header-textarea {
+	border-radius: 18px !important;
+	border: 1px solid color-mix(in srgb, var(--color-secondary) 22%, transparent) !important;
+	background: rgba(255, 255, 255, 0.55) !important;
+	padding: 15px 18px !important;
+	font-size: 14px !important;
+	line-height: 1.75 !important;
+	min-height: 104px !important;
+	color: var(--color-primary) !important;
+	transition:
+		border-color 0.22s ease,
+		box-shadow 0.22s ease,
+		background 0.22s ease !important;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.gitalk-host .gt-header-textarea::placeholder {
+	color: color-mix(in srgb, var(--color-secondary) 70%, transparent);
+}
+
+.gitalk-host .gt-header-textarea:focus {
+	border-color: var(--color-brand) !important;
+	background: rgba(255, 255, 255, 0.85) !important;
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 18%, transparent) !important;
+	outline: none !important;
+}
+
+.gitalk-host .gt-header-preview {
+	border-radius: 18px !important;
+	border: 1px solid color-mix(in srgb, var(--color-secondary) 22%, transparent) !important;
+	background: rgba(255, 255, 255, 0.55) !important;
+	padding: 16px 18px !important;
+	min-height: 104px;
+}
+
+/* ---------- 按钮 ---------- */
+.gitalk-host .gt-btn {
+	border-radius: 999px !important;
+	border: 1px solid color-mix(in srgb, var(--color-secondary) 25%, transparent) !important;
+	background: rgba(255, 255, 255, 0.6) !important;
+	color: var(--color-primary) !important;
+	padding: 9px 20px !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	line-height: 1 !important;
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		background 0.2s ease,
+		border-color 0.2s ease !important;
+}
+
+.gitalk-host .gt-btn:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.25);
+	border-color: color-mix(in srgb, var(--color-brand) 45%, transparent) !important;
+}
+
+.gitalk-host .gt-btn:active {
+	transform: translateY(0) scale(0.98);
+}
+
+/* 主按钮：渐变胶囊 */
+.gitalk-host .gt-btn-public,
+.gitalk-host .gt-btn-login,
+.gitalk-host .gt-btn-preview {
+	background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-secondary) 100%) !important;
+	border-color: transparent !important;
+	color: #fff !important;
+	font-weight: 600 !important;
+	box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--color-brand) 70%, transparent);
+}
+
+.gitalk-host .gt-btn-public:hover,
+.gitalk-host .gt-btn-login:hover,
+.gitalk-host .gt-btn-preview:hover {
+	box-shadow: 0 12px 26px -10px color-mix(in srgb, var(--color-brand) 85%, transparent);
+	filter: brightness(1.05);
+}
+
+.gitalk-host .gt-btn-preview {
+	background: transparent !important;
+	color: var(--color-brand) !important;
+	border: 1px solid color-mix(in srgb, var(--color-brand) 45%, transparent) !important;
+}
+
+.gitalk-host .gt-header-controls {
+	margin-top: 12px !important;
+}
+
+.gitalk-host .gt-header-controls-tip {
+	font-size: 12px !important;
+	color: var(--color-secondary) !important;
+	opacity: 0.8;
+}
+
+.gitalk-host .gt-header-controls-tip a {
+	color: var(--color-brand) !important;
+	border-bottom: none !important;
+}
+
+/* ---------- 评论列表 ---------- */
+.gitalk-host .gt-comments {
+	margin-top: 8px;
+}
+
+.gitalk-host .gt-comment {
+	margin: 16px 0 !important;
+}
+
+.gitalk-host .gt-comment-content {
+	border-radius: 20px !important;
+	border: 1px solid color-mix(in srgb, var(--color-secondary) 16%, transparent) !important;
+	background: rgba(255, 255, 255, 0.42) !important;
+	padding: 16px 18px !important;
+	transition:
+		background 0.22s ease,
+		border-color 0.22s ease,
+		transform 0.22s ease,
+		box-shadow 0.22s ease !important;
+	box-shadow: 0 2px 10px -6px rgba(0, 0, 0, 0.15);
+}
+
+.gitalk-host .gt-comment-content:hover {
+	background: rgba(255, 255, 255, 0.68) !important;
+	border-color: color-mix(in srgb, var(--color-brand) 28%, transparent) !important;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 26px -16px rgba(0, 0, 0, 0.3);
+}
+
+/* 博主本人评论高亮 */
+.gitalk-host .gt-comment-admin .gt-comment-content {
+	border-color: color-mix(in srgb, var(--color-brand) 38%, transparent) !important;
+	background: color-mix(in srgb, var(--color-brand) 7%, rgba(255, 255, 255, 0.5)) !important;
+}
+
+.gitalk-host .gt-comment-admin .gt-comment-content::before {
+	content: '博主';
+	position: absolute;
+	top: -9px;
+	right: 16px;
+	padding: 1px 9px;
+	border-radius: 999px;
+	font-size: 10px;
+	line-height: 16px;
+	font-weight: 600;
+	color: #fff;
+	background: linear-gradient(135deg, var(--color-brand), var(--color-brand-secondary));
+	box-shadow: 0 3px 10px -3px color-mix(in srgb, var(--color-brand) 80%, transparent);
+}
+
+.gitalk-host .gt-comment-content {
+	position: relative;
+}
+
+.gitalk-host .gt-comment-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 10px !important;
+	border-bottom: none !important;
+	padding-bottom: 0 !important;
+}
+
+.gitalk-host .gt-comment-avatar img {
+	width: 32px !important;
+	height: 32px !important;
+	border-radius: 999px !important;
+	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.gitalk-host .gt-comment-username {
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	color: var(--color-primary) !important;
+	border-bottom: none !important;
+}
+
+.gitalk-host .gt-comment-username:hover {
+	color: var(--color-brand) !important;
+}
+
+.gitalk-host .gt-comment-date {
+	font-size: 11px !important;
+	color: color-mix(in srgb, var(--color-secondary) 85%, transparent) !important;
+}
+
+.gitalk-host .gt-comment-actions {
+	margin-left: auto;
+	display: flex !important;
+	align-items: center;
+	gap: 14px !important;
+	float: none !important;
+}
+
+.gitalk-host .gt-comment-reply,
+.gitalk-host .gt-comment-like {
+	border-bottom: none !important;
+	font-size: 12px !important;
+	color: var(--color-secondary) !important;
+	opacity: 0.75;
+	white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	transition:
+		color 0.2s ease,
+		opacity 0.2s ease;
+}
+
+.gitalk-host .gt-comment-reply:hover,
+.gitalk-host .gt-comment-like:hover {
+	color: var(--color-brand) !important;
+	opacity: 1;
+}
+
+.gitalk-host .gt-comment-body {
+	font-size: 14px;
+	line-height: 1.8 !important;
+	color: var(--color-primary) !important;
+	word-break: break-word;
+}
+
+.gitalk-host .gt-comment-body p {
+	margin: 0 0 0.6em;
+}
+
+.gitalk-host .gt-comment-body p:last-child {
+	margin-bottom: 0;
+}
+
+.gitalk-host .gt-comment-body a {
+	color: var(--color-brand) !important;
+	border-bottom: 1px dotted color-mix(in srgb, var(--color-brand) 50%, transparent) !important;
+}
+
+.gitalk-host .gt-comment-body code {
+	background: color-mix(in srgb, var(--color-secondary) 14%, transparent) !important;
+	border-radius: 6px;
+	padding: 2px 6px !important;
+	font-size: 12.5px !important;
+}
+
+.gitalk-host .gt-comment-body pre {
+	background: rgba(0, 0, 0, 0.06) !important;
+	border-radius: 12px !important;
+	padding: 12px 14px !important;
+	overflow-x: auto;
+}
+
+.gitalk-host .gt-comment-body blockquote {
+	border-left: 3px solid color-mix(in srgb, var(--color-brand) 45%, transparent) !important;
+	padding-left: 12px !important;
+	color: var(--color-secondary) !important;
+	margin: 8px 0 !important;
+}
+
+/* 嵌套回复 */
+.gitalk-host .gt-comments-null {
+	font-size: 13px;
+	color: var(--color-secondary);
+	opacity: 0.7;
+	padding: 8px 0;
+}
+
+/* ---------- 空状态 ---------- */
+.gitalk-host .gt-comments .gt-comment-empty,
+.gitalk-host .gt-no-comment {
+	text-align: center;
+	padding: 28px 0 !important;
+	color: var(--color-secondary) !important;
+	font-size: 13px;
+}
+
+/* ---------- 错误提示 ---------- */
+.gitalk-host .gt-error {
+	border-radius: 12px !important;
+	border: 1px solid rgba(239, 68, 68, 0.35) !important;
+	background: rgba(239, 68, 68, 0.08) !important;
+	color: #ef4444 !important;
+	padding: 10px 14px !important;
+	font-size: 12.5px !important;
+}
+
+/* ---------- 加载动画 ---------- */
+.gitalk-host .gt-spinner::before {
+	border-top-color: var(--color-brand) !important;
+}
+
+/* ============================================================
+   暗色模式
+   ============================================================ */
+.dark .gitalk-host .gt-header-textarea,
+.dark .gitalk-host .gt-header-preview {
+	background: rgba(30, 41, 66, 0.62) !important;
+	border-color: rgba(255, 255, 255, 0.1) !important;
+	color: #e8ecf4 !important;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.dark .gitalk-host .gt-header-textarea::placeholder {
+	color: rgba(232, 236, 244, 0.32);
+}
+
+.dark .gitalk-host .gt-header-textarea:focus {
+	border-color: var(--color-brand) !important;
+	background: rgba(34, 46, 74, 0.85) !important;
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 22%, transparent) !important;
+}
+
+.dark .gitalk-host .gt-btn {
+	background: rgba(255, 255, 255, 0.06) !important;
+	border-color: rgba(255, 255, 255, 0.12) !important;
+	color: #dbe3f0 !important;
+}
+
+.dark .gitalk-host .gt-btn-public,
+.dark .gitalk-host .gt-btn-login {
+	background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-brand-secondary) 100%) !important;
+	color: #fff !important;
+	border-color: transparent !important;
+}
+
+.dark .gitalk-host .gt-btn-preview {
+	background: transparent !important;
+	color: var(--color-brand) !important;
+	border-color: color-mix(in srgb, var(--color-brand) 45%, transparent) !important;
+}
+
+.dark .gitalk-host .gt-comment-content {
+	background: rgba(30, 41, 66, 0.5) !important;
+	border-color: rgba(255, 255, 255, 0.08) !important;
+	box-shadow: 0 2px 12px -6px rgba(0, 0, 0, 0.5);
+}
+
+.dark .gitalk-host .gt-comment-content:hover {
+	background: rgba(38, 50, 78, 0.72) !important;
+	border-color: color-mix(in srgb, var(--color-brand) 32%, transparent) !important;
+}
+
+.dark .gitalk-host .gt-comment-admin .gt-comment-content {
+	background: color-mix(in srgb, var(--color-brand) 10%, rgba(30, 41, 66, 0.6)) !important;
+	border-color: color-mix(in srgb, var(--color-brand) 42%, transparent) !important;
+}
+
+.dark .gitalk-host .gt-comment-body {
+	color: #dbe3f0 !important;
+}
+
+.dark .gitalk-host .gt-comment-body pre {
+	background: rgba(0, 0, 0, 0.35) !important;
+}
+
+.dark .gitalk-host .gt-comment-body code {
+	background: rgba(255, 255, 255, 0.08) !important;
+	color: #dbe3f0 !important;
+}
+
+.dark .gitalk-host .gt-meta {
+	border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 移动端收敛 */
+@media (max-width: 640px) {
+	.gitalk-host .gt-comment-content {
+		border-radius: 16px !important;
+		padding: 14px !important;
+	}
+	.gitalk-host .gt-btn {
+		padding: 8px 16px !important;
+	}
+}

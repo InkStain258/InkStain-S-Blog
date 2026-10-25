@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
+import { useMemo } from 'react'
 import { INIT_DELAY } from '@/consts'
 import { useMarkdownRender } from '@/hooks/use-markdown-render'
 import { useSize } from '@/hooks/use-size'
@@ -23,6 +24,17 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 	const { siteContent } = useConfigStore()
 	const summaryInContent = siteContent.summaryInContent ?? false
 
+	// 字数与阅读时长（中文按 400 字/分钟）
+	const stats = useMemo(() => {
+		const plain = markdown
+			.replace(/```[\s\S]*?```/g, '')
+			.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+			.replace(/[#>*_`~\-\[\]()]/g, '')
+			.replace(/\s/g, '')
+		const chars = plain.length
+		return { chars, minutes: Math.max(1, Math.ceil(chars / 400)) }
+	}, [markdown])
+
 	if (loading) {
 		return <div className='text-secondary flex h-full items-center justify-center text-sm'>渲染中...</div>
 	}
@@ -43,7 +55,13 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 						))}
 					</div>
 
-					<div className='text-secondary mt-3 text-center text-sm'>{date}</div>
+					<div className='text-secondary mt-3 flex flex-wrap items-center justify-center gap-2 text-center text-sm'>
+						<span>{date}</span>
+						<span className='opacity-40'>·</span>
+						<span>{stats.chars.toLocaleString()} 字</span>
+						<span className='opacity-40'>·</span>
+						<span>约 {stats.minutes} 分钟</span>
+					</div>
 
 					{summary && summaryInContent && <div className='text-secondary mt-6 cursor-text text-center text-sm'>“{summary}”</div>}
 

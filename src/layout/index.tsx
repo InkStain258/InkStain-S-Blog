@@ -17,7 +17,12 @@ import SakuraPetals from '@/components/sakura-petals'
 import DanmakuBackground from '@/components/danmaku-bg'
 import WeatherWidget from '@/components/weather-widget'
 import ThemeToggle from '@/components/theme-toggle'
+import ReadingProgress from '@/components/reading-progress'
+import CursorGlow from '@/components/cursor-glow'
+import ImageLightbox from '@/components/image-lightbox'
+import SiteFooter from './site-footer'
 import { useTheme } from '@/hooks/use-theme'
+import { usePathname } from 'next/navigation'
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
@@ -26,6 +31,8 @@ export default function Layout({ children }: PropsWithChildren) {
 	const { maxSM, init } = useSize()
 	const { theme } = useTheme()
 	const isDark = theme === 'dark'
+	const pathname = usePathname()
+	const isHome = pathname === '/'
 
 	const backgroundImages = (siteContent.backgroundImages ?? []) as Array<{ id: string; url: string }>
 	const currentBackgroundImageId = siteContent.currentBackgroundImageId
@@ -37,6 +44,9 @@ export default function Layout({ children }: PropsWithChildren) {
 			<SplashScreen />
 			<ClickEffect />
 			<ThemeToggle />
+			<ReadingProgress />
+			<ImageLightbox />
+			<CursorGlow />
 
 			{/* Sakura only in light mode; Fireflies only in dark mode */}
 			{!isDark && <SakuraPetals />}
@@ -69,9 +79,10 @@ export default function Layout({ children }: PropsWithChildren) {
 
 			<main className='relative z-10 h-full'>
 				<PageTransition>{children}</PageTransition>
+				<SiteFooter />
 				<NavCard />
 				{!maxSM && cardStyles.musicCard?.enabled !== false && <MusicCard />}
-				{!maxSM && (
+				{!maxSM && isHome && (
 					<div className="fixed bottom-6 left-6 z-40 w-36">
 						<WeatherWidget />
 					</div>
