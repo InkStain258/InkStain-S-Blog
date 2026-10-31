@@ -10,6 +10,7 @@ type Doc = { s: string; t: string; d: string; c: string; g: string[]; m: string;
 type Hit = Doc & { score: number; snippet: string }
 
 let cache: Doc[] | null = null
+let bodyPromise: Promise<void> | null = null
 
 /** 加权评分：标题 > 标签 > 摘要 > 正文；多关键词按 AND 处理 */
 function search(docs: Doc[], raw: string): Hit[] {
@@ -51,22 +52,46 @@ export default function SearchDialog() {
 	const [active, setActive] = useState(0)
 	const [loading, setLoading] = useState(false)
 	const inputRef = useRef<HTMLInputElement>(null)
+	const shardsRef = useRef(0)
+
+	// 正文分片按需补：先出 meta 的结果，正文命中随后并进来
+	const loadBodies = useCallback(async (shards: number) => {
+		if (!cache || bodyPromise) return bodyPromise ?? Promise.resolve()
+		bodyPromise = Promise.all(
+			Array.from({ length: shards }, (_, i) =>
+				fetch(`/search-index/body-${i}.json`)
+					.then(r => (r.ok ? r.json() : {}))
+					.then((bucket: Record<string, string>) => {
+						for (const [slug, body] of Object.entries(bucket)) {
+							const doc = cache!.find(d => d.s === slug)
+							if (doc) doc.b = body
+						}
+					})
+					.catch(() => {})
+			)
+		).then(() => {
+			if (cache) setDocs([...cache])
+		})
+		return bodyPromise
+	}, [])
 
 	const load = useCallback(async () => {
 		if (cache) return
 		setLoading(true)
 		try {
-			const r = await fetch('/search-index.json')
+			const r = await fetch('/search-index/meta.json')
+			if (!r.ok) throw new Error('meta missing')
 			const j = await r.json()
-			cache = j.docs ?? []
-			setDocs(cache!)
+			cache = (j.docs ?? []).map((d: Doc) => ({ ...d, b: '' }))
+			shardsRef.current = j.shards ?? 0
+			setDocs([...cache!])
+			setLoading(false)
 		} catch {
 			cache = []
 			setDocs([])
-		} finally {
 			setLoading(false)
 		}
-	}, [])
+	}, [loadBodies])
 
 	useEffect(() => {
 		const onKey = (e: KeyboardEvent) => {
@@ -90,6 +115,15 @@ export default function SearchDialog() {
 	}, [open, load])
 
 	const hits = useMemo(() => search(docs, q), [docs, q])
+
+	// 正文分片只在「meta 命中不够看」时才拉：常见词靠标题/标签/摘要就够，
+	// 省掉 240KB 的无谓下载；冷门词才付出补正文的代价，且只付一次。
+	useEffect(() => {
+		const query = q.trim()
+		if (query.length < 2 || !cache || bodyPromise || shardsRef.current === 0) return
+		if (hits.length >= 5) return
+		void loadBodies(shardsRef.current)
+	}, [q, hits.length, loadBodies])
 
 	const onInputKey = (e: React.KeyboardEvent) => {
 		if (e.key === 'ArrowDown') {

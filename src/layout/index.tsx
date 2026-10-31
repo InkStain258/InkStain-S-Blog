@@ -56,7 +56,8 @@ export default function Layout({ children }: PropsWithChildren) {
 	useEffect(() => {
 		const w = window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
 		const warm = () => {
-			fetch('/search-index.json').catch(() => {})
+			// 只预热 meta（几 KB）；正文分片等真正打开搜索时再并行取
+			fetch('/search-index/meta.json').catch(() => {})
 		}
 		if (w.requestIdleCallback) {
 			const id = w.requestIdleCallback(warm, { timeout: 4000 })

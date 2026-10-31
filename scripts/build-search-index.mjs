@@ -7,7 +7,7 @@
  *
  * package.json 里挂了 prebuild，Vercel 构建前会自动跑。
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -83,14 +83,34 @@ const tagCount = {}
 for (const d of docs) for (const t of d.g) tagCount[t] = (tagCount[t] || 0) + 1
 const onceTags = Object.entries(tagCount).filter(([, n]) => n === 1).map(([t]) => t)
 
-const out = {
-	generatedAt: new Date().toISOString(),
-	count: docs.length,
-	tagStats: { total: Object.keys(tagCount).length, once: onceTags },
-	issues,
-	docs
-}
-writeFileSync(join(root, 'public', 'search-index.json'), JSON.stringify(out), 'utf8')
+const generatedAt = new Date().toISOString()
+const tagStats = { total: Object.keys(tagCount).length, once: onceTags }
 
-const kb = (Buffer.byteLength(JSON.stringify(out)) / 1024).toFixed(0)
-console.log(`[search-index] ${docs.length} 篇，${kb}KB${missing ? `，${missing} 篇缺正文` : ''}，体检问题 ${issues.length} 项，单次标签 ${onceTags.length} 个`)
+// 完整索引：给 /admin/health 做内容体检用（不进首屏路径）
+const full = { generatedAt, count: docs.length, tagStats, issues, docs }
+writeFileSync(join(root, 'public', 'search-index.json'), JSON.stringify(full), 'utf8')
+
+/**
+ * 拆成 meta + 正文分片：
+ * 打开搜索只需要 meta（标题/标签/摘要），首屏结果立刻出来；
+ * 正文分片随后并行补，正文命中晚几十毫秒出现，不再一次性拖 100KB+。
+ */
+const SHARDS = 5
+const searchDir = join(root, 'public', 'search-index')
+mkdirSync(searchDir, { recursive: true })
+
+const metaDocs = docs.map(({ b, ...rest }) => rest)
+const meta = { v: 2, generatedAt, count: docs.length, shards: SHARDS, tagStats, issues, docs: metaDocs }
+writeFileSync(join(searchDir, 'meta.json'), JSON.stringify(meta), 'utf8')
+
+for (let n = 0; n < SHARDS; n++) {
+	const bucket = {}
+	docs.forEach((d, i) => {
+		if (i % SHARDS === n && d.b) bucket[d.s] = d.b
+	})
+	writeFileSync(join(searchDir, `body-${n}.json`), JSON.stringify(bucket), 'utf8')
+}
+
+const kb = (Buffer.byteLength(JSON.stringify(full)) / 1024).toFixed(0)
+const metaKb = (Buffer.byteLength(JSON.stringify(meta)) / 1024).toFixed(1)
+console.log(`[search-index] ${docs.length} 篇：完整 ${kb}KB / meta ${metaKb}KB + ${SHARDS} 个正文分片${missing ? `，${missing} 篇缺正文` : ''}，体检问题 ${issues.length} 项，单次标签 ${onceTags.length} 个`)
