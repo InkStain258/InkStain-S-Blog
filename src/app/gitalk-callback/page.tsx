@@ -11,6 +11,8 @@ import { Loader2, ShieldAlert } from 'lucide-react'
  */
 export default function GitalkCallbackPage() {
 	const [err, setErr] = useState('')
+	// 直接访问回调页（没有 code 也没有 error）不是故障，单独给个说明态
+	const [idle, setIdle] = useState(false)
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search)
@@ -23,7 +25,7 @@ export default function GitalkCallbackPage() {
 			return
 		}
 		if (!code) {
-			setErr('回调里没有 code')
+			setIdle(true)
 			return
 		}
 
@@ -55,7 +57,20 @@ export default function GitalkCallbackPage() {
 
 	return (
 		<div className='mx-auto flex min-h-[60vh] w-full max-w-[520px] flex-col items-center justify-center px-6 text-center'>
-			{err ? (
+			{idle ? (
+				<>
+					<ShieldAlert className='text-brand mb-3 h-8 w-8' />
+					<h1 className='text-[16px] font-semibold'>GitHub 授权回调页</h1>
+					<p className='text-secondary mt-2 text-[12px] leading-relaxed opacity-75'>
+						这个地址只在登录时被 GitHub 跳转过来，直接打开没有参数。
+						<br />
+						请到文章底部点「使用 GitHub 登录」。
+					</p>
+					<Link href='/blog' className='bg-brand mt-6 rounded-full px-5 py-2 text-[12.5px] font-medium text-white'>
+						去看看文章
+					</Link>
+				</>
+			) : err ? (
 				<>
 					<ShieldAlert className='mb-3 h-8 w-8 text-amber-500' />
 					<h1 className='text-[16px] font-semibold'>登录没有完成</h1>

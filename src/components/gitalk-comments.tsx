@@ -30,6 +30,8 @@ export default function GitalkComments() {
 
     const gitalk = new Gitalk({
       clientID: GITALK_CLIENT_ID,
+      // 真实密钥由 /api/github 在服务端补上，前端只送 code
+      clientSecret: '',
       repo: 'InkStain-S-Blog',
       owner: 'InkStain258',
       admin: ['InkStain258'],
