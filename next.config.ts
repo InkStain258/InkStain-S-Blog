@@ -59,6 +59,11 @@ const nextConfig: NextConfig = {
 				// 搜索索引会随每次发布变化，给短缓存 + 后台续期：打开搜索不再每次都拉 108KB
 				source: '/search-index.json',
 				headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }]
+			},
+			{
+				// meta 与正文分片同理；默认的 max-age=0 会让每次打开搜索都回源校验
+				source: '/search-index/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }]
 			}
 		]
 	},
