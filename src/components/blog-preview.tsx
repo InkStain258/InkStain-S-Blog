@@ -9,7 +9,9 @@ import { useMarkdownRender } from '@/hooks/use-markdown-render'
 import { useSize } from '@/hooks/use-size'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { seriesContext } from '@/lib/series'
+import { useTocProgress } from '@/hooks/use-toc-progress'
 import PostNav from '@/components/post-nav'
+import RelatedPosts from '@/components/related-posts'
 import MobileToc from '@/components/mobile-toc'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
@@ -22,15 +24,18 @@ type BlogPreviewProps = {
 	summary?: string
 	cover?: string
 	slug?: string
+	category?: string
 }
 
-export function BlogPreview({ markdown, title, tags, date, summary, cover, slug }: BlogPreviewProps) {
+export function BlogPreview({ markdown, title, tags, date, summary, cover, slug, category }: BlogPreviewProps) {
 	const { maxSM: isMobile } = useSize()
 	const { content, toc, loading } = useMarkdownRender(markdown)
 	const { siteContent } = useConfigStore()
 	const summaryInContent = siteContent.summaryInContent ?? false
 	const { items } = useBlogIndex()
 	const series = useMemo(() => (slug ? seriesContext(items, slug) : null), [items, slug])
+	// 目录进度与当前章节在 BlogPreview 里算一次，桌面侧边栏与移动抽屉共用同一份
+	const { activeId, progress } = useTocProgress(toc.map(t => t.id))
 
 	// 字数与阅读时长（中文按 400 字/分钟）
 	const stats = useMemo(() => {
@@ -86,12 +91,13 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 
 					<div className='prose mt-6 max-w-none cursor-text'>{content}</div>
 
-					<PostNav slug={slug} />
+					{slug && <PostNav slug={slug} />}
+					{slug && <RelatedPosts slug={slug} tags={tags} category={category} title={title} />}
 				</div>
 			</motion.article>
 
-			{!isMobile && <BlogSidebar cover={cover} summary={summary} toc={toc} slug={slug} />}
-			{isMobile && <MobileToc toc={toc} />}
+			{!isMobile && <BlogSidebar cover={cover} summary={summary} toc={toc} slug={slug} activeId={activeId} progress={progress} />}
+			{isMobile && <MobileToc toc={toc} activeId={activeId} progress={progress} />}
 		</div>
 	)
 }
