@@ -185,5 +185,3 @@
 纯文学是一个日本概念，与之相对的“杂文学”是属于生造的（中国传统强调的是全面而有序）
 
 # 《文心雕龙》的基本结构
-
-![Screenshot_20240304_093827_com.orion.notein](blob:https://ink-stain-s-blog.vercel.app/5646375d-e23c-4696-a73a-bcd9bc667306)
