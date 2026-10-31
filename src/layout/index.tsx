@@ -52,22 +52,6 @@ export default function Layout({ children }: PropsWithChildren) {
 	// 浏览器空闲后再启动装饰层，首屏只渲染内容
 	const [idle, setIdle] = useState(false)
 
-	// 空闲时预热搜索索引：真正打开搜索框时直接命中 HTTP 缓存，首结果几乎无等待
-	useEffect(() => {
-		const w = window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }
-		const warm = () => {
-			// 只预热 meta（几 KB）；正文分片等真正打开搜索时再并行取
-			fetch('/search-index/meta.json').catch(() => {})
-		}
-		if (w.requestIdleCallback) {
-			const id = w.requestIdleCallback(warm, { timeout: 4000 })
-			return () => {
-				if (typeof cancelIdleCallback === 'function') cancelIdleCallback(id)
-			}
-		}
-		const t = setTimeout(warm, 2500)
-		return () => clearTimeout(t)
-	}, [])
 	useEffect(() => {
 		const w = window as any
 		if (typeof w.requestIdleCallback === 'function') {

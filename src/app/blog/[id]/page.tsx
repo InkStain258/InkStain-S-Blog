@@ -101,13 +101,13 @@ export default function Page() {
 
 			{slug === 'liquid-grass' && <LiquidGrass />}
 
-			{/* Gitalk 评论区（登录后可评论）：这包 160KB(gzip)，滚到附近才下载 */}
+			{/* 匿名留言在前：不用登录，绝大多数读者走这条 */}
+			<ArticleComments slug={slug} />
+
+			{/* GitHub 账号讨论在后：这包 160KB(gzip)，滚到附近才下载 */}
 			<LazyMount>
 				<GitalkComments />
 			</LazyMount>
-
-			{/* 匿名评论：叠加在 Gitalk 下方，不用登录 */}
-			<ArticleComments slug={slug} />
 		</>
 	)
 }

@@ -81,8 +81,8 @@ export default function GitalkComments() {
             <MessageCircle className="h-[18px] w-[18px]" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-[15px] leading-tight font-semibold">评论</h2>
-            <p className="text-secondary mt-0.5 text-[11px]">使用 GitHub 账号登录后参与讨论</p>
+            <h2 className="text-[15px] leading-tight font-semibold">GitHub 账号讨论</h2>
+            <p className="text-secondary mt-0.5 text-[11px]">登录后可楼中楼回复，内容同步到仓库 Issues；不想登录就往上看「说两句」</p>
           </div>
         </header>
 

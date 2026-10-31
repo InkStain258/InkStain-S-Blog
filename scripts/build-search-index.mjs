@@ -20,6 +20,44 @@ if (!existsSync(indexPath)) {
 	process.exit(1)
 }
 
+/**
+ * 分词：与 src/lib/search-tokenize.ts 的 tokenize() 完全一致（改一处必须改另一处）。
+ * 中文 bigram + 拉丁词，长度规则相同。
+ */
+const CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/
+const ALNUM = /[a-z0-9]/
+function tokenize(raw) {
+	const text = (raw || '').toLowerCase()
+	const terms = []
+	let buf = ''
+	let bufIsCjk = false
+	const flush = () => {
+		if (!buf) return
+		if (bufIsCjk) {
+			if (buf.length === 1) terms.push(buf)
+			else for (let i = 0; i < buf.length - 1; i++) terms.push(buf.slice(i, i + 2))
+		} else if (buf.length >= 2) {
+			terms.push(buf)
+		}
+		buf = ''
+	}
+	for (const ch of text) {
+		if (CJK.test(ch)) {
+			if (buf && !bufIsCjk) flush()
+			bufIsCjk = true
+			buf += ch
+		} else if (ALNUM.test(ch)) {
+			if (buf && bufIsCjk) flush()
+			bufIsCjk = false
+			buf += ch
+		} else {
+			flush()
+		}
+	}
+	flush()
+	return [...new Set(terms)]
+}
+
 const index = JSON.parse(readFileSync(indexPath, 'utf8'))
 
 /** 去掉 Markdown 语法，只留可搜索的文本 */
@@ -91,26 +129,42 @@ const full = { generatedAt, count: docs.length, tagStats, issues, docs }
 writeFileSync(join(root, 'public', 'search-index.json'), JSON.stringify(full), 'utf8')
 
 /**
- * 拆成 meta + 正文分片：
- * 打开搜索只需要 meta（标题/标签/摘要），首屏结果立刻出来；
- * 正文分片随后并行补，正文命中晚几十毫秒出现，不再一次性拖 100KB+。
+ * 客户端不再直接下载索引：搜索改走 /api/search（倒排索引在服务端）。
+ * 这里只保留 /admin/health 用的完整索引，以及服务端打包用的 src/generated/search-data.json。
  */
-const SHARDS = 5
-const searchDir = join(root, 'public', 'search-index')
-mkdirSync(searchDir, { recursive: true })
 
-const metaDocs = docs.map(({ b, ...rest }) => rest)
-const meta = { v: 2, generatedAt, count: docs.length, shards: SHARDS, tagStats, issues, docs: metaDocs }
-writeFileSync(join(searchDir, 'meta.json'), JSON.stringify(meta), 'utf8')
-
-for (let n = 0; n < SHARDS; n++) {
-	const bucket = {}
-	docs.forEach((d, i) => {
-		if (i % SHARDS === n && d.b) bucket[d.s] = d.b
-	})
-	writeFileSync(join(searchDir, `body-${n}.json`), JSON.stringify(bucket), 'utf8')
+// ── 倒排索引：term → [[docIdx, mask], …]，mask 1标题 2标签 4摘要 8正文 ──
+const inv = new Map()
+const add = (term, idx, bit) => {
+	let post = inv.get(term)
+	if (!post) {
+		post = new Map()
+		inv.set(term, post)
+	}
+	post.set(idx, (post.get(idx) || 0) | bit)
 }
+docs.forEach((d, i) => {
+	for (const t of tokenize(d.t)) add(t, i, 1)
+	for (const t of tokenize(d.g.join(' '))) add(t, i, 2)
+	for (const t of tokenize(d.m)) add(t, i, 4)
+	for (const t of tokenize(d.b)) add(t, i, 8)
+})
+const invOut = {}
+for (const [term, post] of inv) invOut[term] = [...post].map(([i, mask]) => [i, mask])
+
+const serverData = {
+	v: 1,
+	generatedAt,
+	count: docs.length,
+	// 服务端搜索用：正文也在里面，用于生成命中片段
+	docs: docs.map(({ s, t, d, c, g, m, b }) => ({ s, t, d, c, g, m, b })),
+	inv: invOut
+}
+const serverPath = join(root, 'src', 'generated', 'search-data.json')
+mkdirSync(join(root, 'src', 'generated'), { recursive: true })
+writeFileSync(serverPath, JSON.stringify(serverData), 'utf8')
+const invKb = (Buffer.byteLength(JSON.stringify(serverData)) / 1024).toFixed(0)
+console.log(`[search-index] 倒排：${Object.keys(invOut).length} 个 term，${invKb}KB（服务端打包用）`)
 
 const kb = (Buffer.byteLength(JSON.stringify(full)) / 1024).toFixed(0)
-const metaKb = (Buffer.byteLength(JSON.stringify(meta)) / 1024).toFixed(1)
-console.log(`[search-index] ${docs.length} 篇：完整 ${kb}KB / meta ${metaKb}KB + ${SHARDS} 个正文分片${missing ? `，${missing} 篇缺正文` : ''}，体检问题 ${issues.length} 项，单次标签 ${onceTags.length} 个`)
+console.log(`[search-index] ${docs.length} 篇：完整索引 ${kb}KB（仅 /admin/health）${missing ? `，${missing} 篇缺正文` : ''}，体检问题 ${issues.length} 项，单次标签 ${onceTags.length} 个`)

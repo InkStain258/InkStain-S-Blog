@@ -1,97 +1,44 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'motion/react'
 import EmptyState from '@/components/empty-state'
 import { Search, CornerDownLeft, X } from 'lucide-react'
 
-type Doc = { s: string; t: string; d: string; c: string; g: string[]; m: string; b: string }
-type Hit = Doc & { score: number; snippet: string }
+type Hit = { s: string; t: string; d: string; c: string; g: string[]; m: string; snippet: string; score: number }
 
-let cache: Doc[] | null = null
-let bodyPromise: Promise<void> | null = null
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-/** 加权评分：标题 > 标签 > 摘要 > 正文；多关键词按 AND 处理 */
-function search(docs: Doc[], raw: string): Hit[] {
-	const q = raw.trim().toLowerCase()
-	if (!q) return []
-	const terms = q.split(/\s+/).filter(Boolean)
-
-	const hits: Hit[] = []
-	for (const d of docs) {
-		const title = d.t.toLowerCase()
-		const tags = d.g.join(' ').toLowerCase()
-		const summary = d.m.toLowerCase()
-		const body = d.b.toLowerCase()
-		const haystack = `${title} ${tags} ${summary} ${body}`
-
-		if (!terms.every(t => haystack.includes(t))) continue
-
-		let score = 0
-		if (title === q) score += 120
-		if (title.startsWith(q)) score += 60
-		if (title.includes(q)) score += 45
-		if (tags.includes(q)) score += 30
-		if (summary.includes(q)) score += 22
-		if (body.includes(q)) score += 10
-
-		const idx = body.indexOf(terms[0])
-		const snippet = idx >= 0 ? d.b.slice(Math.max(0, idx - 30), idx + 90).replace(/\n/g, ' ') : d.m
-
-		hits.push({ ...d, score, snippet })
-	}
-
-	return hits.sort((a, b) => b.score - a.score).slice(0, 12)
+/** 命中词高亮：只按用户输入的整串切，避免 bigram 把词切碎 */
+function Highlight({ text, q }: { text: string; q: string }) {
+	const needle = q.trim()
+	if (!needle) return <>{text}</>
+	const parts = text.split(new RegExp(`(${escapeRe(needle)})`, 'gi'))
+	return (
+		<>
+			{parts.map((part, i) =>
+				part && part.toLowerCase() === needle.toLowerCase() ? (
+					<mark key={i} className='bg-brand/25 text-inherit rounded-[3px] px-0.5'>
+						{part}
+					</mark>
+				) : (
+					<span key={i}>{part}</span>
+				)
+			)}
+		</>
+	)
 }
 
 export default function SearchDialog() {
 	const [open, setOpen] = useState(false)
 	const [q, setQ] = useState('')
-	const [docs, setDocs] = useState<Doc[]>(cache ?? [])
+	const [hits, setHits] = useState<Hit[]>([])
 	const [active, setActive] = useState(0)
 	const [loading, setLoading] = useState(false)
+	const [took, setTook] = useState<number | null>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
-	const shardsRef = useRef(0)
-
-	// 正文分片按需补：先出 meta 的结果，正文命中随后并进来
-	const loadBodies = useCallback(async (shards: number) => {
-		if (!cache || bodyPromise) return bodyPromise ?? Promise.resolve()
-		bodyPromise = Promise.all(
-			Array.from({ length: shards }, (_, i) =>
-				fetch(`/search-index/body-${i}.json`)
-					.then(r => (r.ok ? r.json() : {}))
-					.then((bucket: Record<string, string>) => {
-						for (const [slug, body] of Object.entries(bucket)) {
-							const doc = cache!.find(d => d.s === slug)
-							if (doc) doc.b = body
-						}
-					})
-					.catch(() => {})
-			)
-		).then(() => {
-			if (cache) setDocs([...cache])
-		})
-		return bodyPromise
-	}, [])
-
-	const load = useCallback(async () => {
-		if (cache) return
-		setLoading(true)
-		try {
-			const r = await fetch('/search-index/meta.json')
-			if (!r.ok) throw new Error('meta missing')
-			const j = await r.json()
-			cache = (j.docs ?? []).map((d: Doc) => ({ ...d, b: '' }))
-			shardsRef.current = j.shards ?? 0
-			setDocs([...cache!])
-			setLoading(false)
-		} catch {
-			cache = []
-			setDocs([])
-			setLoading(false)
-		}
-	}, [loadBodies])
+	const abortRef = useRef<AbortController | null>(null)
 
 	useEffect(() => {
 		const onKey = (e: KeyboardEvent) => {
@@ -108,22 +55,39 @@ export default function SearchDialog() {
 
 	useEffect(() => {
 		if (!open) return
-		load()
 		setActive(0)
 		const t = setTimeout(() => inputRef.current?.focus(), 60)
 		return () => clearTimeout(t)
-	}, [open, load])
+	}, [open])
 
-	const hits = useMemo(() => search(docs, q), [docs, q])
-
-	// 正文分片只在「meta 命中不够看」时才拉：常见词靠标题/标签/摘要就够，
-	// 省掉 240KB 的无谓下载；冷门词才付出补正文的代价，且只付一次。
+	// 查询走服务端倒排索引（/api/search）：客户端不再下载索引文件，
+	// 冷门词也不会像旧方案那样额外拉 240KB 正文分片。
 	useEffect(() => {
 		const query = q.trim()
-		if (query.length < 2 || !cache || bodyPromise || shardsRef.current === 0) return
-		if (hits.length >= 5) return
-		void loadBodies(shardsRef.current)
-	}, [q, hits.length, loadBodies])
+		if (!query) {
+			setHits([])
+			setLoading(false)
+			return
+		}
+		setLoading(true)
+		const timer = setTimeout(async () => {
+			abortRef.current?.abort()
+			const ac = new AbortController()
+			abortRef.current = ac
+			try {
+				const r = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal: ac.signal })
+				const j = await r.json()
+				setHits(Array.isArray(j?.hits) ? j.hits : [])
+				setTook(typeof j?.took === 'number' ? j.took : null)
+				setActive(0)
+			} catch {
+				// 被后续输入打断，忽略
+			} finally {
+				setLoading(false)
+			}
+		}, 160)
+		return () => clearTimeout(timer)
+	}, [q])
 
 	const onInputKey = (e: React.KeyboardEvent) => {
 		if (e.key === 'ArrowDown') {
@@ -185,7 +149,7 @@ export default function SearchDialog() {
 							</div>
 
 							<div className='scrollbar-none max-h-[52vh] overflow-y-auto'>
-								{loading && <div className='text-secondary px-4 py-8 text-center text-[12px]'>索引加载中…</div>}
+								{loading && <div className='text-secondary px-4 py-8 text-center text-[12px]'>搜索中…</div>}
 
 								{!loading && !q && (
 									<div className='text-secondary px-4 py-6 text-center text-[12px]'>
@@ -203,10 +167,14 @@ export default function SearchDialog() {
 										onMouseEnter={() => setActive(i)}
 										className={`block border-b px-4 py-3 last:border-0 transition-colors ${i === active ? 'bg-brand/8' : ''}`}>
 										<div className='flex items-center justify-between gap-3'>
-											<div className='text-[13px] font-medium'>{h.t}</div>
+											<div className='text-[13px] font-medium'>
+							<Highlight text={h.t} q={q} />
+						</div>
 											<span className='text-secondary shrink-0 text-[10.5px] tabular-nums opacity-60'>{(h.d || '').slice(0, 10)}</span>
 										</div>
-										<div className='text-secondary mt-1 line-clamp-1 text-[11.5px] opacity-75'>{h.snippet}</div>
+										<div className='text-secondary mt-1 line-clamp-1 text-[11.5px] opacity-75'>
+							<Highlight text={h.snippet} q={q} />
+						</div>
 										<div className='text-secondary mt-1 flex items-center gap-2 text-[10px] opacity-50'>
 											{h.c && <span>{h.c}</span>}
 											{h.g.slice(0, 2).map(t => (
@@ -222,6 +190,13 @@ export default function SearchDialog() {
 									</Link>
 								))}
 							</div>
+
+							{!loading && !!hits.length && (
+								<div className='text-secondary flex items-center justify-between border-t px-4 py-2 text-[10.5px] opacity-55'>
+									<span>{hits.length} 条结果</span>
+									<span className='tabular-nums'>{took !== null ? `${took}ms` : ''}</span>
+								</div>
+							)}
 						</motion.div>
 					</motion.div>
 				)}
