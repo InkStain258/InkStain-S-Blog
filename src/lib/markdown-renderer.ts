@@ -60,7 +60,17 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	// Load optional renderers first so they apply on the FIRST lex/parse pass.
 	// (If we lex before registering extensions, math tokens won't ever be produced on a cold refresh.)
 	const codeBlockMap = new Map<string, { html: string; original: string }>()
-	const [shiki, katex] = await Promise.all([loadShiki(), loadKatex()])
+	// 按内容决定要不要加载 shiki / katex：这两块是包里最重的两块，
+	// 而本站 25 篇文章里既没有围栏代码块、也没有公式，每篇却都付这份下载成本。
+	// 判定只在本地字符串上做，命中才 import，未命中直接跳过。
+	const needsShiki = /(^|\n)\s*```/.test(markdown)
+	const needsKatex =
+		markdown.includes('$$') || // 块级公式，可能跨行
+		/(^|[^\\])\$[^$\n]+\$/.test(markdown) ||
+		markdown.includes('\\(') ||
+		markdown.includes('\\[') ||
+		/\\begin\{(equation|aligned|array|cases|matrix)/.test(markdown)
+	const [shiki, katex] = await Promise.all([needsShiki ? loadShiki() : Promise.resolve(null), needsKatex ? loadKatex() : Promise.resolve(null)])
 
 	// Render HTML with heading ids
 	const renderer = new marked.Renderer()

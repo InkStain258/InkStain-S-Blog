@@ -10,6 +10,7 @@ import { loadBlog, type BlogConfig } from '@/lib/load-blog'
 import { useReadArticles } from '@/hooks/use-read-articles'
 import LiquidGrass from '@/components/liquid-grass'
 import dynamic from 'next/dynamic'
+import LazyMount from '@/components/lazy-mount'
 
 const GitalkComments = dynamic(() => import('@/components/gitalk-comments'), { ssr: false })
 const ArticleComments = dynamic(() => import('@/components/article-comments'), { ssr: false })
@@ -100,8 +101,10 @@ export default function Page() {
 
 			{slug === 'liquid-grass' && <LiquidGrass />}
 
-			{/* Gitalk 评论区（登录后可评论） */}
-			<GitalkComments />
+			{/* Gitalk 评论区（登录后可评论）：这包 160KB(gzip)，滚到附近才下载 */}
+			<LazyMount>
+				<GitalkComments />
+			</LazyMount>
 
 			{/* 匿名评论：叠加在 Gitalk 下方，不用登录 */}
 			<ArticleComments slug={slug} />
