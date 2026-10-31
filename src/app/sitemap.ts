@@ -1,35 +1,49 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 import blogIndex from '@/../public/blogs/index.json'
 import type { BlogIndexItem } from '@/app/blog/types'
+import { SITE_URL } from '@/lib/site-url'
 
 export const dynamic = 'force-static'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	// 域名配置：
-	// 1. 优先使用 SITE_URL (你在 Vercel 手动设置的正式域名)
-	// 2. 其次尝试 VERCEL_URL (Vercel 自动生成的预览域名，通常不带 https://)
-	// 3. 最后回退到本地开发地址
-	const baseUrl = process.env.SITE_URL ? process.env.SITE_URL : process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+/**
+ * 只认 src/lib/site-url.ts 里的规范域名。
+ * 历史上这里回落到 VERCEL_URL，导致 26 条 loc 全指向每次部署都变的预览域名。
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
+	const posts = blogIndex as BlogIndexItem[]
+	const staticPages = ['/blog', '/archive', '/series', '/about', '/projects', '/share', '/guestbook', '/bloggers']
+	const categories = [...new Set(posts.map(p => p.category).filter(Boolean))] as string[]
+	const tags = [...new Set(posts.flatMap(p => p.tags || []))]
 
-	console.log(`[Sitemap] Generating for: ${baseUrl}`)
-
-	let posts: BlogIndexItem[] = blogIndex
-
-	const postEntries: MetadataRoute.Sitemap = posts.map(post => ({
-		url: `${baseUrl}/blog/${post.slug}`,
-		lastModified: post.date ? new Date(post.date) : new Date(),
-		changeFrequency: 'weekly',
-		priority: 0.8
-	}))
-
-	const staticEntries: MetadataRoute.Sitemap = [
-		{
-			url: baseUrl,
-			lastModified: new Date(),
-			changeFrequency: 'daily',
-			priority: 1
-		}
+	const entries: MetadataRoute.Sitemap = [
+		{ url: `${SITE_URL}/`, changeFrequency: 'daily', priority: 1, lastModified: new Date() },
+		...staticPages.map(path => ({
+			url: `${SITE_URL}${path}`,
+			changeFrequency: 'weekly' as const,
+			priority: path === '/blog' ? 0.9 : 0.5,
+			lastModified: new Date()
+		})),
+		...categories.map(slug => ({
+			url: `${SITE_URL}/blog/category/${encodeURIComponent(slug)}`,
+			changeFrequency: 'weekly' as const,
+			priority: 0.6,
+			lastModified: new Date()
+		})),
+		...tags.map(slug => ({
+			url: `${SITE_URL}/blog/tag/${encodeURIComponent(slug)}`,
+			changeFrequency: 'monthly' as const,
+			priority: 0.4,
+			lastModified: new Date()
+		})),
+		...posts
+			.filter(p => !p.hidden)
+			.map(p => ({
+				url: `${SITE_URL}/blog/${p.slug}`,
+				lastModified: p.date ? new Date(p.date) : new Date(),
+				changeFrequency: 'monthly' as const,
+				priority: 0.8
+			}))
 	]
 
-	return [...staticEntries, ...postEntries]
+	return entries
 }

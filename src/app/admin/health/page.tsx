@@ -20,6 +20,19 @@ const KIND: Record<string, { label: string; color: string }> = {
 export default function HealthPage() {
 	const { items } = useBlogIndex()
 	const [h, setH] = useState<Health | null>(null)
+	const [cfg, setCfg] = useState<{
+		siteUrl: string
+		siteUrlSource: string
+		gitalkSecret: 'env' | 'legacy'
+		likeEndpoint: string
+	} | null>(null)
+
+	useEffect(() => {
+		fetch('/api/site-check')
+			.then(r => r.json())
+			.then(setCfg)
+			.catch(() => setCfg(null))
+	}, [])
 
 	useEffect(() => {
 		fetch('/search-index.json')
@@ -65,6 +78,42 @@ export default function HealthPage() {
 						</div>
 					</div>
 				))}
+			</div>
+
+			{/* 部署配置自检 */}
+			<div className='bg-card mt-3 rounded-2xl border px-4 py-3.5'>
+				<div className='text-secondary mb-2 text-[10.5px] tracking-[0.14em] uppercase opacity-70'>部署配置</div>
+				<div className='flex flex-col gap-1.5 text-[12px]'>
+					{[
+						{
+							ok: !!cfg?.siteUrl && !cfg.siteUrl.includes('vercel.app'),
+							label: '规范域名',
+							value: cfg?.siteUrl ?? '读取中…',
+							hint: cfg?.siteUrlSource === 'env' ? '来自环境变量' : '来自代码默认值'
+						},
+						{
+							ok: cfg?.gitalkSecret === 'env',
+							label: 'Gitalk 密钥',
+							value: cfg?.gitalkSecret === 'env' ? '环境变量' : cfg ? '历史兜底密钥（待轮换）' : '读取中…',
+							hint: '缺失时登录会失败，回退值已进过 git 历史'
+						},
+						{
+							ok: (cfg?.likeEndpoint ?? '') !== 'local-only',
+							label: '点赞后端',
+							value: cfg?.likeEndpoint ?? '读取中…',
+							hint: cfg?.likeEndpoint === 'local-only' ? '未配置，仅记录本地点赞' : '走远程计数'
+						}
+					].map(row => (
+						<div key={row.label} className='flex items-start gap-2'>
+							<span className={row.ok ? 'text-emerald-500' : 'text-amber-500'}>{row.ok ? '●' : '○'}</span>
+							<span className='w-[92px] shrink-0 opacity-70'>{row.label}</span>
+							<span className='min-w-0 flex-1 break-all'>
+								{row.value}
+								<span className='text-secondary ml-2 text-[10.5px] opacity-55'>{row.hint}</span>
+							</span>
+						</div>
+					))}
+				</div>
 			</div>
 
 			{/* 分类分布 */}

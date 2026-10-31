@@ -4,8 +4,10 @@ import path from 'node:path'
 import siteContent from '@/config/site-content.json'
 import blogIndex from '@/../public/blogs/index.json'
 import type { BlogIndexItem } from '@/app/blog/types'
+import { SITE_URL as SITE_ORIGIN_CONFIG } from '@/lib/site-url'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yysuni.com'
+// 规范域名统一走 src/lib/site-url.ts（这里历史上兜底成了别人的域名 yysuni.com）
+const SITE_URL = SITE_ORIGIN_CONFIG
 const FEED_PATH = '/rss.xml'
 const SITE_ORIGIN = SITE_URL.replace(/\/$/, '')
 const FEED_URL = `${SITE_ORIGIN}${FEED_PATH}`

@@ -13,7 +13,11 @@ type LikeButtonProps = {
 	delay?: number
 }
 
-const ENDPOINT = 'https://blog-liker.yysuni1001.workers.dev/api/like'
+// 历史上写死的是别人的 Cloudflare Worker（现已 502/超时，实测 GET 直接连不上）。
+// 改走可配置端点：没配就退化成「只统计本地点赞」，不再对着死接口发请求。
+const ENDPOINT = process.env.NEXT_PUBLIC_LIKE_ENDPOINT || ''
+const REMOTE_ENABLED = ENDPOINT.length > 0
+const LOCAL_KEY = 'inkstain:liked'
 
 export default function LikeButton({ slug = 'inkstain', delay, className }: LikeButtonProps) {
 	slug = BLOG_SLUG_KEY + slug
@@ -27,6 +31,16 @@ export default function LikeButton({ slug = 'inkstain', delay, className }: Like
 			setShow(true)
 		}, delay || 1000)
 	}, [])
+
+	// 本地点赞记录：刷新后按钮保持「已赞」外观
+	useEffect(() => {
+		try {
+			const likedSet = new Set<string>(JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'))
+			if (slug && likedSet.has(slug)) setLiked(true)
+		} catch {
+			/* ignore */
+		}
+	}, [slug])
 
 	useEffect(() => {
 		if (justLiked) {
@@ -42,10 +56,11 @@ export default function LikeButton({ slug = 'inkstain', delay, className }: Like
 		return typeof data?.count === 'number' ? data.count : null
 	}, [])
 
-	const { data: fetchedCount, mutate } = useSWR(slug ? `${ENDPOINT}?slug=${encodeURIComponent(slug)}` : null, fetcher, {
-		revalidateOnFocus: false,
-		dedupingInterval: 1000 * 10
-	})
+	const { data: fetchedCount, mutate } = useSWR(
+		REMOTE_ENABLED && slug ? `${ENDPOINT}?slug=${encodeURIComponent(slug)}` : null,
+		fetcher,
+		{ revalidateOnFocus: false, dedupingInterval: 1000 * 10 }
+	)
 
 	const handleLike = useCallback(async () => {
 		if (!slug) return
@@ -63,6 +78,20 @@ export default function LikeButton({ slug = 'inkstain', delay, className }: Like
 		// Clear particles after animation
 		setTimeout(() => setParticles([]), 1000)
 
+		// 先落本地：端点没配或挂掉时，读者的点赞至少不会白点
+		try {
+			const likedSet = new Set<string>(JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'))
+			likedSet.add(slug)
+			localStorage.setItem(LOCAL_KEY, JSON.stringify([...likedSet].slice(-200)))
+		} catch {
+			/* 隐私模式忽略 */
+		}
+
+		if (!REMOTE_ENABLED) {
+			await mutate((fetchedCount ?? 0) + 1, { revalidate: false })
+			return
+		}
+
 		try {
 			const url = `${ENDPOINT}?slug=${encodeURIComponent(slug)}`
 			const res = await fetch(url, { method: 'POST' })
@@ -71,7 +100,7 @@ export default function LikeButton({ slug = 'inkstain', delay, className }: Like
 			const value = typeof data?.count === 'number' ? data.count : (fetchedCount ?? 0) + 1
 			await mutate(value, { revalidate: false })
 		} catch {
-			// ignore
+			await mutate((fetchedCount ?? 0) + 1, { revalidate: false })
 		}
 	}, [slug, fetchedCount, mutate])
 
