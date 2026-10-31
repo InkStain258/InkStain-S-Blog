@@ -23,7 +23,7 @@ export default function HealthPage() {
 	const [cfg, setCfg] = useState<{
 		siteUrl: string
 		siteUrlSource: string
-		gitalkSecret: 'env' | 'legacy'
+		gitalkSecret: 'env' | 'none'
 		likeEndpoint: string
 	} | null>(null)
 
@@ -94,8 +94,8 @@ export default function HealthPage() {
 						{
 							ok: cfg?.gitalkSecret === 'env',
 							label: 'Gitalk 密钥',
-							value: cfg?.gitalkSecret === 'env' ? '环境变量' : cfg ? '历史兜底密钥（待轮换）' : '读取中…',
-							hint: '缺失时登录会失败，回退值已进过 git 历史'
+							value: cfg?.gitalkSecret === 'env' ? '环境变量' : cfg ? '未配置（登录会失败）' : '读取中…',
+							hint: '只认环境变量 GITALK_CLIENT_SECRET，代码里已无兜底值'
 						},
 						{
 							ok: (cfg?.likeEndpoint ?? '') !== 'local-only',

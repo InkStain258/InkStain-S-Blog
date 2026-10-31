@@ -6,6 +6,7 @@
  * - sitemap 26 条 loc 全是每次部署都变的 vercel.app 预览域名
  * - rss 的 <link> 兜底成了别人的域名 yysuni.com
  * - robots.txt 直接 404
+ * - OAuth client secret 被写死在源码里、跟着 git 历史一起泄漏
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -48,6 +49,27 @@ else {
 	if (foreign.length) problems.push(`rss 有 ${foreign.length} 条链接不是规范域名，例如 ${foreign[0]}`)
 	info.push(`rss.xml: ${links.length} 条 link，起始 ${links[0] || 'n/a'}`)
 }
+
+// 密钥字面量守卫：源码里不允许再出现 40 位十六进制（GitHub OAuth App secret 的形态）。
+// 历史上 client_secret 就是被这么写死后进了 git 历史，轮换过一次才收场。
+const SRC_DIR = 'src'
+const hex40 = /\b[0-9a-fA-F]{40}\b/
+const secretHits = []
+const walk = dir => {
+	for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+		const p = path.join(dir, e.name)
+		if (e.isDirectory()) {
+			if (e.name === 'generated') continue
+			walk(p)
+		} else if (/\.(ts|tsx|js|mjs)$/.test(e.name)) {
+			const text = fs.readFileSync(p, 'utf8')
+			if (hex40.test(text)) secretHits.push(p)
+		}
+	}
+}
+if (fs.existsSync(SRC_DIR)) walk(SRC_DIR)
+if (secretHits.length) problems.push(`源码里出现疑似密钥的 40 位十六进制串：${secretHits.join(', ')}`)
+else info.push('源码无 40 位十六进制密钥字面量')
 
 console.log(info.map(l => '✓ ' + l).join('\n'))
 if (problems.length) {

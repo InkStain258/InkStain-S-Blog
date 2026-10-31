@@ -5,10 +5,10 @@ export const dynamic = 'force-dynamic'
 
 /**
  * 站点配置自检：只回布尔/枚举，不回任何密钥内容。
- * 用在 /admin/health，方便一眼看出「规范域名是不是回落到预览域名」「Gitalk 是不是还在用历史密钥」。
+ * 用在 /admin/health，方便一眼看出「规范域名是不是回落到预览域名」「Gitalk 密钥有没有配上」。
  */
 export function GET() {
-	const gitalkSecret: 'env' | 'legacy' = process.env.GITALK_CLIENT_SECRET?.trim() ? 'env' : 'legacy'
+	const gitalkSecret: 'env' | 'none' = process.env.GITALK_CLIENT_SECRET?.trim() ? 'env' : 'none'
 	const likeEndpoint = process.env.NEXT_PUBLIC_LIKE_ENDPOINT?.trim() || ''
 
 	return NextResponse.json({

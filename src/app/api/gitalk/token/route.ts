@@ -6,22 +6,14 @@ export const dynamic = 'force-dynamic'
 /**
  * 用 code 换 access_token。secret 只在服务端使用，绝不进前端 bundle。
  *
- * 取值顺序：环境变量 GITALK_CLIENT_SECRET > 历史兜底值（带告警）。
- * 兜底只为「不把线上登录搞挂」；它已经进过 git 历史，属于待清理项：
- * 在部署平台补上 GITALK_CLIENT_SECRET、并在 GitHub 轮换 OAuth App secret 之后，
- * 把 LEGACY_SECRET 与回退分支一起删掉。当前用的是哪一个，GET 本路由即可看到。
+ * 只认环境变量 GITALK_CLIENT_SECRET。历史上那个写死在源码里的密钥
+ * 已随 OAuth App 轮换作废，回退分支同步删除 —— 缺变量就明确失败，
+ * 不再有「悄悄用旧密钥」的隐式行为。当前配置状态可 GET 本路由自检。
  */
-const LEGACY_SECRET = '59c9013436b6f405749760cb85b8168201ec4f4d'
-
-let warned = false
-function resolveSecret(): { secret: string; source: 'env' | 'legacy' | 'none' } {
+function resolveSecret(): { secret: string | null; source: 'env' | 'none' } {
 	const env = process.env.GITALK_CLIENT_SECRET?.trim()
 	if (env) return { secret: env, source: 'env' }
-	if (!warned) {
-		warned = true
-		console.warn('[gitalk] GITALK_CLIENT_SECRET 未配置，回退到历史密钥；请补环境变量并轮换。')
-	}
-	return { secret: LEGACY_SECRET, source: 'legacy' }
+	return { secret: null, source: 'none' }
 }
 
 export async function POST(req: Request) {
@@ -36,6 +28,9 @@ export async function POST(req: Request) {
 
 	const clientId = process.env.GITALK_CLIENT_ID || GITALK_CLIENT_ID
 	const { secret, source } = resolveSecret()
+	if (!secret) {
+		return NextResponse.json({ error: '服务端未配置 GITALK_CLIENT_SECRET', secretSource: source }, { status: 500 })
+	}
 
 	try {
 		const res = await fetch('https://github.com/login/oauth/access_token', {
@@ -62,3 +57,4 @@ export function GET() {
 	const { source } = resolveSecret()
 	return NextResponse.json({ secretSource: source, ok: source === 'env' })
 }
+
