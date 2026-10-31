@@ -101,6 +101,22 @@ export default function CodeBlockEnhancer() {
 				bar.appendChild(lang)
 				bar.appendChild(btn)
 				pre.appendChild(bar)
+
+				// 超长代码块折叠（>28 行）
+				const lines = (pre.querySelector('code')?.textContent || '').split('\n').length
+				if (lines > 28) {
+					pre.classList.add('is-collapsed')
+					const fold = document.createElement('button')
+					fold.type = 'button'
+					fold.className = 'code-fold'
+					fold.textContent = `展开全部 ${lines} 行`
+					fold.addEventListener('click', () => {
+						const collapsed = pre.classList.toggle('is-collapsed')
+						fold.textContent = collapsed ? `展开全部 ${lines} 行` : '收起'
+						if (collapsed) pre.scrollIntoView({ behavior: 'smooth', block: 'start' })
+					})
+					pre.appendChild(fold)
+				}
 			}
 		}
 

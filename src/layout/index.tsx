@@ -20,6 +20,8 @@ import ThemeToggle from '@/components/theme-toggle'
 import ReadingProgress from '@/components/reading-progress'
 import ImageLightbox from '@/components/image-lightbox'
 import SiteFooter from './site-footer'
+import SearchDialog from '@/components/search-dialog'
+import ReadingPrefs from '@/components/reading-prefs'
 import { useTheme } from '@/hooks/use-theme'
 import { usePathname } from 'next/navigation'
 
@@ -110,6 +112,8 @@ export default function Layout({ children }: PropsWithChildren) {
 				)}
 			</main>
 
+			<SearchDialog />
+			<ReadingPrefs />
 			<BackToTop />
 		</>
 	)

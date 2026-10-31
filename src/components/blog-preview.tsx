@@ -10,6 +10,7 @@ import { useSize } from '@/hooks/use-size'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { seriesContext } from '@/lib/series'
 import PostNav from '@/components/post-nav'
+import MobileToc from '@/components/mobile-toc'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
@@ -90,6 +91,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 			</motion.article>
 
 			{!isMobile && <BlogSidebar cover={cover} summary={summary} toc={toc} slug={slug} />}
+			{isMobile && <MobileToc toc={toc} />}
 		</div>
 	)
 }

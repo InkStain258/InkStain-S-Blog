@@ -563,9 +563,16 @@
 }
 
 /* ===== 正文排版：中文阅读的呼吸感 ===== */
+/* 字号 / 行距 / 字体 / 版心宽度由「阅读设置」(reading-prefs.tsx) 写入根变量 */
+.prose {
+  font-size: var(--reading-size, 16px);
+  font-family: var(--reading-font, inherit);
+  max-width: var(--reading-width, none);
+  margin-inline: auto;
+}
 .prose p,
 .prose li {
-  line-height: 1.92;
+  line-height: var(--reading-leading, 1.92);
   letter-spacing: 0.012em;
 }
 .prose h2 {
@@ -612,4 +619,39 @@ body::before {
 body.dark::before {
   opacity: 0.045;
   mix-blend-mode: screen;
+}
+
+/* ===== 代码块：超长折叠 ===== */
+.prose pre.code-block.is-collapsed {
+  max-height: 420px;
+  overflow: hidden;
+  position: relative;
+}
+.prose pre.code-block.is-collapsed::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 90px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--color-article) 92%, black 8%));
+}
+.code-fold {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  border: 1px solid color-mix(in srgb, var(--color-border) 90%, transparent);
+  background: color-mix(in srgb, var(--color-article) 88%, transparent);
+  color: var(--color-secondary);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.code-fold:hover {
+  color: var(--color-brand);
+  border-color: color-mix(in srgb, var(--color-brand) 45%, transparent);
 }
