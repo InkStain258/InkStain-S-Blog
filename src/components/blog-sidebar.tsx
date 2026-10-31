@@ -19,14 +19,18 @@ type BlogSidebarProps = {
 	slug?: string
 	activeId?: string
 	progress?: number
+	resume?: { id: string; text: string } | null
+	onResume?: () => void
 }
 
-export function BlogSidebar({ cover, summary, toc, slug, activeId, progress }: BlogSidebarProps) {
+export function BlogSidebar({ cover, summary, toc, slug, activeId, progress, resume, onResume }: BlogSidebarProps) {
 	const { siteContent } = useConfigStore()
 	const summaryInContent = siteContent.summaryInContent ?? false
 
 	return (
-		<div className='sticky flex w-[200px] shrink-0 flex-col items-start gap-4 self-start max-sm:hidden' style={{ top: 24 }}>
+		<div
+			className='scrollbar-none sticky flex max-h-[calc(100vh-3rem)] w-[200px] shrink-0 flex-col items-start gap-4 self-start overflow-y-auto pb-2 max-sm:hidden'
+			style={{ top: 24 }}>
 			{cover && (
 				<motion.div
 					initial={{ opacity: 0, scale: 0.8 }}
@@ -48,7 +52,14 @@ export function BlogSidebar({ cover, summary, toc, slug, activeId, progress }: B
 				</motion.div>
 			)}
 
-			<BlogToc toc={toc} delay={INIT_DELAY + ANIMATION_DELAY * 3} activeId={activeId} progress={progress} />
+			<BlogToc
+				toc={toc}
+				delay={INIT_DELAY + ANIMATION_DELAY * 3}
+				activeId={activeId}
+				progress={progress}
+				resume={resume}
+				onResume={onResume}
+			/>
 
 			<LikeButton slug={slug} delay={(INIT_DELAY + ANIMATION_DELAY * 4) * 1000} />
 		</div>

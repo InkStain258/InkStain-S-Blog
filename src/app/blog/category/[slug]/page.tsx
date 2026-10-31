@@ -79,7 +79,7 @@ export default function CategoryPage() {
 				initial={{ opacity: 0, y: 14 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-				className='card relative w-full mt-8 px-6 py-3'>
+				className='card card-content relative w-full mt-8 px-6 py-3'>
 				<PostList items={list} empty='这个分类下还没有文章' />
 			</motion.div>
 		</div>

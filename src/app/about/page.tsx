@@ -117,7 +117,7 @@ export default function Page() {
 								{loading ? (
 									<div className='text-secondary text-center'>预览渲染中...</div>
 								) : (
-									<div className='card relative p-6'>
+									<div className='card card-content relative p-6'>
 										<div className='prose prose-sm max-w-none'>{content}</div>
 									</div>
 								)}
@@ -141,7 +141,7 @@ export default function Page() {
 									/>
 								</div>
 
-								<div className='card relative'>
+								<div className='card card-content relative'>
 									<textarea
 										placeholder='Markdown 内容'
 										className='min-h-[400px] w-full resize-none text-sm'
@@ -163,7 +163,7 @@ export default function Page() {
 							{loading ? (
 								<div className='text-secondary text-center'>加载中...</div>
 							) : (
-								<motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className='card relative mt-8 p-6'>
+								<motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className='card card-content relative mt-8 p-6'>
 									<div className='prose prose-sm max-w-none'>{content}</div>
 								</motion.div>
 							)}

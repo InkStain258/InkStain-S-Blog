@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import clsx from 'clsx'
-import { List, X } from 'lucide-react'
+import { List, X, Bookmark } from 'lucide-react'
 
 type TocItem = { id: string; text: string; level: number }
 
@@ -12,6 +12,8 @@ type MobileTocProps = {
 	toc: TocItem[]
 	activeId?: string
 	progress?: number
+	resume?: { id: string; text: string } | null
+	onResume?: () => void
 }
 
 /**
@@ -21,7 +23,7 @@ type MobileTocProps = {
  * 组件所在的那层容器有 transform/层叠上下文，抽屉写在原地时 z-[71] 也压不住
  * z-40 的「阅读设置」「回到顶部」浮动按钮（实测 elementFromPoint 命中按钮）。
  */
-export default function MobileToc({ toc, activeId = '', progress = 0 }: MobileTocProps) {
+export default function MobileToc({ toc, activeId = '', progress = 0, resume, onResume }: MobileTocProps) {
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
 	const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({})
@@ -96,6 +98,19 @@ export default function MobileToc({ toc, activeId = '', progress = 0 }: MobileTo
 								style={{ width: `${percent}%`, transition: 'width 150ms linear' }}
 							/>
 						</div>
+
+						{resume && resume.id !== activeId && (
+							<button
+								type='button'
+								onClick={() => {
+									jump(resume.id)
+									onResume?.()
+								}}
+								className='text-secondary hover:text-brand mb-2 flex w-full shrink-0 items-center gap-1.5 rounded-lg border border-dashed px-2 py-1.5 text-left text-[11px] transition-colors'>
+								<Bookmark className='h-3 w-3 shrink-0' />
+								<span className='truncate'>上次读到 · {resume.text}</span>
+							</button>
+						)}
 
 						{/* 列表单独滚动：自动定位当前章节时不会把标题栏和进度条一起卷走 */}
 						<div className='min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain'>

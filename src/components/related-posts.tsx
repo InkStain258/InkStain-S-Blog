@@ -53,7 +53,7 @@ export default function RelatedPosts({ slug, tags, category, title, limit = 3 }:
 						whileHover={{ y: -2 }}>
 						<Link
 							href={`/blog/${item.slug}`}
-							className='glass-1 hover:border-brand/35 flex h-full flex-col rounded-2xl p-3.5 transition-colors'>
+							className='glass-1 glass-gloss hover:border-brand/35 flex h-full flex-col rounded-2xl p-3.5 transition-colors'>
 							<div className='text-secondary mb-1.5 flex flex-wrap items-center gap-1 text-[10px]'>
 								{reasons.map(r => (
 									<span key={r} className='bg-brand/10 text-brand rounded-full px-1.5 py-0.5 leading-none'>

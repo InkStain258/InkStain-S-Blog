@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'motion/react'
+import EmptyState from '@/components/empty-state'
 import { Search, CornerDownLeft, X } from 'lucide-react'
 
 type Doc = { s: string; t: string; d: string; c: string; g: string[]; m: string; b: string }
@@ -159,7 +160,7 @@ export default function SearchDialog() {
 									</div>
 								)}
 
-								{!loading && q && !hits.length && <div className='text-secondary px-4 py-8 text-center text-[12px]'>没找到「{q}」</div>}
+								{!loading && q && !hits.length && <EmptyState dense title={`没找到「${q}」`} hint='试试更短的关键词，或者去归档翻。' />}
 
 								{hits.map((h, i) => (
 									<Link

@@ -82,7 +82,7 @@ export default function MagazineHome() {
 
 				{hero && (
 					<Link href={`/blog/${hero.slug}`} className='group relative block'>
-						<div className='border-border/60 bg-card relative aspect-[4/3] overflow-hidden rounded-3xl border shadow-sm'>
+						<div className='glass-1 glass-gloss relative aspect-[4/3] overflow-hidden rounded-2xl'>
 							{hero.cover ? (
 								<img
 									src={hero.cover.startsWith('http') ? hero.cover : `${origin}${hero.cover}`}
@@ -113,7 +113,7 @@ export default function MagazineHome() {
 					<div className='grid gap-3.5 md:grid-cols-3'>
 						{featured.map((it, i) => (
 							<motion.div key={it.slug} {...fade(0.08 + i * 0.06)}>
-								<Link href={`/blog/${it.slug}`} className='bg-card relative flex h-full w-full flex-col overflow-hidden rounded-2xl border transition-colors hover:border-brand/35'>
+								<Link href={`/blog/${it.slug}`} className='glass-1 glass-gloss relative flex h-full w-full flex-col overflow-hidden rounded-2xl transition-colors hover:border-brand/35'>
 									<div className='bg-border/30 aspect-[3/2] overflow-hidden'>
 										{it.cover ? (
 											<img

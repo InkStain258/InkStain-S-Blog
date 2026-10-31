@@ -2,6 +2,7 @@
 
 import clsx from 'clsx'
 import { motion } from 'motion/react'
+import { Bookmark } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
 type TocItem = {
@@ -17,11 +18,14 @@ type BlogTocProps = {
 	activeId?: string
 	/** 0–1 阅读进度 */
 	progress?: number
+	/** 上次读到的那一节（localStorage 记忆），点一下跳回去 */
+	resume?: { id: string; text: string } | null
+	onResume?: () => void
 }
 
 const RAIL_LEFT = 3
 
-export function BlogToc({ toc, delay = 0, activeId = '', progress = 0 }: BlogTocProps) {
+export function BlogToc({ toc, delay = 0, activeId = '', progress = 0, resume, onResume }: BlogTocProps) {
 	const listRef = useRef<HTMLDivElement>(null)
 	const itemRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
 	const percent = Math.round(Math.min(Math.max(progress, 0), 1) * 100)
@@ -64,8 +68,21 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0 }: BlogToc
 			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ delay }}
-			className='glass-2 w-full rounded-xl p-3 text-sm'>
+			className='glass-2 glass-gloss w-full rounded-xl p-3 text-sm'>
 			{head}
+
+			{resume && resume.id !== activeId && (
+				<button
+					type='button'
+					onClick={() => {
+						document.getElementById(resume.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+						onResume?.()
+					}}
+					className='text-secondary hover:border-brand/40 hover:text-brand mb-2 flex w-full items-center gap-1.5 rounded-lg border border-dashed px-2 py-1 text-left text-[10.5px] transition-colors'>
+					<Bookmark className='h-3 w-3 shrink-0' />
+					<span className='truncate'>上次读到 · {resume.text}</span>
+				</button>
+			)}
 
 			<div ref={listRef} className='scrollbar-none relative max-h-[300px] overflow-auto pr-1'>
 				<div className='relative'>

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react'
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { BookMarked } from 'lucide-react'
 import { INIT_DELAY } from '@/consts'
 import { useMarkdownRender } from '@/hooks/use-markdown-render'
@@ -10,6 +10,9 @@ import { useSize } from '@/hooks/use-size'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { seriesContext } from '@/lib/series'
 import { useTocProgress } from '@/hooks/use-toc-progress'
+import { usePostShortcuts } from '@/hooks/use-post-shortcuts'
+import { loadAnchor, saveAnchor } from '@/lib/reading-anchor'
+import ArticleSkeleton from '@/components/article-skeleton'
 import PostNav from '@/components/post-nav'
 import RelatedPosts from '@/components/related-posts'
 import MobileToc from '@/components/mobile-toc'
@@ -36,6 +39,23 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 	const series = useMemo(() => (slug ? seriesContext(items, slug) : null), [items, slug])
 	// 目录进度与当前章节在 BlogPreview 里算一次，桌面侧边栏与移动抽屉共用同一份
 	const { activeId, progress } = useTocProgress(toc.map(t => t.id))
+	usePostShortcuts(slug)
+
+	// 上次读到哪一节：进入文章时读一次 localStorage
+	const [resume, setResume] = useState<{ id: string; text: string } | null>(null)
+	useEffect(() => {
+		if (!slug || toc.length === 0) return
+		const a = loadAnchor(slug)
+		const hit = a ? toc.find(t => t.id === a.id) : null
+		if (hit) setResume({ id: hit.id, text: hit.text })
+	}, [slug, toc])
+
+	// 边读边记：当前章节变了才写（saveAnchor 内部还有 1.2s 节流）
+	useEffect(() => {
+		if (!slug || !activeId || progress < 0.02) return
+		const item = toc.find(t => t.id === activeId)
+		if (item) saveAnchor(slug, { id: item.id, text: item.text, ratio: progress })
+	}, [slug, activeId, progress, toc])
 
 	// 字数与阅读时长（中文按 400 字/分钟）
 	const stats = useMemo(() => {
@@ -49,7 +69,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 	}, [markdown])
 
 	if (loading) {
-		return <div className='text-secondary flex h-full items-center justify-center text-sm'>渲染中...</div>
+		return <ArticleSkeleton />
 	}
 
 	return (
@@ -58,7 +78,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: INIT_DELAY }}
-				className='card bg-article static flex-1 overflow-auto rounded-xl p-8'>
+				className='card card-content bg-article static flex-1 overflow-auto p-8'>
 				<div>
 					{series && series.total > 1 && (
 						<Link
@@ -96,8 +116,10 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 				</div>
 			</motion.article>
 
-			{!isMobile && <BlogSidebar cover={cover} summary={summary} toc={toc} slug={slug} activeId={activeId} progress={progress} />}
-			{isMobile && <MobileToc toc={toc} activeId={activeId} progress={progress} />}
+			{!isMobile && (
+				<BlogSidebar cover={cover} summary={summary} toc={toc} slug={slug} activeId={activeId} progress={progress} resume={resume} onResume={() => setResume(null)} />
+			)}
+			{isMobile && <MobileToc toc={toc} activeId={activeId} progress={progress} resume={resume} onResume={() => setResume(null)} />}
 		</div>
 	)
 }

@@ -71,7 +71,8 @@ export default function Layout({ children }: PropsWithChildren) {
 			<SplashScreen />
 			{idle && wantClick && <ClickEffect />}
 			<ThemeToggle />
-			<ReadingProgress />
+			{/* 文章页有目录进度条，全站顶部条只在列表/首页出现，避免两条进度打架 */}
+			{!/^\/blog\/[^/]+$/.test(pathname || '') && <ReadingProgress />}
 			<ImageLightbox />
 			{idle && wantGlow && <CursorGlow />}
 

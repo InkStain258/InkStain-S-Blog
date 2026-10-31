@@ -73,6 +73,11 @@ export default function PostNav({ slug }: { slug: string }) {
 						系列目录
 					</Link>
 				)}
+				<span className='text-secondary hidden shrink-0 items-center gap-1 text-[10.5px] opacity-50 sm:flex'>
+					<kbd className='rounded border px-1 leading-tight'>J</kbd>
+					<kbd className='rounded border px-1 leading-tight'>K</kbd>
+					切换
+				</span>
 			</div>
 			<div className='grid gap-3 sm:grid-cols-2'>
 				<Card post={older} dir='older' />

@@ -61,7 +61,7 @@ export default function ArchivePage() {
 						initial={{ opacity: 0, y: 14 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.06 + yi * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-						className='card relative w-full scroll-mt-24 px-6 py-4'>
+						className='card card-content relative w-full scroll-mt-24 px-6 py-4'>
 						<div className='mb-1 flex items-baseline justify-between'>
 							<h2 className='text-[15px] font-semibold tracking-wide'>{y} 年</h2>
 							<span className='text-secondary text-[11px] opacity-60'>{list.length} 篇</span>

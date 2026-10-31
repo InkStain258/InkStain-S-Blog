@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { motion } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import type { BlogIndexItem } from '@/app/blog/types'
+import EmptyState from '@/components/empty-state'
 
 type Props = {
 	items: BlogIndexItem[]
@@ -23,12 +24,7 @@ type Props = {
  */
 export default function PostList({ items, showTags = true, prefix, empty = '这里还没有文章', dense = false }: Props) {
 	if (!items.length) {
-		return (
-			<div className='text-secondary py-16 text-center text-sm'>
-				<div className='mx-auto mb-3 h-8 w-8 rounded-full border border-dashed opacity-40' />
-				{empty}
-			</div>
-		)
+		return <EmptyState title={empty} hint='换个分类或标签看看，或者去归档按时间翻。' action={{ label: '看全部文章', href: '/blog' }} />
 	}
 
 	return (
