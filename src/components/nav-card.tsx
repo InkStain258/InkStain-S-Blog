@@ -75,7 +75,7 @@ export default function NavCard() {
 	const pathname = usePathname()
 	const center = useCenterStore()
 	const [show, setShow] = useState(false)
-	const { maxSM } = useSize()
+	const { maxSM, maxLG } = useSize()
 	const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 	const { siteContent, cardStyles } = useConfigStore()
 	const styles = cardStyles.navCard
@@ -90,17 +90,27 @@ export default function NavCard() {
 		setShow(true)
 	}, [])
 
+	// 杂志式首页：导航改成左侧固定停靠，不再跟拼贴中心浮动
+	// （浏览器缩放会改 innerWidth，中心驱动的定位会整体漂移，撞进正文里）
+	const magazine = pathname === '/' && siteContent.homeLayout === 'magazine'
+
 	let form = useMemo(() => {
 		if (pathname == '/') return 'full'
 		else if (pathname == '/write') return 'mini'
 		else return 'icons'
 	}, [pathname])
 	if (maxSM) form = 'icons'
+	if (magazine && maxLG) form = 'icons'
 
 	const itemHeight = form === 'full' ? 44 : 28
 	const rowGap = form === 'full' ? 4 : 8
 
 	let position = useMemo(() => {
+		if (magazine) {
+			// 与杂志首页内容容器同一套公式：宽屏时整组居中（1460 为其最大宽），窄屏贴左 24
+			const outer = Math.max(0, center.x * 2 - 1460) / 2
+			return { x: Math.round(outer + 24 + (styles.offsetX ?? 0)), y: 16 }
+		}
 		if (form === 'full') {
 			const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x - hiCardStyles.width / 2 - styles.width - CARD_SPACING
 			const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y + hiCardStyles.height / 2 - styles.height
@@ -111,7 +121,7 @@ export default function NavCard() {
 			x: 24,
 			y: 16
 		}
-	}, [form, center, styles, hiCardStyles])
+	}, [form, center, styles, hiCardStyles, magazine])
 
 	const size = useMemo(() => {
 		if (form === 'mini') return { width: 64, height: 64 }

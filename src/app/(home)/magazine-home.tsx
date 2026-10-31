@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { motion } from 'motion/react'
@@ -8,8 +8,6 @@ import { ArrowRight, BookMarked, Clock3 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { groupSeries } from '@/lib/series'
-import { useCenterStore } from '@/hooks/use-center'
-import { CARD_SPACING } from '@/consts'
 import PostList from '@/components/post-list'
 
 const origin = ''
@@ -22,37 +20,6 @@ export default function MagazineHome() {
 	const { items, loading } = useBlogIndex()
 	const { siteContent, cardStyles } = useConfigStore()
 	const { meta } = siteContent
-	const center = useCenterStore()
-	const outerRef = useRef<HTMLDivElement>(null)
-	const [pad, setPad] = useState(0)
-
-	// 导航卡跟着拼贴中心走，位置随视口变化，所以留白得算出来而不是写死
-	const navRight = useMemo(() => {
-		const st = cardStyles.navCard
-		const hi = cardStyles.hiCard
-		const x = st.offsetX !== null ? center.x + st.offsetX : center.x - hi.width / 2 - st.width - CARD_SPACING
-		return x + st.width
-	}, [cardStyles, center])
-
-	useEffect(() => {
-		const measure = () => {
-			const el = outerRef.current
-			if (!el) return
-			if (window.innerWidth < 1024) return setPad(0)
-			const innerLeft = el.getBoundingClientRect().left + 24
-			const room = el.clientWidth - 24
-			setPad(Math.max(0, Math.min(navRight + 32 - innerLeft, room - 460)))
-		}
-		measure()
-		window.addEventListener('resize', measure)
-		window.addEventListener('pointerup', measure)
-		const t = setTimeout(measure, 600)
-		return () => {
-			window.removeEventListener('resize', measure)
-			window.removeEventListener('pointerup', measure)
-			clearTimeout(t)
-		}
-	}, [navRight])
 
 	const sorted = useMemo(() => [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [items])
 	const featured = sorted.slice(0, 3)
@@ -73,8 +40,8 @@ export default function MagazineHome() {
 	})
 
 	return (
-		<div ref={outerRef} className='mx-auto w-full max-w-[1500px] px-6 pt-28 pb-24 max-sm:px-4'>
-			<div className='max-w-[980px]' style={{ marginLeft: pad || undefined }}>
+		<div className='mx-auto w-full max-w-[1460px] px-6 pt-28 pb-24 max-sm:px-4 lg:pl-[330px]'>
+			<div className='max-w-[980px]'>
 			{/* 主视觉 */}
 			<motion.section {...fade()} className='grid items-center gap-9 md:grid-cols-[1.08fr_0.92fr]'>
 				<div>
