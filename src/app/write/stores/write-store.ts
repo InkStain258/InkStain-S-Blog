@@ -3,6 +3,7 @@ import { toast } from 'sonner'
 import { hashFileSHA256 } from '@/lib/file-utils'
 import { compressImages } from '@/lib/image-compress'
 import { loadBlog } from '@/lib/load-blog'
+import { saveDraft } from '@/lib/draft'
 import type { PublishForm, ImageItem } from '../types'
 
 export const formatDateTimeLocal = (date: Date = new Date()): string => {
@@ -66,7 +67,12 @@ export const useWriteStore = create<WriteStore>((set, get) => ({
 
 	// Form state
 	form: { ...initialForm },
-	updateForm: updates => set(state => ({ form: { ...state.form, ...updates } })),
+	updateForm: updates =>
+		set(state => {
+			const form = { ...state.form, ...updates }
+			if (state.mode === 'create') saveDraft(form)
+			return { form }
+		}),
 	setForm: form => set({ form }),
 
 	// Image state

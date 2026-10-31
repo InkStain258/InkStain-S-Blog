@@ -39,6 +39,7 @@ function toPlain(md) {
 }
 
 const docs = []
+const issues = []
 let missing = 0
 
 for (const item of index) {
@@ -49,6 +50,23 @@ for (const item of index) {
 	} else {
 		missing++
 	}
+	// 内容体检（构建期顺手做，结果给 /admin/health 用）
+	if (!item.summary || item.summary.trim().length < 20) issues.push({ s: item.slug, t: item.title || item.slug, k: 'summary', v: `摘要${item.summary ? '过短（' + item.summary.length + ' 字）' : '缺失'}` })
+	if ((item.title || '').length > 40) issues.push({ s: item.slug, t: item.title, k: 'title', v: `标题 ${item.title.length} 字，偏长` })
+	if (!item.category) issues.push({ s: item.slug, t: item.title || item.slug, k: 'category', v: '未分类' })
+
+	if (body || existsSync(file)) {
+		const raw = readFileSync(file, 'utf8')
+		if (raw.includes('blob:')) issues.push({ s: item.slug, t: item.title || item.slug, k: 'blob', v: '正文里有 blob: 临时图片地址' })
+
+		// 本地图片引用是否存在
+		const refs = [...raw.matchAll(/!\[[^\]]*\]\((?!https?:)([^)]+)\)/g)].map(m => m[1].split(/[?#]/)[0])
+		for (const ref of refs) {
+			const abs = ref.startsWith('/') ? join(root, 'public', ref) : join(blogsDir, item.slug, ref)
+			if (!existsSync(abs)) issues.push({ s: item.slug, t: item.title || item.slug, k: 'image', v: `图片缺失：${ref}` })
+		}
+	}
+
 	docs.push({
 		s: item.slug,
 		t: item.title || item.slug,
@@ -60,8 +78,19 @@ for (const item of index) {
 	})
 }
 
-const out = { generatedAt: new Date().toISOString(), count: docs.length, docs }
+// 标签使用频次：只用一次的标签对读者没意义
+const tagCount = {}
+for (const d of docs) for (const t of d.g) tagCount[t] = (tagCount[t] || 0) + 1
+const onceTags = Object.entries(tagCount).filter(([, n]) => n === 1).map(([t]) => t)
+
+const out = {
+	generatedAt: new Date().toISOString(),
+	count: docs.length,
+	tagStats: { total: Object.keys(tagCount).length, once: onceTags },
+	issues,
+	docs
+}
 writeFileSync(join(root, 'public', 'search-index.json'), JSON.stringify(out), 'utf8')
 
 const kb = (Buffer.byteLength(JSON.stringify(out)) / 1024).toFixed(0)
-console.log(`[search-index] ${docs.length} 篇，${kb}KB${missing ? `，${missing} 篇缺正文` : ''}`)
+console.log(`[search-index] ${docs.length} 篇，${kb}KB${missing ? `，${missing} 篇缺正文` : ''}，体检问题 ${issues.length} 项，单次标签 ${onceTags.length} 个`)

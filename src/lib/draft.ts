@@ -38,3 +38,22 @@ export function clearDraft(): void {
 		/* ignore */
 	}
 }
+
+let saveTimer: ReturnType<typeof setTimeout> | null = null
+
+/** 防抖写草稿：编辑器每敲一下都会调用，这里合并成 800ms 一次 */
+export function saveDraft(payload: Omit<DraftPayload, '_savedAt'>): void {
+	try {
+		if (saveTimer) clearTimeout(saveTimer)
+		saveTimer = setTimeout(() => {
+			try {
+				if (!payload.md && !payload.title) return
+				localStorage.setItem(DRAFT_KEY, JSON.stringify({ ...payload, _savedAt: Date.now() }))
+			} catch {
+				/* ignore */
+			}
+		}, 800)
+	} catch {
+		/* ignore */
+	}
+}
