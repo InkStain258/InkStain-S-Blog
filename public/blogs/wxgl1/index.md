@@ -6,7 +6,7 @@
 
 # 研究文学活动特性和普遍规律的人文学科
 
-文学理论的研究对象是**文学活动(****<u>社会生活中的规律和特性</u>** **)** ，<span data-type="text" style="background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);">文学活动是一个由生活、作家（写作的人）、作品（中心）和读者（接触作品的人）等要素构成的多环节活动。</span>
+文学理论的研究对象是**文学活动(<u>社会生活中的规律和特性</u>** **)** ，<span data-type="text" style="background-color: var(--b3-card-info-background); color: var(--b3-card-info-color);">文学活动是一个由生活、作家（写作的人）、作品（中心）和读者（接触作品的人）等要素构成的多环节活动。</span>
 
 # 文学活动的基本过程。 
 
