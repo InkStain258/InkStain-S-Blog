@@ -49,10 +49,17 @@ const nextConfig: NextConfig = {
 		const asset = '(.*\.(?:webp|png|jpg|jpeg|gif|svg|avif|ico|mp3|m4a|ogg|wav|json5|woff2?|ttf|otf))'
 		return [
 			{ source: '/blogs/:slug/:file' + asset, headers: immutable },
+			// 预生成的图片变体内容按内容寻址（文件名含源图哈希），可以长期缓存
+			{ source: '/_img/:path' + asset, headers: immutable },
 			{ source: '/images/:path' + asset, headers: immutable },
 			{ source: '/music/:path' + asset, headers: immutable },
 			{ source: '/live2d/:path' + asset, headers: immutable },
-			{ source: '/fonts/:path' + asset, headers: immutable }
+			{ source: '/fonts/:path' + asset, headers: immutable },
+			{
+				// 搜索索引会随每次发布变化，给短缓存 + 后台续期：打开搜索不再每次都拉 108KB
+				source: '/search-index.json',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=300, stale-while-revalidate=86400' }]
+			}
 		]
 	},
 

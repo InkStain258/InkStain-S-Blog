@@ -10,6 +10,7 @@ import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { groupSeries } from '@/lib/series'
 import { plainInline } from '@/lib/utils'
 import PostList from '@/components/post-list'
+import { SmartImage } from '@/components/smart-image'
 
 const origin = ''
 
@@ -85,9 +86,12 @@ export default function MagazineHome() {
 					<Link href={`/blog/${hero.slug}`} className='group relative block'>
 						<div className='glass-1 glass-gloss relative aspect-[4/3] overflow-hidden rounded-2xl'>
 							{hero.cover ? (
-								<img
+								<SmartImage
 									src={hero.cover.startsWith('http') ? hero.cover : `${origin}${hero.cover}`}
+									slug={hero.slug}
 									alt={hero.title}
+									priority
+									sizes='(max-width: 1024px) 100vw, 720px'
 									className='h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]'
 								/>
 							) : (
@@ -117,11 +121,13 @@ export default function MagazineHome() {
 								<Link href={`/blog/${it.slug}`} className='glass-1 glass-gloss relative flex h-full w-full flex-col overflow-hidden rounded-2xl transition-colors hover:border-brand/35'>
 									<div className='bg-border/30 aspect-[3/2] overflow-hidden'>
 										{it.cover ? (
-											<img
-												src={it.cover.startsWith('http') ? it.cover : `${origin}${it.cover}`}
-												alt={it.title}
-												className='h-full w-full object-cover transition-transform duration-700 hover:scale-[1.05]'
-											/>
+											<SmartImage
+									src={it.cover.startsWith('http') ? it.cover : `${origin}${it.cover}`}
+									slug={it.slug}
+									alt={it.title}
+									sizes='(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 320px'
+									className='h-full w-full object-cover transition-transform duration-700 hover:scale-[1.05]'
+								/>
 										) : (
 											<div className='from-brand/12 to-brand-secondary/12 h-full w-full bg-gradient-to-br' />
 										)}

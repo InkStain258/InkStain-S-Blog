@@ -6,6 +6,7 @@ import LikeButton from '@/components/like-button'
 import { BlogToc } from '@/components/blog-toc'
 import { plainInline } from '@/lib/utils'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
+import { SmartImage } from '@/components/smart-image'
 
 type TocItem = {
 	id: string
@@ -38,7 +39,7 @@ export function BlogSidebar({ cover, summary, toc, slug, activeId, progress, res
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ delay: INIT_DELAY + ANIMATION_DELAY * 1 }}
 					className='glass-2 w-full rounded-xl p-3'>
-					<img src={cover} alt='cover' className='h-auto w-full rounded-xl border object-cover' />
+					<SmartImage src={cover} slug={slug} alt='cover' sizes='200px' className='h-auto w-full rounded-xl border object-cover' />
 				</motion.div>
 			)}
 

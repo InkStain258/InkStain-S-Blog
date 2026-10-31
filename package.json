@@ -12,7 +12,8 @@
 		"deploy": "opennextjs-cloudflare deploy",
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
 		"build-search-index": "node scripts/build-search-index.mjs",
-		"prebuild": "node scripts/build-search-index.mjs"
+		"prebuild": "node scripts/build-search-index.mjs",
+		"images": "node scripts/build-images.mjs"
 	},
 	"dependencies": {
 		"@opennextjs/cloudflare": "^1.14.4",

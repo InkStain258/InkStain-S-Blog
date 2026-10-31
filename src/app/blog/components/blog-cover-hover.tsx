@@ -2,11 +2,13 @@
 
 import { AnimatePresence, motion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { SmartImage } from '@/components/smart-image'
 
 const COVER_HOVER_DELAY_MS = 1500
 const PREVIEW_OFFSET_PX = 16
 
-export type BlogCoverPreviewState = { src: string } | null
+export type BlogCoverPreviewState = { src: string
+	slug?: string } | null
 
 export function useBlogCoverHover(editMode: boolean) {
 	const [hoverCoverPreview, setHoverCoverPreview] = useState<BlogCoverPreviewState>(null)
@@ -91,7 +93,7 @@ export function BlogCoverHoverPreview({ preview, position }: BlogCoverHoverPrevi
 						left: position.x + PREVIEW_OFFSET_PX,
 						top: position.y + PREVIEW_OFFSET_PX
 					}}>
-					<img src={preview.src} alt='' className='w-full rounded-xl object-cover' draggable={false} />
+					<SmartImage src={preview.src} slug={preview.slug} alt='' sizes='260px' className='w-full rounded-xl object-cover' />
 				</motion.div>
 			)}
 		</AnimatePresence>
