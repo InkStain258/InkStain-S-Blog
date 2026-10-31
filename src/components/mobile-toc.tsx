@@ -25,6 +25,7 @@ export default function MobileToc({ toc, activeId = '', progress = 0 }: MobileTo
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
 	const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({})
+	const triggerRef = useRef<HTMLButtonElement>(null)
 	const percent = Math.round(Math.min(Math.max(progress, 0), 1) * 100)
 
 	useEffect(() => setMounted(true), [])
@@ -35,6 +36,22 @@ export default function MobileToc({ toc, activeId = '', progress = 0 }: MobileTo
 		const t = setTimeout(() => itemRefs.current[activeId]?.scrollIntoView({ block: 'center', behavior: 'smooth' }), 140)
 		return () => clearTimeout(t)
 	}, [open, activeId])
+
+	// Esc 关闭，关掉后焦点回到触发按钮（键盘用户不会掉到页面顶部）
+	useEffect(() => {
+		if (!open) return
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				e.preventDefault()
+				setOpen(false)
+			}
+		}
+		window.addEventListener('keydown', onKey)
+		return () => {
+			window.removeEventListener('keydown', onKey)
+			triggerRef.current?.focus({ preventScroll: true })
+		}
+	}, [open])
 
 	if (!toc?.length) return null
 
@@ -113,8 +130,11 @@ export default function MobileToc({ toc, activeId = '', progress = 0 }: MobileTo
 		<div className='sm:hidden'>
 			<button
 				type='button'
+				ref={triggerRef}
 				onClick={() => setOpen(true)}
-				className='text-secondary border-border/60 fixed bottom-6 left-5 z-40 flex h-10 items-center gap-1.5 rounded-full border bg-white/75 px-3.5 text-[11.5px] backdrop-blur-md dark:bg-black/45'>
+				aria-expanded={open}
+				aria-haspopup='dialog'
+				className='glass-2 text-secondary fixed bottom-6 left-5 z-40 flex h-11 items-center gap-1.5 rounded-full px-3.5 text-[11.5px]'>
 				<List className='h-3.5 w-3.5' />
 				目录
 				<span className='text-brand tabular-nums opacity-80'>{percent}%</span>

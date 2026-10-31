@@ -30,6 +30,18 @@
 	textarea:focus {
 		outline: none;
 	}
+
+	/* 键盘焦点必须看得见：上面把默认 outline 关掉了，这里补品牌色描边 */
+	:focus-visible {
+		outline: 2px solid color-mix(in srgb, var(--color-brand) 88%, transparent);
+		outline-offset: 2px;
+	}
+	input:focus-visible,
+	textarea:focus-visible,
+	select:focus-visible {
+		outline: 2px solid color-mix(in srgb, var(--color-brand) 88%, transparent);
+		outline-offset: 2px;
+	}
 	input:placeholder-shown {
 		text-overflow: ellipsis;
 	}
@@ -94,16 +106,81 @@
 
 @utility card {
 	@apply bg-card absolute rounded-[40px] border p-6;
+	/* 原来这里写的是 `inset 0 0 20`（缺单位），浏览器判定整条 box-shadow 无效并丢弃，
+	   所以亮色主题的内容卡一直没有阴影（暗色的覆盖块单位是对的，才有影子）。 */
 	box-shadow:
-		0 40px 50px -32px rgba(0, 0, 0, 0.05),
-		inset 0 0 20 rgba(255, 255, 255, 0.25);
-	backdrop-filter: blur(4px);
+		inset 0 1px 0 var(--glass-hi),
+		var(--glass-shadow-2);
+	backdrop-filter: blur(8px) saturate(1.08);
 
 	&.squircle {
 		@supports (corner-shape: squircle) {
 			corner-shape: squircle;
 			@apply rounded-[64px];
 		}
+	}
+}
+
+/* ===== 玻璃材质分级 =====
+   glass-1 卡片 / glass-2 浮起 / glass-overlay 浮层。
+   渐变描边（左上受光、右下压暗）+ 内高光 + 外双层投影，三者一起才像玻璃；
+   只用单色 border 的话亮色主题等于没有边界（--ink-border 本身就是 #fff）与阴影。 */
+@utility glass-1 {
+	border: 1px solid transparent;
+	background-image:
+		linear-gradient(var(--glass-1-bg), var(--glass-1-bg)),
+		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
+	background-origin: border-box;
+	background-clip: padding-box, border-box;
+	box-shadow:
+		inset 0 1px 0 var(--glass-hi),
+		var(--glass-shadow-1);
+	backdrop-filter: blur(8px) saturate(1.08);
+}
+
+@utility glass-2 {
+	border: 1px solid transparent;
+	background-image:
+		linear-gradient(var(--glass-2-bg), var(--glass-2-bg)),
+		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
+	background-origin: border-box;
+	background-clip: padding-box, border-box;
+	box-shadow:
+		inset 0 1px 0 var(--glass-hi),
+		var(--glass-shadow-2);
+	backdrop-filter: blur(12px) saturate(1.12);
+}
+
+@utility glass-overlay {
+	border: 1px solid transparent;
+	background-image:
+		linear-gradient(var(--glass-3-bg), var(--glass-3-bg)),
+		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
+	background-origin: border-box;
+	background-clip: padding-box, border-box;
+	box-shadow:
+		inset 0 1px 0 var(--glass-hi),
+		var(--glass-shadow-3);
+	backdrop-filter: blur(18px) saturate(1.15);
+}
+
+/* 不支持的浏览器 / 系统开了「降低透明度」：退回实底，不要半透明糊一层 */
+@supports not (backdrop-filter: blur(4px)) {
+	.glass-1,
+	.glass-2,
+	.glass-overlay {
+		background-image: none;
+		background-color: var(--color-article);
+	}
+}
+
+@media (prefers-reduced-transparency: reduce) {
+	.glass-1,
+	.glass-2,
+	.glass-overlay {
+		background-image: none;
+		background-color: var(--color-article);
+		backdrop-filter: none;
 	}
 }
 
@@ -181,8 +258,8 @@
 /* ===== Dark mode overrides ===== */
 .dark .card {
   box-shadow:
-    0 40px 50px -32px rgba(0, 0, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 var(--glass-hi),
+    var(--glass-shadow-3);
 }
 
 .dark .text-linear {
@@ -668,6 +745,18 @@ html.sepia {
   --color-secondary: #7b6c5b !important;
   --color-brand: #a8743c !important;
   --color-brand-secondary: #c9a227 !important;
+
+  /* 纸色主题的玻璃：暖白填充、暖灰投影，别用冷灰把纸感冲掉。
+     纸面和卡面亮度接近，描边得比亮色主题更实一点，否则卡片边界看不出来。 */
+  --glass-1-bg: #fbf6eceb;
+  --glass-2-bg: #fdf8f0f2;
+  --glass-3-bg: #fdf9f1fa;
+  --glass-edge-a: rgb(255 255 255 / 0.7);
+  --glass-edge-b: rgb(96 74 44 / 0.16);
+  --glass-hi: rgb(255 255 255 / 0.78);
+  --glass-shadow-1: 0 1px 2px -1px rgb(88 66 40 / 0.14), 0 8px 20px -12px rgb(88 66 40 / 0.22);
+  --glass-shadow-2: 0 2px 4px -2px rgb(88 66 40 / 0.16), 0 16px 36px -18px rgb(88 66 40 / 0.3);
+  --glass-shadow-3: 0 6px 14px -6px rgb(88 66 40 / 0.2), 0 30px 68px -30px rgb(88 66 40 / 0.36);
 }
 html.sepia body::before {
   opacity: 0.05;

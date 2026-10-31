@@ -67,7 +67,7 @@ export default function ReadingPrefs() {
 				aria-label='阅读设置'
 				whileHover={{ scale: 1.06 }}
 				whileTap={{ scale: 0.94 }}
-				className='text-secondary hover:text-brand border-border/60 fixed right-6 bottom-[8.75rem] z-40 grid h-10 w-10 place-items-center rounded-full border bg-white/70 backdrop-blur-md dark:bg-black/40'>
+				className='glass-2 text-secondary hover:text-brand fixed right-6 bottom-[8.75rem] z-40 grid h-11 w-11 place-items-center rounded-full'>
 				<Type className='h-4 w-4' />
 			</motion.button>
 
@@ -78,7 +78,7 @@ export default function ReadingPrefs() {
 						animate={{ opacity: 1, y: 0, scale: 1 }}
 						exit={{ opacity: 0, y: 8, scale: 0.97 }}
 						transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-						className='bg-card fixed right-4 bottom-[12.5rem] z-40 max-h-[calc(100vh-230px)] w-[228px] overflow-y-auto rounded-2xl border p-3.5 shadow-xl backdrop-blur-xl' style={{ backgroundColor: 'color-mix(in srgb, var(--color-card) 96%, transparent)' }}>
+						className='glass-overlay fixed right-4 bottom-[12.5rem] z-40 max-h-[calc(100vh-230px)] w-[228px] overflow-y-auto rounded-2xl p-3.5'>
 						<div className='mb-3 flex items-center justify-between'>
 							<span className='text-[12px] font-medium'>阅读设置</span>
 							<button type='button' onClick={() => setOpen(false)} aria-label='收起' className='text-secondary hover:text-primary'>

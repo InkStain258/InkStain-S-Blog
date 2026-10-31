@@ -83,7 +83,7 @@ export default function ArticleComments({ slug }: { slug: string }) {
 			</div>
 
 			{/* 输入区 */}
-			<div className='bg-card rounded-2xl border p-4'>
+			<div className='glass-1 rounded-2xl p-4'>
 				<div className='flex gap-2.5'>
 					<input
 						value={name}
@@ -149,7 +149,7 @@ export default function ArticleComments({ slug }: { slug: string }) {
 					<div className='text-secondary py-6 text-center text-[11.5px] opacity-50'>第一条评论的位置留给你了</div>
 				)}
 				{items.map(c => (
-					<motion.div key={c.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className='bg-card rounded-2xl border px-4 py-3'>
+					<motion.div key={c.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className='glass-1 rounded-2xl px-4 py-3'>
 						<div className='flex items-baseline gap-2'>
 							<span className='text-[12.5px] font-medium'>{c.name || '匿名'}</span>
 							<span className='text-secondary text-[10.5px] opacity-50'>{dayjs(c.createdAt).format('YYYY-MM-DD HH:mm')}</span>

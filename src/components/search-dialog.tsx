@@ -109,7 +109,7 @@ export default function SearchDialog() {
 				onClick={() => setOpen(true)}
 				aria-label='搜索'
 				title='搜索（⌘K）'
-				className='text-secondary hover:text-brand border-border/60 bg-card fixed top-16 right-4 z-40 hidden h-9 w-9 place-items-center rounded-xl border shadow-md backdrop-blur-sm transition-colors hover:scale-105 md:grid'>
+				className='glass-2 text-secondary hover:text-brand fixed top-16 right-4 z-40 hidden h-11 w-11 place-items-center rounded-xl transition-colors hover:scale-105 md:grid'>
 				<Search className='h-4 w-4' />
 			</button>
 
@@ -128,7 +128,7 @@ export default function SearchDialog() {
 							exit={{ opacity: 0, y: -8, scale: 0.99 }}
 							transition={{ type: 'spring', stiffness: 380, damping: 32 }}
 							onClick={e => e.stopPropagation()}
-							className='bg-card w-full max-w-[580px] overflow-hidden rounded-2xl border shadow-2xl'>
+							className='glass-overlay w-full max-w-[580px] overflow-hidden rounded-2xl'>
 							<div className='flex items-center gap-2.5 border-b px-4 py-3'>
 								<Search className='text-secondary h-4 w-4 shrink-0' />
 								<input

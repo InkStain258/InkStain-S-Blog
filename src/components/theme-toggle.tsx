@@ -7,7 +7,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="fixed top-4 right-4 z-50 p-2 rounded-xl bg-card border backdrop-blur-sm hover:scale-110 transition-transform shadow-md"
+      className="glass-2 fixed top-4 right-4 z-50 grid h-11 w-11 place-items-center rounded-xl transition-transform hover:scale-110"
       title={theme === 'dark' ? '切换到亮色模式' : theme === 'sepia' ? '切换到暗色模式' : '切换到纸色模式'}
     >
       {theme === 'dark' ? (

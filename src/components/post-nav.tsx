@@ -38,7 +38,7 @@ export default function PostNav({ slug }: { slug: string }) {
 			<motion.div whileHover={{ y: -2 }} transition={{ type: 'spring', stiffness: 320, damping: 26 }}>
 				<Link
 					href={`/blog/${post.slug}`}
-					className={`group block h-full rounded-2xl border p-4 transition-colors hover:border-brand/35 ${isOlder ? '' : 'text-right'}`}>
+					className={`glass-1 group block h-full rounded-2xl p-4 transition-colors hover:border-brand/35 ${isOlder ? '' : 'text-right'}`}>
 					<div className={`text-secondary flex items-center gap-1.5 text-[11px] ${isOlder ? '' : 'justify-end'}`}>
 						{isOlder && <ArrowLeft className='h-3 w-3' />}
 						{label}

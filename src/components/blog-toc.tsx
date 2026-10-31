@@ -52,7 +52,7 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0 }: BlogToc
 				initial={{ opacity: 0, scale: 0.8 }}
 				animate={{ opacity: 1, scale: 1 }}
 				transition={{ delay }}
-				className='bg-card w-full rounded-xl border p-3 text-sm'>
+				className='glass-2 w-full rounded-xl p-3 text-sm'>
 				{head}
 				<div className='text-secondary'>暂无</div>
 			</motion.div>
@@ -64,13 +64,13 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0 }: BlogToc
 			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ delay }}
-			className='bg-card w-full rounded-xl border p-3 text-sm'>
+			className='glass-2 w-full rounded-xl p-3 text-sm'>
 			{head}
 
 			<div ref={listRef} className='scrollbar-none relative max-h-[300px] overflow-auto pr-1'>
 				<div className='relative'>
 					{/* 轨道 */}
-					<div className='bg-border/70 pointer-events-none absolute top-0 bottom-0 w-px' style={{ left: RAIL_LEFT }} />
+					<div className='bg-border pointer-events-none absolute top-0 bottom-0 w-px' style={{ left: RAIL_LEFT }} />
 					{/* 已读进度 */}
 					<div
 						className='from-brand to-brand-secondary pointer-events-none absolute top-0 w-px bg-gradient-to-b'
@@ -96,7 +96,7 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0 }: BlogToc
 									<span
 										className={clsx(
 											'absolute top-[0.68em] h-1.5 w-1.5 rounded-full transition-all',
-											active ? 'bg-brand scale-125' : 'bg-border'
+											active ? 'bg-brand scale-125' : 'bg-secondary/35'
 										)}
 										style={{ left: RAIL_LEFT - 3 }}
 									/>

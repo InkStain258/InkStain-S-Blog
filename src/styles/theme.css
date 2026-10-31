@@ -16,22 +16,46 @@
 
 :root {
   --ink-primary: #334f52;
-  --ink-secondary: #7b888e;
+  --ink-secondary: #62707a;
   --ink-brand-secondary: #1fc9e7;
   --ink-bg: #eeeeee;
   --ink-border: #fff;
   --ink-brand: #35bfab;
   --ink-card: #ffffff66;
   --ink-article: #ffffffcc;
+
+  /* ===== 玻璃材质（亮色）=====
+     四件套：填充 / 渐变描边的两端 / 内高光 / 外双层投影。
+     元素只声明自己是玻璃第几级，具体光学参数在这里换主题。 */
+  --glass-1-bg: #fff9;
+  --glass-2-bg: #ffffffb3;
+  --glass-3-bg: #ffffffd9;
+  --glass-edge-a: rgb(255 255 255 / 0.9);
+  --glass-edge-b: rgb(20 40 50 / 0.1);
+  --glass-hi: rgb(255 255 255 / 0.7);
+  --glass-shadow-1: 0 1px 2px -1px rgb(20 40 50 / 0.08), 0 8px 20px -12px rgb(20 40 50 / 0.16);
+  --glass-shadow-2: 0 1px 2px -1px rgb(20 40 50 / 0.1), 0 14px 32px -18px rgb(20 40 50 / 0.26);
+  --glass-shadow-3: 0 4px 10px -4px rgb(20 40 50 / 0.14), 0 28px 64px -28px rgb(20 40 50 / 0.34);
 }
 
 .dark {
   --ink-primary: #e0e0e0;
-  --ink-secondary: #8892b0;
+  --ink-secondary: #9aa5c2;
   --ink-brand-secondary: #2fcbe7;
   --ink-bg: #1a1a2e;
   --ink-border: #2a2a4a;
   --ink-brand: #2fcbe7;
   --ink-card: #16213e88;
   --ink-article: #1e2a3a88;
+
+  /* 玻璃材质（暗色）：描边亮度降下来，光靠内高光一线「刃口」，投影更深 */
+  --glass-1-bg: #16213e80;
+  --glass-2-bg: #16213ea6;
+  --glass-3-bg: #101a30f2;
+  --glass-edge-a: rgb(255 255 255 / 0.16);
+  --glass-edge-b: rgb(255 255 255 / 0.02);
+  --glass-hi: rgb(255 255 255 / 0.14);
+  --glass-shadow-1: 0 1px 2px -1px rgb(0 0 0 / 0.35), 0 10px 24px -14px rgb(0 0 0 / 0.45);
+  --glass-shadow-2: 0 2px 4px -2px rgb(0 0 0 / 0.4), 0 18px 40px -20px rgb(0 0 0 / 0.55);
+  --glass-shadow-3: 0 6px 14px -6px rgb(0 0 0 / 0.5), 0 32px 72px -32px rgb(0 0 0 / 0.65);
 }

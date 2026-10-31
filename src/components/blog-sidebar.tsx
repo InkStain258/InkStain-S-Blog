@@ -32,7 +32,7 @@ export function BlogSidebar({ cover, summary, toc, slug, activeId, progress }: B
 					initial={{ opacity: 0, scale: 0.8 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ delay: INIT_DELAY + ANIMATION_DELAY * 1 }}
-					className='bg-card w-full rounded-xl border p-3'>
+					className='glass-2 w-full rounded-xl p-3'>
 					<img src={cover} alt='cover' className='h-auto w-full rounded-xl border object-cover' />
 				</motion.div>
 			)}
@@ -42,7 +42,7 @@ export function BlogSidebar({ cover, summary, toc, slug, activeId, progress }: B
 					initial={{ opacity: 0, scale: 0.8 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ delay: INIT_DELAY + ANIMATION_DELAY * 2 }}
-					className='bg-card w-full rounded-xl border p-3 text-sm'>
+					className='glass-2 w-full rounded-xl p-3 text-sm'>
 					<h2 className='text-secondary mb-2 font-medium'>摘要</h2>
 					<div className='text-secondary scrollbar-none max-h-[240px] cursor-text overflow-auto'>{summary}</div>
 				</motion.div>
