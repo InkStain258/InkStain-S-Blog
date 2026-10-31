@@ -11,6 +11,7 @@ import LiquidGrass from '@/components/liquid-grass'
 import dynamic from 'next/dynamic'
 
 const GitalkComments = dynamic(() => import('@/components/gitalk-comments'), { ssr: false })
+const ArticleComments = dynamic(() => import('@/components/article-comments'), { ssr: false })
 
 export default function Page() {
 	const params = useParams() as { id?: string | string[] }
@@ -114,8 +115,11 @@ export default function Page() {
 
 			{slug === 'liquid-grass' && <LiquidGrass />}
 
-			{/* Gitalk 评论区 */}
+			{/* Gitalk 评论区（登录后可评论） */}
 			<GitalkComments />
+
+			{/* 匿名评论：叠加在 Gitalk 下方，不用登录 */}
+			<ArticleComments slug={slug} />
 		</>
 	)
 }

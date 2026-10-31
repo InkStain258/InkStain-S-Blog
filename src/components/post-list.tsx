@@ -13,13 +13,15 @@ type Props = {
 	/** 行前缀：章节号 / 日期等 */
 	prefix?: (item: BlogIndexItem, index: number) => string
 	empty?: string
+	/** 紧凑行高，用于首页侧栏这类信息密度高的位置 */
+	dense?: boolean
 }
 
 /**
  * 通用文章列表。分类页、标签页、归档页、系列页共用一套排版，
  * 与 /blog 主列表视觉一致（日期 + 圆点 + 标题 + 标签）。
  */
-export default function PostList({ items, showTags = true, prefix, empty = '这里还没有文章' }: Props) {
+export default function PostList({ items, showTags = true, prefix, empty = '这里还没有文章', dense = false }: Props) {
 	if (!items.length) {
 		return (
 			<div className='text-secondary py-16 text-center text-sm'>
@@ -37,8 +39,8 @@ export default function PostList({ items, showTags = true, prefix, empty = '这�
 					initial={{ opacity: 0, y: 6 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: Math.min(i * 0.03, 0.3), duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
-					<Link href={`/blog/${it.slug}`} className='group flex items-center gap-4 py-3.5'>
-						<span className='text-secondary w-12 shrink-0 text-[12px] tabular-nums'>
+					<Link href={`/blog/${it.slug}`} className={`group flex items-center gap-3 ${dense ? 'py-2' : 'py-3.5'}`}>
+						<span className={`text-secondary shrink-0 tabular-nums ${dense ? 'w-11 text-[11px]' : 'w-12 text-[12px]'}`}>
 							{prefix ? prefix(it, i) : dayjs(it.date).format('MM-DD')}
 						</span>
 
@@ -46,11 +48,11 @@ export default function PostList({ items, showTags = true, prefix, empty = '这�
 							<span className='bg-secondary/50 group-hover:bg-brand h-[5px] w-[5px] rounded-full transition-all group-hover:h-3.5' />
 						</span>
 
-						<span className='group-hover:text-brand min-w-0 flex-1 truncate text-[13.5px] font-medium transition-all group-hover:translate-x-1'>
+						<span className={`group-hover:text-brand min-w-0 flex-1 truncate font-medium transition-all group-hover:translate-x-1 ${dense ? 'text-[12.5px]' : 'text-[13.5px]'}`}>
 							{it.title || it.slug}
 						</span>
 
-						{showTags && (
+						{showTags && !dense && (
 							<span className='text-secondary flex shrink-0 items-center gap-2 text-[11px] max-sm:hidden'>
 								{(it.tags || []).slice(0, 2).map(t => (
 									<span key={t} className='opacity-60'>

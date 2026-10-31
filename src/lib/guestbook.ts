@@ -15,6 +15,10 @@ export type GuestStatus = 'pending' | 'approved'
 
 export type GuestMessage = {
 	id: string
+	/** gb = 留言板，article = 文章评论 */
+	kind?: 'gb' | 'article'
+	/** 文章评论所属文章 slug */
+	slug?: string
 	name: string
 	contact?: string
 	content: string
@@ -25,6 +29,8 @@ export type GuestMessage = {
 }
 
 export type SubmitInput = {
+	kind?: 'gb' | 'article'
+	slug?: string
 	name: string
 	contact?: string
 	content: string
@@ -68,6 +74,8 @@ function ghHeaders(withAuth = true): Record<string, string> {
 
 function encodeBody(input: SubmitInput): string {
 	const meta = {
+		kind: input.kind || 'gb',
+		slug: input.slug || '',
 		name: input.name,
 		contact: input.contact || '',
 		at: new Date().toISOString(),
@@ -94,6 +102,8 @@ function decodeIssue(issue: any): GuestMessage | null {
 	const labels: string[] = (issue.labels || []).map((l: any) => (typeof l === 'string' ? l : l.name))
 	return {
 		id: String(issue.number),
+		kind: meta.kind === 'article' ? 'article' : 'gb',
+		slug: meta.slug || undefined,
 		name: meta.name || '匿名',
 		contact: meta.contact || undefined,
 		content,
@@ -134,15 +144,23 @@ async function ghList(status: GuestStatus | 'all'): Promise<any[]> {
 	return Array.isArray(data) ? data : []
 }
 
-export async function listMessages(status: GuestStatus | 'all' = 'approved'): Promise<GuestMessage[]> {
+export type ListFilter = { kind?: 'gb' | 'article'; slug?: string }
+
+export async function listMessages(status: GuestStatus | 'all' = 'approved', filter: ListFilter = {}): Promise<GuestMessage[]> {
+	const match = (m: GuestMessage) => {
+		if (filter.kind && (m.kind || 'gb') !== filter.kind) return false
+		if (filter.slug && m.slug !== filter.slug) return false
+		return true
+	}
 	if (useLocalDriver()) {
 		return readLocal()
 			.map(({ _ip, ...m }) => m)
 			.filter(m => status === 'all' || m.status === status)
+			.filter(match)
 			.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 	}
 	const issues = await ghList(status)
-	return issues.map(decodeIssue).filter(Boolean) as GuestMessage[]
+	return (issues.map(decodeIssue).filter(Boolean) as GuestMessage[]).filter(match)
 }
 
 export async function createMessage(input: SubmitInput): Promise<GuestMessage> {
@@ -150,6 +168,8 @@ export async function createMessage(input: SubmitInput): Promise<GuestMessage> {
 		const all = readLocal()
 		const msg: LocalRecord = {
 			id: crypto.randomUUID(),
+			kind: input.kind || 'gb',
+			slug: input.slug,
 			name: input.name,
 			contact: input.contact,
 			content: input.content,
@@ -167,7 +187,10 @@ export async function createMessage(input: SubmitInput): Promise<GuestMessage> {
 		method: 'POST',
 		headers: { ...ghHeaders(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			title: `[留言] ${input.name} · ${new Date().toISOString().slice(0, 10)}`,
+			title:
+				input.kind === 'article'
+					? `[评论] ${input.slug} · ${input.name} · ${new Date().toISOString().slice(0, 10)}`
+					: `[留言] ${input.name} · ${new Date().toISOString().slice(0, 10)}`,
 			body: encodeBody(input),
 			labels: [LABEL_ALL, LABEL_PENDING]
 		})

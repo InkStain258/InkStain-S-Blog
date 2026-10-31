@@ -20,7 +20,7 @@ function clean(input: unknown, max: number): string {
 
 export async function GET() {
 	try {
-		const items = await listMessages('approved')
+		const items = await listMessages('approved', { kind: 'gb' })
 		return NextResponse.json(
 			{ items, configured: isConfigured() },
 			{ headers: { 'Cache-Control': 'no-store' } }

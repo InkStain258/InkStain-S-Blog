@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { motion } from 'motion/react'
@@ -8,6 +8,8 @@ import { ArrowRight, BookMarked, Clock3 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { groupSeries } from '@/lib/series'
+import { useCenterStore } from '@/hooks/use-center'
+import { CARD_SPACING } from '@/consts'
 import PostList from '@/components/post-list'
 
 const origin = ''
@@ -18,8 +20,39 @@ const origin = ''
  */
 export default function MagazineHome() {
 	const { items, loading } = useBlogIndex()
-	const { siteContent } = useConfigStore()
+	const { siteContent, cardStyles } = useConfigStore()
 	const { meta } = siteContent
+	const center = useCenterStore()
+	const outerRef = useRef<HTMLDivElement>(null)
+	const [pad, setPad] = useState(0)
+
+	// 导航卡跟着拼贴中心走，位置随视口变化，所以留白得算出来而不是写死
+	const navRight = useMemo(() => {
+		const st = cardStyles.navCard
+		const hi = cardStyles.hiCard
+		const x = st.offsetX !== null ? center.x + st.offsetX : center.x - hi.width / 2 - st.width - CARD_SPACING
+		return x + st.width
+	}, [cardStyles, center])
+
+	useEffect(() => {
+		const measure = () => {
+			const el = outerRef.current
+			if (!el) return
+			if (window.innerWidth < 1024) return setPad(0)
+			const innerLeft = el.getBoundingClientRect().left + 24
+			const room = el.clientWidth - 24
+			setPad(Math.max(0, Math.min(navRight + 32 - innerLeft, room - 460)))
+		}
+		measure()
+		window.addEventListener('resize', measure)
+		window.addEventListener('pointerup', measure)
+		const t = setTimeout(measure, 600)
+		return () => {
+			window.removeEventListener('resize', measure)
+			window.removeEventListener('pointerup', measure)
+			clearTimeout(t)
+		}
+	}, [navRight])
 
 	const sorted = useMemo(() => [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [items])
 	const featured = sorted.slice(0, 3)
@@ -40,19 +73,20 @@ export default function MagazineHome() {
 	})
 
 	return (
-		<div className='mx-auto w-full max-w-[1000px] px-6 pt-28 pb-24 max-sm:px-4 xl:mr-auto xl:ml-[320px]'>
+		<div ref={outerRef} className='mx-auto w-full max-w-[1500px] px-6 pt-28 pb-24 max-sm:px-4'>
+			<div className='max-w-[980px]' style={{ marginLeft: pad || undefined }}>
 			{/* 主视觉 */}
-			<motion.section {...fade()} className='grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr]'>
+			<motion.section {...fade()} className='grid items-center gap-9 md:grid-cols-[1.08fr_0.92fr]'>
 				<div>
 					<div className='text-secondary text-[10.5px] tracking-[0.32em] uppercase opacity-60'>InkStain · 技术杂谈</div>
-					<h1 className='mt-4 text-[38px] leading-[1.22] font-semibold tracking-tight max-sm:text-[30px]'>
+					<h1 className='mt-3.5 text-[34px] leading-[1.24] font-semibold tracking-tight max-sm:text-[27px]'>
 						在代码里找诗，
 						<br />
 						也把诗写成代码。
 					</h1>
-					<p className='text-secondary mt-4 max-w-[420px] text-[13px] leading-relaxed opacity-80'>{meta.description}</p>
+					<p className='text-secondary mt-3.5 max-w-[452px] text-[12.5px] leading-relaxed opacity-80'>{meta.description}</p>
 
-					<div className='mt-7 flex flex-wrap items-center gap-3'>
+					<div className='mt-6 flex flex-wrap items-center gap-2.5'>
 						<Link
 							href={hero ? `/blog/${hero.slug}` : '/blog'}
 							className='bg-brand inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[12.5px] font-medium text-white transition-opacity hover:opacity-90'>
@@ -67,7 +101,7 @@ export default function MagazineHome() {
 						</Link>
 					</div>
 
-					<div className='text-secondary mt-6 flex items-center gap-4 text-[11px] opacity-70'>
+					<div className='text-secondary mt-5 flex items-center gap-3.5 text-[10.5px] opacity-70'>
 						<span>{items.length} 篇文章</span>
 						<span className='opacity-30'>·</span>
 						<span>{series.length} 个系列</span>
@@ -102,18 +136,18 @@ export default function MagazineHome() {
 
 			{/* 精选 */}
 			{featured.length > 0 && (
-				<section className='mt-16'>
-					<div className='mb-5 flex items-baseline justify-between'>
+				<section className='mt-14'>
+					<div className='mb-4 flex items-baseline justify-between'>
 						<h2 className='text-[15px] font-semibold tracking-wide'>最近写的</h2>
 						<Link href='/blog' className='text-secondary hover:text-brand text-[11.5px] transition-colors'>
 							全部文章 →
 						</Link>
 					</div>
-					<div className='grid gap-4 md:grid-cols-3'>
+					<div className='grid gap-3.5 md:grid-cols-3'>
 						{featured.map((it, i) => (
 							<motion.div key={it.slug} {...fade(0.08 + i * 0.06)}>
-								<Link href={`/blog/${it.slug}`} className='bg-card relative block h-full w-full overflow-hidden rounded-2xl border transition-colors hover:border-brand/35'>
-									<div className='bg-border/30 aspect-[16/10] overflow-hidden'>
+								<Link href={`/blog/${it.slug}`} className='bg-card relative flex h-full w-full flex-col overflow-hidden rounded-2xl border transition-colors hover:border-brand/35'>
+									<div className='bg-border/30 aspect-[3/2] overflow-hidden'>
 										{it.cover ? (
 											<img
 												src={it.cover.startsWith('http') ? it.cover : `${origin}${it.cover}`}
@@ -124,11 +158,11 @@ export default function MagazineHome() {
 											<div className='from-brand/12 to-brand-secondary/12 h-full w-full bg-gradient-to-br' />
 										)}
 									</div>
-									<div className='p-4'>
+									<div className='flex flex-1 flex-col p-3.5'>
 										{it.category && <div className='text-brand text-[10px] tracking-wider opacity-80'>{it.category}</div>}
-										<div className='mt-1.5 line-clamp-2 text-[13.5px] leading-snug font-medium'>{it.title}</div>
-										<div className='text-secondary mt-1.5 line-clamp-2 text-[11px] opacity-70'>{it.summary}</div>
-										<div className='text-secondary mt-2.5 text-[10.5px] opacity-50'>{dayjs(it.date).format('YYYY-MM-DD')}</div>
+										<div className='mt-1.5 line-clamp-2 text-[13px] leading-snug font-medium'>{it.title}</div>
+										<div className='text-secondary mt-1.5 line-clamp-1 text-[11px] opacity-65'>{it.summary}</div>
+										<div className='text-secondary mt-auto pt-2 text-[10px] opacity-45'>{dayjs(it.date).format('YYYY-MM-DD')}</div>
 									</div>
 								</Link>
 							</motion.div>
@@ -138,7 +172,7 @@ export default function MagazineHome() {
 			)}
 
 			{/* 系列 + 最近更新 */}
-			<div className='mt-16 grid gap-8 lg:grid-cols-[1fr_1.15fr]'>
+			<div className='mt-14 grid gap-8 lg:grid-cols-[0.86fr_1.14fr]'>
 				{series.length > 0 && (
 					<section>
 						<div className='mb-4 flex items-baseline justify-between'>
@@ -147,15 +181,15 @@ export default function MagazineHome() {
 								全部 →
 							</Link>
 						</div>
-						<div className='space-y-2.5'>
+						<div className='space-y-2'>
 							{series.map(g => (
 								<Link
 									key={g.slug}
 									href={`/series/${encodeURIComponent(g.slug)}`}
-									className='group border-border/60 hover:border-brand/35 flex items-center justify-between rounded-2xl border px-4 py-3 transition-colors'>
+									className='group bg-card/60 border-border/60 hover:border-brand/35 flex items-center justify-between rounded-xl border px-4 py-3 transition-colors'>
 									<span className='min-w-0'>
 										<span className='group-hover:text-brand block truncate text-[13px] font-medium transition-colors'>{g.name}</span>
-										<span className='text-secondary mt-0.5 block text-[10.5px] opacity-60'>
+										<span className='text-secondary mt-0.5 block truncate text-[10.5px] whitespace-nowrap opacity-60'>
 											{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M月D日')}
 										</span>
 									</span>
@@ -173,8 +207,8 @@ export default function MagazineHome() {
 							归档 →
 						</Link>
 					</div>
-					<div className='card relative w-full px-5 py-2'>
-						<PostList items={rest} empty={loading ? '加载中…' : '还没有文章'} />
+					<div className='card relative w-full px-4 py-1.5'>
+						<PostList items={rest} dense showTags={false} empty={loading ? '加载中…' : '还没有文章'} />
 					</div>
 				</section>
 			</div>
@@ -188,7 +222,7 @@ export default function MagazineHome() {
 							<Link
 								key={t}
 								href={`/blog/tag/${encodeURIComponent(t)}`}
-								className='text-secondary hover:border-brand/40 hover:text-brand border-border/60 rounded-full border px-3 py-1.5 text-[11.5px] transition-colors'>
+								className='text-secondary hover:border-brand/40 hover:text-brand border-border/60 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
 								#{t}
 								<span className='ml-1 opacity-50'>{n}</span>
 							</Link>
@@ -196,6 +230,7 @@ export default function MagazineHome() {
 					</div>
 				</section>
 			)}
+			</div>
 		</div>
 	)
 }

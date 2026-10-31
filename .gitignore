@@ -48,3 +48,6 @@ next-env.d.ts
 .history/
 # 留言板本地数据（文件驱动，不提交）
 /.data
+
+# 本地留言/评论的降级存储
+.data/
