@@ -34,3 +34,19 @@ export function getFileExt(filename: string): string {
 export function rand(a: number, b: number) {
 	return a + Math.random() * (b - a)
 }
+
+/**
+ * 摘要/列表里展示的是纯文本，作者手写的行内 Markdown 标记会原样漏出来。
+ * 去掉强调、行内代码、链接语法，其余照抄。
+ */
+export function plainInline(source?: string | null) {
+	if (!source) return ''
+	return String(source)
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+		.replace(/`([^`]*)`/g, '$1')
+		.replace(/(\*\*|__)(.+?)\1/g, '$2')
+		.replace(/(^|\s)[*_](\S.*?\S)[*_](?=\s|$)/g, '$1$2')
+		.replace(/~~(.+?)~~/g, '$1')
+		.trim()
+}

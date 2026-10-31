@@ -4,6 +4,7 @@ import { useLatestBlog } from '@/hooks/use-blog-index'
 import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
 import dayjs from 'dayjs'
+import { plainInline } from '@/lib/utils'
 import Link from 'next/link'
 import { HomeDraggableLayer } from './home-draggable-layer'
 
@@ -47,7 +48,7 @@ export default function ArticleCard() {
 						)}
 						<div className='flex-1'>
 							<h3 className='line-clamp-1 text-sm font-medium'>{blog.title || blog.slug}</h3>
-							{blog.summary && <p className='text-secondary mt-1 line-clamp-3 text-xs'>{blog.summary}</p>}
+							{blog.summary && <p className='text-secondary mt-1 line-clamp-3 text-xs'>{plainInline(blog.summary)}</p>}
 							<p className='text-secondary mt-3 text-xs'>{dayjs(blog.date).format('YYYY/M/D')}</p>
 						</div>
 					</Link>

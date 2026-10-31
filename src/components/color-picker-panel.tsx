@@ -198,7 +198,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 	return (
 		<div
 			data-color-picker-panel
-			className={cn('w-56 rounded-lg border bg-white p-3 shadow-lg select-none', className, show ? 'opacity-100' : 'opacity-0')}
+			className={cn('w-56 rounded-lg border bg-white p-3 elev-3 select-none', className, show ? 'opacity-100' : 'opacity-0')}
 			style={style}>
 			{/* Saturation and brightness picker */}
 			<div
@@ -218,7 +218,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 					backgroundImage: 'linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsla(0, 0%, 100%, 0))'
 				}}>
 				<div
-					className='absolute z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full border-2 border-white shadow-md'
+					className='absolute z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full border-2 border-white elev-2'
 					style={{
 						backgroundColor: `hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}%)`,
 						left: saturationOffset,
@@ -243,7 +243,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 						'linear-gradient(to right, rgb(255, 0, 0), rgb(255, 255, 0), rgb(0, 255, 0), rgb(0, 255, 255), rgb(0, 0, 255), rgb(255, 0, 255), rgb(255, 0, 0))'
 				}}>
 				<div
-					className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white shadow-md'
+					className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white elev-2'
 					style={{ backgroundColor: `hsl(${hue} 100% 50%)`, left: hueOffset }}
 				/>
 			</div>
@@ -268,7 +268,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 					style={{
 						background: `linear-gradient(to right, hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / 0%), hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / 100%))`
 					}}>
-					<div style={{ left: alphaOffset }} className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white bg-white shadow-md'>
+					<div style={{ left: alphaOffset }} className='absolute h-4 w-4 -translate-x-1/2 cursor-pointer rounded-full border-2 border-white bg-white elev-2'>
 						<div className='h-full w-full rounded-full' style={{ backgroundColor: `hsl(${hsl.h} ${hsl.s * 100}% ${hsl.l * 100}% / ${alpha * 100}%)` }} />
 					</div>
 				</div>

@@ -86,7 +86,7 @@ export function BlogCoverHoverPreview({ preview, position }: BlogCoverHoverPrevi
 					initial={{ opacity: 0, scale: 0.6 }}
 					animate={{ opacity: 1, scale: 1 }}
 					exit={{ opacity: 0, scale: 0.6 }}
-					className='bg-card pointer-events-none fixed z-100 min-h-[80px] w-[160px] overflow-hidden rounded-3xl p-4 shadow-sm backdrop-blur-sm'
+					className='bg-card pointer-events-none fixed z-100 min-h-[80px] w-[160px] overflow-hidden rounded-3xl p-4 elev-1 backdrop-blur-sm'
 					style={{
 						left: position.x + PREVIEW_OFFSET_PX,
 						top: position.y + PREVIEW_OFFSET_PX

@@ -59,3 +59,20 @@
   --glass-shadow-2: 0 2px 4px -2px rgb(0 0 0 / 0.4), 0 18px 40px -20px rgb(0 0 0 / 0.55);
   --glass-shadow-3: 0 6px 14px -6px rgb(0 0 0 / 0.5), 0 32px 72px -32px rgb(0 0 0 / 0.65);
 }
+
+/* ===== 阴影层级 e1–e4 =====
+   小元素（按钮、色块、弹层）统一走这四级，别再直接写 shadow-sm/lg；
+   玻璃卡片的阴影在 --glass-shadow-* 里，不在这里。 */
+:root {
+  --elev-1: 0 1px 2px -1px rgb(20 40 50 / 0.1);
+  --elev-2: 0 2px 6px -2px rgb(20 40 50 / 0.14);
+  --elev-3: 0 10px 26px -14px rgb(20 40 50 / 0.24);
+  --elev-4: 0 18px 52px -22px rgb(20 40 50 / 0.3);
+}
+
+.dark {
+  --elev-1: 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --elev-2: 0 2px 8px -2px rgb(0 0 0 / 0.45);
+  --elev-3: 0 12px 30px -16px rgb(0 0 0 / 0.55);
+  --elev-4: 0 20px 56px -24px rgb(0 0 0 / 0.62);
+}

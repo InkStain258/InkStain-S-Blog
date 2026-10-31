@@ -52,7 +52,7 @@ export default function BackToTop() {
 					onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 					aria-label='回到顶部'
 					title='回到顶部'
-					className='bg-card border-backdrop fixed right-6 bottom-24 z-40 grid place-items-center rounded-full border shadow-lg backdrop-blur-md max-sm:right-4 max-sm:bottom-20'
+					className='bg-card border-backdrop fixed right-6 bottom-24 z-40 grid place-items-center rounded-full border elev-3 backdrop-blur-md max-sm:right-4 max-sm:bottom-20'
 					style={{ width: SIZE, height: SIZE }}>
 					<svg width={SIZE} height={SIZE} className='absolute inset-0 -rotate-90' aria-hidden>
 						<circle cx={SIZE / 2} cy={SIZE / 2} r={R} fill='none' stroke='currentColor' strokeWidth={STROKE} className='text-secondary/15' />

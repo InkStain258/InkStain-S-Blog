@@ -31,7 +31,7 @@ export default function WeatherWidget() {
   }
 
   return (
-    <div className="h-full rounded-xl bg-white/40 backdrop-blur-sm border border-white/30 shadow-md p-4 flex flex-col items-center justify-center gap-1">
+    <div className="h-full rounded-xl bg-white/40 backdrop-blur-sm border border-white/30 elev-2 p-4 flex flex-col items-center justify-center gap-1">
       {loading ? (
         <Loader2 className="animate-spin text-slate-400" size={24} />
       ) : w ? (

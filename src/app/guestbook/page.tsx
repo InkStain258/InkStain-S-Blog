@@ -144,7 +144,7 @@ export default function GuestbookPage() {
 				initial={{ opacity: 0, y: 14 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: INIT_DELAY + 0.08 }}
-				className='bg-card mt-8 rounded-[28px] border p-5 shadow-sm backdrop-blur-md'>
+				className='bg-card mt-8 rounded-[28px] border p-5 elev-1 backdrop-blur-md'>
 				<div className='flex flex-col gap-3 sm:flex-row'>
 					<input
 						value={name}
@@ -191,7 +191,7 @@ export default function GuestbookPage() {
 					<button
 						onClick={submit}
 						disabled={sending || cooldown > 0 || !configured}
-						className='bg-brand hover:bg-brand/90 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white shadow-sm transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-45'>
+						className='bg-brand hover:bg-brand/90 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white elev-1 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-45'>
 						{sending ? <Loader2 className='h-3.5 w-3.5 animate-spin' /> : <Send className='h-3.5 w-3.5' />}
 						提交留言
 					</button>
@@ -232,7 +232,7 @@ export default function GuestbookPage() {
 							className='bg-card group hover:border-brand/30 rounded-2xl border p-4 transition-colors'>
 							<div className='flex items-start gap-3'>
 								<span
-									className='grid h-9 w-9 shrink-0 place-items-center rounded-full text-[13px] font-semibold text-white shadow-sm'
+									className='grid h-9 w-9 shrink-0 place-items-center rounded-full text-[13px] font-semibold text-white elev-1'
 									style={{ backgroundColor: avatarColor(m.name) }}>
 									{m.name.slice(0, 1).toUpperCase()}
 								</span>

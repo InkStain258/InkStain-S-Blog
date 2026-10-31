@@ -67,6 +67,35 @@ export default function ImageLightbox() {
 		}
 	}, [src])
 
+	// ← / → 在同篇文章的正文图之间切换（跳过小图标与加载失败的图）
+	useEffect(() => {
+		if (!src) return
+		const step = (dir: 1 | -1) => {
+			const imgs = [...document.querySelectorAll<HTMLImageElement>('.prose img')].filter(i => i.naturalWidth >= 120)
+			if (imgs.length < 2) return null
+			const norm = (u: string) => {
+				try {
+					return new URL(u, location.href).pathname
+				} catch {
+					return u
+				}
+			}
+			const cur = imgs.findIndex(i => norm(i.currentSrc || i.src) === norm(src))
+			if (cur < 0) return null
+			return imgs[(cur + dir + imgs.length) % imgs.length]
+		}
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+			const target = step(e.key === 'ArrowRight' ? 1 : -1)
+			if (!target) return
+			e.preventDefault()
+			setSrc(target.currentSrc || target.src)
+			reset()
+		}
+		window.addEventListener('keydown', onKey)
+		return () => window.removeEventListener('keydown', onKey)
+	}, [src])
+
 	// 缩放时用 wheel 需要 passive: false 才能阻止页面滚动
 	useEffect(() => {
 		if (!src) return
@@ -81,6 +110,24 @@ export default function ImageLightbox() {
 	if (!src) return null
 
 	const dragging = !!dragRef.current
+
+	// 同篇文章里的正文图，用来做 ← → 翻图与角标
+	const normPath = (u: string) => {
+		try {
+			return new URL(u, location.href).pathname
+		} catch {
+			return u
+		}
+	}
+	const gallery = [...document.querySelectorAll<HTMLImageElement>('.prose img')].filter(i => i.naturalWidth >= 120)
+	const curIdx = gallery.findIndex(i => normPath(i.currentSrc || i.src) === normPath(src))
+	const multi = gallery.length > 1 && curIdx >= 0
+	const goto = (dir: 1 | -1) => {
+		const t = gallery[(curIdx + dir + gallery.length) % gallery.length]
+		if (!t) return
+		setSrc(t.currentSrc || t.src)
+		reset()
+	}
 
 	return (
 		<div
@@ -102,7 +149,7 @@ export default function ImageLightbox() {
 				src={src}
 				alt=''
 				draggable={false}
-				className='max-h-full max-w-full rounded-xl shadow-2xl select-none'
+				className='elev-4 max-h-full max-w-full rounded-xl select-none'
 				style={{
 					animation: 'lb-zoom 280ms cubic-bezier(0.2, 0.9, 0.3, 1)',
 					transform: `translate3d(${offset.x}px, ${offset.y}px, 0) scale(${scale})`,
@@ -153,8 +200,37 @@ export default function ImageLightbox() {
 				</button>
 			</div>
 
+			{multi && (
+				<>
+					<button
+						type='button'
+						onClick={e => {
+							e.stopPropagation()
+							goto(-1)
+						}}
+						aria-label='上一张'
+						className='absolute top-1/2 left-4 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/25'>
+						<svg viewBox='0 0 24 24' className='h-5 w-5' fill='none' stroke='currentColor' strokeWidth={2} strokeLinecap='round'>
+							<path d='M15 18l-6-6 6-6' />
+						</svg>
+					</button>
+					<button
+						type='button'
+						onClick={e => {
+							e.stopPropagation()
+							goto(1)
+						}}
+						aria-label='下一张'
+						className='absolute top-1/2 right-4 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-white/25'>
+						<svg viewBox='0 0 24 24' className='h-5 w-5' fill='none' stroke='currentColor' strokeWidth={2} strokeLinecap='round'>
+							<path d='M9 6l6 6-6 6' />
+						</svg>
+					</button>
+				</>
+			)}
+
 			<div className='pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/40 px-4 py-1.5 text-center text-xs whitespace-nowrap text-white/70 backdrop-blur'>
-				滚轮缩放 · 放大后拖拽移动 · 双击复位 · Esc 关闭
+				{multi ? `第 ${curIdx + 1} / ${gallery.length} 张 · ← → 切换 · ` : ''}滚轮缩放 · 放大后拖拽移动 · 双击复位 · Esc 关闭
 			</div>
 		</div>
 	)

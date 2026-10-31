@@ -65,9 +65,12 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 	// Render HTML with heading ids
 	const renderer = new marked.Renderer()
 
-	renderer.heading = (token: Tokens.Heading) => {
+	renderer.heading = function (token: Tokens.Heading) {
 		const id = slugify(token.text || '')
-		return `<h${token.depth} id="${id}">${token.text}</h${token.depth}>`
+		// token.text 是转义后的纯文本（会把 <sup> 显示成字面量），
+		// 走 parseInline 才能拿到行内标记与作者手写的行内 HTML
+		const inner = this.parser.parseInline(token.tokens || [])
+		return `<h${token.depth} id="${id}">${inner}</h${token.depth}>`
 	}
 
 	renderer.code = (token: Tokens.Code) => {

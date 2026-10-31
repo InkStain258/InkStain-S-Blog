@@ -8,6 +8,7 @@ import { ArrowRight, BookMarked, Clock3 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { groupSeries } from '@/lib/series'
+import { plainInline } from '@/lib/utils'
 import PostList from '@/components/post-list'
 
 const origin = ''
@@ -128,7 +129,7 @@ export default function MagazineHome() {
 									<div className='flex flex-1 flex-col p-3.5'>
 										{it.category && <div className='text-brand text-[10px] tracking-wider opacity-80'>{it.category}</div>}
 										<div className='mt-1.5 line-clamp-2 text-[13px] leading-snug font-medium'>{it.title}</div>
-										<div className='text-secondary mt-1.5 line-clamp-1 text-[11px] opacity-65'>{it.summary}</div>
+										<div className='text-secondary mt-1.5 line-clamp-1 text-[11px] opacity-65'>{plainInline(it.summary)}</div>
 										<div className='text-secondary mt-auto pt-2 text-[10px] opacity-45'>{dayjs(it.date).format('YYYY-MM-DD')}</div>
 									</div>
 								</Link>

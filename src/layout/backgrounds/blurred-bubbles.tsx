@@ -13,8 +13,8 @@ import { makeNoise2D, rand } from './utils'
 export default function BlurredBubblesBackground({
 	count = 6,
 	colors = siteContent.backgroundColors,
-	darkColors,
-	isDark,
+	darkColors = [],
+	isDark = false,
 	minRadius = 250,
 	maxRadius = 400,
 	bottomBandStart = 0.8,
@@ -25,6 +25,21 @@ export default function BlurredBubblesBackground({
 	debugFps = false,
 	startDelayMs = 1500,
 	regenerateKey = 0
+}: {
+	count?: number
+	colors?: string[]
+	darkColors?: string[]
+	isDark?: boolean
+	minRadius?: number
+	maxRadius?: number
+	bottomBandStart?: number
+	speed?: number
+	noiseScale?: number
+	noiseTimeScale?: number
+	targetFps?: number
+	debugFps?: boolean
+	startDelayMs?: number
+	regenerateKey?: number
 }) {
 	const ref = useRef<HTMLCanvasElement>(null)
 	const noise = useRef(makeNoise2D())

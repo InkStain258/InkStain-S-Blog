@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { ANIMATION_DELAY, INIT_DELAY } from '@/consts'
 import LikeButton from '@/components/like-button'
 import { BlogToc } from '@/components/blog-toc'
+import { plainInline } from '@/lib/utils'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
 type TocItem = {
@@ -48,7 +49,7 @@ export function BlogSidebar({ cover, summary, toc, slug, activeId, progress, res
 					transition={{ delay: INIT_DELAY + ANIMATION_DELAY * 2 }}
 					className='glass-2 w-full rounded-xl p-3 text-sm'>
 					<h2 className='text-secondary mb-2 font-medium'>摘要</h2>
-					<div className='text-secondary scrollbar-none max-h-[240px] cursor-text overflow-auto'>{summary}</div>
+					<div className='text-secondary scrollbar-none max-h-[240px] cursor-text overflow-auto'>{plainInline(summary)}</div>
 				</motion.div>
 			)}
 

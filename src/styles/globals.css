@@ -123,6 +123,21 @@
 	}
 }
 
+
+/* 阴影层级 utility：小元素统一用这四级 */
+@utility elev-1 {
+	box-shadow: var(--elev-1);
+}
+@utility elev-2 {
+	box-shadow: var(--elev-2);
+}
+@utility elev-3 {
+	box-shadow: var(--elev-3);
+}
+@utility elev-4 {
+	box-shadow: var(--elev-4);
+}
+
 /* 内容页卡片：圆角收到 20px，比首页拼贴卡的 40px 更利落 */
 .card-content {
 	--card-radius: 20px;
@@ -862,6 +877,10 @@ html.sepia {
   --glass-shadow-1: 0 1px 2px -1px rgb(88 66 40 / 0.14), 0 8px 20px -12px rgb(88 66 40 / 0.22);
   --glass-shadow-2: 0 2px 4px -2px rgb(88 66 40 / 0.16), 0 16px 36px -18px rgb(88 66 40 / 0.3);
   --glass-shadow-3: 0 6px 14px -6px rgb(88 66 40 / 0.2), 0 30px 68px -30px rgb(88 66 40 / 0.36);
+  --elev-1: 0 1px 2px -1px rgb(88 66 40 / 0.14);
+  --elev-2: 0 2px 6px -2px rgb(88 66 40 / 0.18);
+  --elev-3: 0 10px 26px -14px rgb(88 66 40 / 0.26);
+  --elev-4: 0 18px 52px -22px rgb(88 66 40 / 0.32);
 }
 html.sepia body::before {
   opacity: 0.05;
@@ -869,4 +888,27 @@ html.sepia body::before {
 html.sepia .cursor-glow {
   filter: blur(34px);
   opacity: 0.22;
+}
+
+/* ===== 正文缺图占位：图片挂了不要露出浏览器的破图标 ===== */
+.prose-img-missing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 1.6em 0;
+  padding: 22px 16px;
+  border: 1px dashed var(--ink-border, rgb(0 0 0 / 0.16));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-card) 60%, transparent);
+  color: var(--ink-secondary, #62707a);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.prose-img-missing small {
+  font-size: 11px;
+  opacity: 0.72;
+  word-break: break-all;
 }

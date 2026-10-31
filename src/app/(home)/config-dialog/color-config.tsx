@@ -250,11 +250,11 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 						className='hover:border-brand/30 group flex items-center gap-3 rounded-xl border px-3 py-2.5 transition-all hover:translate-x-0.5'>
 						<div className='flex items-center gap-2'>
 							<div
-								className='h-8 w-8 rounded-lg shadow-sm ring-1 ring-black/10 dark:ring-white/15'
+								className='h-8 w-8 rounded-lg elev-1 ring-1 ring-black/10 dark:ring-white/15'
 								style={{ backgroundColor: preset.theme.colorBrand ?? DEFAULT_THEME_COLORS.colorBrand }}
 							/>
 							{preset.backgroundColors.map((color, index) => (
-								<div key={index} className='h-8 w-8 rounded-lg shadow-sm ring-1 ring-black/10 dark:ring-white/15' style={{ backgroundColor: color }} />
+								<div key={index} className='h-8 w-8 rounded-lg elev-1 ring-1 ring-black/10 dark:ring-white/15' style={{ backgroundColor: color }} />
 							))}
 						</div>
 

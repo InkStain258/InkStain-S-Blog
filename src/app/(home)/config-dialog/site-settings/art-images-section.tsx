@@ -121,7 +121,7 @@ export function ArtImagesSection({ formData, setFormData, artImageUploads, setAr
 								type='button'
 								onClick={() => handleSetCurrentArtImage(item.id)}
 								className={`block w-full overflow-hidden rounded-xl border bg-white/60 transition-all ${
-									isActive ? 'ring-brand shadow-md ring-2' : 'hover:border-brand/60'
+									isActive ? 'ring-brand elev-2 ring-2' : 'hover:border-brand/60'
 								}`}>
 								<img src={src} alt='art preview' className='h-24 w-full object-cover' />
 							</button>

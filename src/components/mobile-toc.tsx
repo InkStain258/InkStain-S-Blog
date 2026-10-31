@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useDragControls } from 'motion/react'
 import clsx from 'clsx'
 import { List, X, Bookmark } from 'lucide-react'
 
@@ -26,6 +26,7 @@ type MobileTocProps = {
 export default function MobileToc({ toc, activeId = '', progress = 0, resume, onResume }: MobileTocProps) {
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
+	const dragControls = useDragControls()
 	const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 	const triggerRef = useRef<HTMLButtonElement>(null)
 	const percent = Math.round(Math.min(Math.max(progress, 0), 1) * 100)
@@ -79,10 +80,25 @@ export default function MobileToc({ toc, activeId = '', progress = 0, resume, on
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}
 						transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+						// 只有抓头部才能拖动：列表本身还要正常滚动
+						drag='y'
+						dragListener={false}
+						dragControls={dragControls}
+						// 允许向下拖 320px，超出用弹性收住；只有头部能起拖
+						dragConstraints={{ top: 0, bottom: 320 }}
+						dragElastic={{ top: 0, bottom: 0.4 }}
+						// 手势没到阈值就弹回原位；到阈值由 onDragEnd 关闭
+						dragSnapToOrigin
+						onDragEnd={(_, info) => {
+							if (info.offset.y > 96 || info.velocity.y > 520) setOpen(false)
+						}}
 						// bg-card 自带 alpha，单用会透出背后的正文；先垫一层不透明的 --color-bg
 						style={{ background: 'linear-gradient(var(--color-card), var(--color-card)), var(--color-bg)' }}
 						className='fixed inset-x-0 bottom-0 z-[71] flex max-h-[70vh] flex-col rounded-t-2xl border-t px-5 pt-4 pb-8 backdrop-blur-xl'>
-						<div className='mb-2 flex shrink-0 items-center justify-between'>
+						<div
+							onPointerDown={e => dragControls.start(e)}
+							className='mb-2 flex shrink-0 cursor-grab touch-none items-center justify-between active:cursor-grabbing'>
+							<span aria-hidden className='bg-border absolute top-2 left-1/2 h-1 w-9 -translate-x-1/2 rounded-full opacity-70' />
 							<span className='text-[12.5px] font-medium'>目录</span>
 							<span className='text-secondary flex items-center gap-2 text-[10.5px] tabular-nums'>
 								{percent}%

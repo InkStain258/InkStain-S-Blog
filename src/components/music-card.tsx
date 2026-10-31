@@ -286,7 +286,7 @@ export default function MusicCard() {
 					</button>
 					<button
 						onClick={() => setIsPlaying(v => !v)}
-						className='bg-brand/90 hover:bg-brand grid h-8 w-8 place-items-center rounded-full text-white shadow-sm transition-transform active:scale-95'
+						className='bg-brand/90 hover:bg-brand grid h-8 w-8 place-items-center rounded-full text-white elev-1 transition-transform active:scale-95'
 						title={isPlaying ? '暂停' : '播放'}>
 						{isPlaying ? <Pause className='h-3.5 w-3.5' /> : <Play className='ml-0.5 h-3.5 w-3.5' />}
 					</button>

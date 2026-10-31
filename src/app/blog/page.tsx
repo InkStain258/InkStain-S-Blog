@@ -368,7 +368,7 @@ export default function BlogPage() {
 								onClick={() => setDisplayMode(option.value as DisplayMode)}
 								className={cn(
 									'btn-rounded px-3 py-1.5 text-xs font-medium transition-all',
-									displayMode === option.value ? 'bg-brand text-white shadow-sm' : 'text-secondary hover:text-brand hover:bg-white/60'
+									displayMode === option.value ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand hover:bg-white/60'
 								)}>
 								{option.label}
 							</motion.button>

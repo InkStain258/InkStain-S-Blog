@@ -151,7 +151,7 @@ export default function ClockPage() {
 						}}
 						className={cn(
 							`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all`,
-							mode === 'stopwatch' ? 'bg-brand text-white shadow-sm' : 'text-secondary hover:text-brand'
+							mode === 'stopwatch' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand'
 						)}>
 						秒表
 					</motion.button>
@@ -169,7 +169,7 @@ export default function ClockPage() {
 						}}
 						className={cn(
 							`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all`,
-							mode === 'timer' ? 'bg-brand text-white shadow-sm' : 'text-secondary hover:text-brand'
+							mode === 'timer' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand'
 						)}>
 						计时器
 					</motion.button>
@@ -241,7 +241,7 @@ export default function ClockPage() {
 						whileTap={{ scale: 0.95 }}
 						onClick={handleStartPause}
 						disabled={!canStart}
-						className={`flex h-20 w-20 items-center justify-center rounded-full text-white shadow-lg transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
+						className={`flex h-20 w-20 items-center justify-center rounded-full text-white elev-3 transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
 							isRunning ? 'bg-brand-secondary hover:bg-brand-secondary/80' : 'bg-brand hover:bg-brand/80'
 						}`}>
 						{isRunning ? <Pause className='h-8 w-8' /> : <Play className='h-8 w-8' />}

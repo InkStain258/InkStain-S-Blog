@@ -91,7 +91,7 @@ export default function UploadDialog({ onClose, onSubmit }: UploadDialogProps) {
 									image.type === 'file' ? (
 										<div
 											key={index}
-											className={`absolute h-32 w-44 overflow-hidden rounded-xl border-4 border-white bg-white shadow-xl transition-transform ${
+											className={`absolute h-32 w-44 overflow-hidden rounded-xl border-4 border-white bg-white elev-4 transition-transform ${
 												index === 0 ? '-left-4 -translate-y-2 -rotate-6' : index === 1 ? 'z-20 rotate-1' : 'right-0 translate-y-2 rotate-6'
 											}`}>
 											<img src={image.previewUrl} alt={`preview-${index}`} className='h-full w-full object-cover' />
@@ -100,7 +100,7 @@ export default function UploadDialog({ onClose, onSubmit }: UploadDialogProps) {
 								)}
 
 								{images.length > 3 && (
-									<div className='absolute right-4 -bottom-2 rounded-full bg-black/70 px-3 py-1 text-xs text-white shadow-lg'>共 {images.length} 张</div>
+									<div className='absolute right-4 -bottom-2 rounded-full bg-black/70 px-3 py-1 text-xs text-white elev-3'>共 {images.length} 张</div>
 								)}
 							</div>
 

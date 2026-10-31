@@ -86,7 +86,7 @@ export default function GuestbookManagePage() {
 	if (!key) {
 		return (
 			<div className='mx-auto w-full max-w-[420px] px-6 pt-40'>
-				<div className='bg-card rounded-[24px] border p-6 shadow-sm backdrop-blur-md'>
+				<div className='bg-card rounded-[24px] border p-6 elev-1 backdrop-blur-md'>
 					<h1 className='text-base font-semibold'>留言审核</h1>
 					<p className='text-secondary mt-1 text-[12px]'>输入管理口令后可以审核、回复与展示留言。口令会在这台浏览器记住。</p>
 					<input

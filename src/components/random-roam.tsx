@@ -41,11 +41,11 @@ export default function RandomRoam() {
 				whileTap={{ scale: 0.92 }}
 				aria-label='随机看一篇'
 				title='随机看一篇'
-				className='bg-card border-backdrop group relative grid h-11 w-11 place-items-center rounded-full border shadow-lg backdrop-blur-md'>
+				className='bg-card border-backdrop group relative grid h-11 w-11 place-items-center rounded-full border elev-3 backdrop-blur-md'>
 				<motion.span animate={spinning ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 0.42, ease: 'easeInOut' }}>
 					<Dices className='text-brand h-4.5 w-4.5' />
 				</motion.span>
-				<span className='border-brand/20 bg-card pointer-events-none absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap opacity-0 shadow-md transition-opacity group-hover:opacity-100 sm:block'>
+				<span className='border-brand/20 bg-card pointer-events-none absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap opacity-0 elev-2 transition-opacity group-hover:opacity-100 sm:block'>
 					随机看一篇
 				</span>
 			</motion.button>
@@ -56,7 +56,7 @@ export default function RandomRoam() {
 						initial={{ opacity: 0, y: 6 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -6 }}
-						className='text-secondary bg-card border-backdrop absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap shadow-md sm:block'
+						className='text-secondary bg-card border-backdrop absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap elev-2 sm:block'
 						style={{ bottom: 0 }}>
 						掷骰中…
 					</motion.span>

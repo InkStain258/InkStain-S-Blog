@@ -29,7 +29,7 @@ export default function SplashScreen() {
             <div className="relative w-20 h-20 mb-6">
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                 className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-pink-400 opacity-50 blur-sm" />
-              <div className="relative w-full h-full rounded-full p-1 bg-white shadow-lg">
+              <div className="relative w-full h-full rounded-full p-1 bg-white elev-3">
                 <img src="/images/avatar.png" alt="InkStain" className="w-full h-full rounded-full object-cover" />
               </div>
             </div>

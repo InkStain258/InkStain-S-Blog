@@ -151,7 +151,7 @@ export function EditorToolbar({ onAction, onTemplate, words, savedAt }: Props) {
 			ref={menuRef}
 			role='menu'
 			style={{ top: pos?.top ?? -9999, left: pos?.left ?? -9999, width: MENU_WIDTH }}
-			className='ink-menu fixed z-[9999] overflow-hidden rounded-xl border border-black/10 shadow-2xl ring-1 ring-black/5 dark:border-white/15 dark:ring-white/10'>
+			className='ink-menu fixed z-[9999] overflow-hidden rounded-xl border border-black/10 elev-4 ring-1 ring-black/5 dark:border-white/15 dark:ring-white/10'>
 			<div className='text-secondary border-b border-black/5 px-3 py-1.5 text-[11px] font-medium tracking-wide dark:border-white/10'>预设模板</div>
 			<div className='scrollbar-none max-h-[min(60vh,360px)] overflow-y-auto py-1'>
 				{MD_TEMPLATES.map(tpl => (

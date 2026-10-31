@@ -287,7 +287,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 										{active && (
 											<motion.span
 												layoutId='cfg-tab-pill'
-												className='bg-card absolute inset-0 rounded-lg shadow-sm'
+												className='bg-card absolute inset-0 rounded-lg elev-1'
 												transition={{ type: 'spring', stiffness: 420, damping: 34 }}
 											/>
 										)}
