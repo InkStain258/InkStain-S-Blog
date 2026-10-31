@@ -75,5 +75,13 @@
 	"beian": {
 		"text": "",
 		"link": ""
+	},
+	"homeLayout": "magazine",
+	"decorations": {
+		"sakura": false,
+		"fireflies": false,
+		"danmaku": false,
+		"glow": true,
+		"click": true
 	}
 }

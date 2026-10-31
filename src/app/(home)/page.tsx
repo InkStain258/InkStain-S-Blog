@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 import ConfigDialog from './config-dialog/index'
 import { useEffect } from 'react'
 import SnowfallBackground from '@/layout/backgrounds/snowfall'
+import MagazineHome from './magazine-home'
 
 export default function Home() {
 	const { maxSM } = useSize()
@@ -76,6 +77,9 @@ export default function Home() {
 				</div>
 			)}
 
+			{siteContent.homeLayout === 'magazine' ? (
+				<MagazineHome />
+			) : (
 			<div className='max-sm:flex max-sm:flex-col max-sm:items-center max-sm:gap-6 max-sm:pt-28 max-sm:pb-20'>
 				{cardStyles.artCard?.enabled !== false && <ArtCard />}
 				{cardStyles.hiCard?.enabled !== false && <HiCard />}
@@ -89,6 +93,7 @@ export default function Home() {
 				{cardStyles.hatCard?.enabled !== false && <HatCard />}
 				{cardStyles.beianCard?.enabled !== false && <BeianCard />}
 			</div>
+			)}
 
 			{siteContent.enableChristmas && <SnowfallBackground zIndex={2} count={!maxSM ? 125 : 20} />}
 			<ConfigDialog open={configDialogOpen} onClose={() => setConfigDialogOpen(false)} />

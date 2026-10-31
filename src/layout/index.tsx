@@ -36,6 +36,13 @@ export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
+	// 装饰层开关（站点设置 → 首页外观），缺省按旧的「全开」逻辑之外保守取值
+	const deco = (siteContent as any).decorations ?? {}
+	const wantSakura = deco.sakura ?? false
+	const wantFireflies = deco.fireflies ?? false
+	const wantDanmaku = deco.danmaku ?? false
+	const wantGlow = deco.glow ?? true
+	const wantClick = deco.click ?? true
 	const { maxSM } = useSize()
 	const { theme } = useTheme()
 	const isDark = theme === 'dark'
@@ -62,17 +69,17 @@ export default function Layout({ children }: PropsWithChildren) {
 	return (
 		<>
 			<SplashScreen />
-			{idle && <ClickEffect />}
+			{idle && wantClick && <ClickEffect />}
 			<ThemeToggle />
 			<ReadingProgress />
 			<ImageLightbox />
-			{idle && <CursorGlow />}
+			{idle && wantGlow && <CursorGlow />}
 
 			{/* Sakura only in light mode; Fireflies only in dark mode */}
-			{idle && !isDark && <SakuraPetals />}
-			{idle && isDark && <Fireflies />}
+			{idle && wantSakura && <SakuraPetals />}
+			{idle && wantFireflies && <Fireflies />}
 
-			{idle && <DanmakuBackground />}
+			{idle && wantDanmaku && <DanmakuBackground />}
 
 			<Toaster
 				position='bottom-right'
@@ -104,7 +111,7 @@ export default function Layout({ children }: PropsWithChildren) {
 				<PageTransition>{children}</PageTransition>
 				<SiteFooter />
 				<NavCard />
-				{!maxSM && cardStyles.musicCard?.enabled !== false && <MusicCard />}
+				{!maxSM && (siteContent as any).homeLayout !== 'magazine' && cardStyles.musicCard?.enabled !== false && <MusicCard />}
 				{!maxSM && isHome && (
 					<div className="fixed bottom-6 left-6 z-40 w-36">
 						<WeatherWidget />

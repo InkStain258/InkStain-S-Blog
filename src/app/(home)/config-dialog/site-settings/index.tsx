@@ -98,6 +98,53 @@ export function SiteSettings({
 				/>
 			</Section>
 
+			<Section title='首页外观' hint='两套布局随时可换，装饰层可单独关掉'>
+				<div className='mb-4 flex w-fit items-center gap-1 rounded-xl bg-black/[0.04] p-1 dark:bg-white/[0.06]'>
+					{[
+						{ v: 'cards', label: '卡片拼贴' },
+						{ v: 'magazine', label: '杂志式' }
+					].map(o => (
+						<button
+							key={o.v}
+							type='button'
+							onClick={() => setFormData({ ...formData, homeLayout: o.v })}
+							className={`rounded-lg px-3.5 py-1.5 text-[12px] transition-colors ${
+								(formData.homeLayout || 'cards') === o.v ? 'bg-brand text-white' : 'text-secondary hover:text-brand'
+							}`}>
+							{o.label}
+						</button>
+					))}
+				</div>
+
+				<div className='grid grid-cols-2 gap-x-6 gap-y-3.5'>
+					<Toggle
+						checked={(formData as any).decorations?.glow ?? true}
+						onChange={v => setFormData({ ...formData, decorations: { ...(formData as any).decorations, glow: v } } as any)}
+						label='鼠标光晕'
+					/>
+					<Toggle
+						checked={(formData as any).decorations?.click ?? true}
+						onChange={v => setFormData({ ...formData, decorations: { ...(formData as any).decorations, click: v } } as any)}
+						label='点击涟漪'
+					/>
+					<Toggle
+						checked={(formData as any).decorations?.sakura ?? false}
+						onChange={v => setFormData({ ...formData, decorations: { ...(formData as any).decorations, sakura: v } } as any)}
+						label='樱花飘落'
+					/>
+					<Toggle
+						checked={(formData as any).decorations?.fireflies ?? false}
+						onChange={v => setFormData({ ...formData, decorations: { ...(formData as any).decorations, fireflies: v } } as any)}
+						label='萤火虫（暗色）'
+					/>
+					<Toggle
+						checked={(formData as any).decorations?.danmaku ?? false}
+						onChange={v => setFormData({ ...formData, decorations: { ...(formData as any).decorations, danmaku: v } } as any)}
+						label='弹幕背景'
+					/>
+				</div>
+			</Section>
+
 			<Section title='显示选项'>
 				<div className='grid grid-cols-2 gap-x-6 gap-y-3.5'>
 					<Toggle checked={formData.clockShowSeconds ?? false} onChange={v => setFormData({ ...formData, clockShowSeconds: v })} label='时钟显示秒数' />

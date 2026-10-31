@@ -655,3 +655,24 @@ body.dark::before {
   color: var(--color-brand);
   border-color: color-mix(in srgb, var(--color-brand) 45%, transparent);
 }
+
+/* ===== 纸色主题（sepia）=====
+   站点配色由 config 运行时写进 :root 内联样式，选择器优先级低于内联，
+   所以这里必须 !important 才能覆盖。 */
+html.sepia {
+  --color-bg: #f2ece1 !important;
+  --color-card: #fbf6ec !important;
+  --color-article: #fdf9f1 !important;
+  --color-border: #e0d5c2 !important;
+  --color-primary: #3b332a !important;
+  --color-secondary: #7b6c5b !important;
+  --color-brand: #a8743c !important;
+  --color-brand-secondary: #c9a227 !important;
+}
+html.sepia body::before {
+  opacity: 0.05;
+}
+html.sepia .cursor-glow {
+  filter: blur(34px);
+  opacity: 0.22;
+}

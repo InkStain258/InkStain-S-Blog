@@ -1,7 +1,8 @@
 'use client'
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 
-type Theme = 'light' | 'dark'
+type Theme = 'light' | 'sepia' | 'dark'
+const ORDER: Theme[] = ['light', 'sepia', 'dark']
 interface ThemeCtx { theme: Theme; toggle: () => void }
 
 const ThemeContext = createContext<ThemeCtx>({ theme: 'light', toggle: () => {} })
@@ -13,21 +14,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true)
     const saved = localStorage.getItem('ink-theme') as Theme | null
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      setTheme('dark')
-      document.documentElement.classList.add('dark')
-    }
+    const initial: Theme = saved && ORDER.includes(saved)
+      ? saved
+      : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    setTheme(initial)
+    document.documentElement.classList.toggle('dark', initial === 'dark')
+    document.documentElement.classList.toggle('sepia', initial === 'sepia')
   }, [])
 
   const toggle = useCallback(() => {
     setTheme(prev => {
-      const next = prev === 'dark' ? 'light' : 'dark'
+      const next = ORDER[(ORDER.indexOf(prev) + 1) % ORDER.length]
       localStorage.setItem('ink-theme', next)
-      if (next === 'dark') {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
+      document.documentElement.classList.toggle('dark', next === 'dark')
+      document.documentElement.classList.toggle('sepia', next === 'sepia')
       return next
     })
   }, [])
