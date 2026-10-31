@@ -1,5 +1,6 @@
 'use client'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useCenterInit } from '@/hooks/use-center'
 import BlurredBubblesBackground from './backgrounds/blurred-bubbles'
 import NavCard from '@/components/nav-card'
@@ -14,18 +15,20 @@ import RandomRoam from '@/components/random-roam'
 import MusicCard from '@/components/music-card'
 import SplashScreen from '@/components/splash-screen'
 import PageTransition from '@/components/page-transition'
-import ClickEffect from '@/components/click-effect'
-import Fireflies from '@/components/fireflies'
-import SakuraPetals from '@/components/sakura-petals'
-import DanmakuBackground from '@/components/danmaku-bg'
 import WeatherWidget from '@/components/weather-widget'
 import ThemeToggle from '@/components/theme-toggle'
 import ReadingProgress from '@/components/reading-progress'
-import CursorGlow from '@/components/cursor-glow'
 import ImageLightbox from '@/components/image-lightbox'
 import SiteFooter from './site-footer'
 import { useTheme } from '@/hooks/use-theme'
 import { usePathname } from 'next/navigation'
+
+// 纯氛围装饰：拆成独立 chunk，等浏览器空闲再挂载，不占首屏
+const ClickEffect = dynamic(() => import('@/components/click-effect'), { ssr: false })
+const Fireflies = dynamic(() => import('@/components/fireflies'), { ssr: false })
+const SakuraPetals = dynamic(() => import('@/components/sakura-petals'), { ssr: false })
+const DanmakuBackground = dynamic(() => import('@/components/danmaku-bg'), { ssr: false })
+const CursorGlow = dynamic(() => import('@/components/cursor-glow'), { ssr: false })
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
@@ -37,6 +40,18 @@ export default function Layout({ children }: PropsWithChildren) {
 	const pathname = usePathname()
 	const isHome = pathname === '/'
 
+	// 浏览器空闲后再启动装饰层，首屏只渲染内容
+	const [idle, setIdle] = useState(false)
+	useEffect(() => {
+		const w = window as any
+		if (typeof w.requestIdleCallback === 'function') {
+			const id = w.requestIdleCallback(() => setIdle(true), { timeout: 2500 })
+			return () => w.cancelIdleCallback?.(id)
+		}
+		const t = setTimeout(() => setIdle(true), 1200)
+		return () => clearTimeout(t)
+	}, [])
+
 	const backgroundImages = (siteContent.backgroundImages ?? []) as Array<{ id: string; url: string }>
 	const currentBackgroundImageId = siteContent.currentBackgroundImageId
 	const currentBackgroundImage =
@@ -45,17 +60,17 @@ export default function Layout({ children }: PropsWithChildren) {
 	return (
 		<>
 			<SplashScreen />
-			<ClickEffect />
+			{idle && <ClickEffect />}
 			<ThemeToggle />
 			<ReadingProgress />
 			<ImageLightbox />
-			<CursorGlow />
+			{idle && <CursorGlow />}
 
 			{/* Sakura only in light mode; Fireflies only in dark mode */}
-			{!isDark && <SakuraPetals />}
-			{isDark && <Fireflies />}
+			{idle && !isDark && <SakuraPetals />}
+			{idle && isDark && <Fireflies />}
 
-			<DanmakuBackground />
+			{idle && <DanmakuBackground />}
 
 			<Toaster
 				position='bottom-right'

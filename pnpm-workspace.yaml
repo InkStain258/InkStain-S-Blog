@@ -1,0 +1,6 @@
+# pnpm 10+ 默认不再执行依赖的安装脚本（esbuild/sharp/workerd 需要编译二进制）。
+# 显式放行这三个，否则 pnpm install / next build 会因 ERR_PNPM_IGNORED_BUILDS 中断。
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd
