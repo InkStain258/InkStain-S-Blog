@@ -328,6 +328,27 @@ export default function BlogPage() {
 			/>
 
 			<div className='flex flex-col items-center justify-center gap-6 px-6 pt-24 max-sm:pt-24'>
+				{/* 入口：分类 / 标签 / 系列 / 归档 */}
+				<motion.div
+					initial={{ opacity: 0, y: -6 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+					className='text-secondary flex items-center gap-1 text-[11.5px] max-sm:hidden'>
+					{[
+						{ href: '/series', label: '系列' },
+						{ href: '/archive', label: '归档' },
+						...(categoryList.length ? [{ href: `/blog/category/${encodeURIComponent(categoryList[0])}`, label: '分类' }] : []),
+						...(items[0]?.tags?.length ? [{ href: `/blog/tag/${encodeURIComponent(items[0].tags[0])}`, label: '标签' }] : [])
+					].map((l, i) => (
+						<span key={l.href} className='flex items-center gap-1'>
+							{i > 0 && <span className='opacity-30'>·</span>}
+							<Link href={l.href} className='hover:text-brand transition-colors'>
+								{l.label}
+							</Link>
+						</span>
+					))}
+				</motion.div>
+
 				{items.length > 0 && (
 					<motion.div
 						initial={{ opacity: 0, scale: 0.6 }}

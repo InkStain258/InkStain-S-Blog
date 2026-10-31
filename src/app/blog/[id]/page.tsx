@@ -71,8 +71,27 @@ export default function Page() {
 		return <div className='text-secondary flex h-full items-center justify-center text-sm'>文章不存在</div>
 	}
 
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: title,
+		datePublished: blog.config.date,
+		dateModified: blog.config.date,
+		keywords: tags.join(', '),
+		articleSection: blog.config.category,
+		description: blog.config.summary,
+		image: blog.cover ? (blog.cover.startsWith('http') ? blog.cover : `${origin}${blog.cover}`) : undefined,
+		author: { '@type': 'Person', name: 'InkStain' },
+		mainEntityOfPage: { '@type': 'WebPage', '@id': `${origin}/blog/${slug}` }
+	}
+
+	// JSON.stringify 不转义 <，标题里若出现 </script> 会截断标签，这里统一转成 \u003c
+	const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c')
+
 	return (
 		<>
+			<script type='application/ld+json' dangerouslySetInnerHTML={{ __html: jsonLdText }} />
+
 			<BlogPreview
 				markdown={blog.markdown}
 				title={title}

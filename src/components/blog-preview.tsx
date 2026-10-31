@@ -1,10 +1,14 @@
 'use client'
 
 import { motion } from 'motion/react'
+import Link from 'next/link'
 import { useMemo } from 'react'
+import { BookMarked } from 'lucide-react'
 import { INIT_DELAY } from '@/consts'
 import { useMarkdownRender } from '@/hooks/use-markdown-render'
 import { useSize } from '@/hooks/use-size'
+import { useBlogIndex } from '@/hooks/use-blog-index'
+import { seriesContext } from '@/lib/series'
 import PostNav from '@/components/post-nav'
 import { BlogSidebar } from '@/components/blog-sidebar'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
@@ -24,6 +28,8 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 	const { content, toc, loading } = useMarkdownRender(markdown)
 	const { siteContent } = useConfigStore()
 	const summaryInContent = siteContent.summaryInContent ?? false
+	const { items } = useBlogIndex()
+	const series = useMemo(() => (slug ? seriesContext(items, slug) : null), [items, slug])
 
 	// 字数与阅读时长（中文按 400 字/分钟）
 	const stats = useMemo(() => {
@@ -48,11 +54,22 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 				transition={{ delay: INIT_DELAY }}
 				className='card bg-article static flex-1 overflow-auto rounded-xl p-8'>
 				<div>
+					{series && series.total > 1 && (
+						<Link
+							href={`/series/${encodeURIComponent(series.group.slug)}`}
+							className='text-secondary hover:border-brand/40 hover:text-brand mx-auto mb-3 flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
+							<BookMarked className='h-3 w-3' />
+							{series.group.name} · 第 {series.index + 1} / {series.total} 篇
+						</Link>
+					)}
+
 					<div className='text-center text-2xl font-semibold'>{title}</div>
 
 					<div className='text-secondary mt-4 flex flex-wrap items-center justify-center gap-3 px-8 text-center text-sm'>
 						{tags.map(t => (
-							<span key={t}>#{t}</span>
+							<Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className='hover:text-brand transition-colors'>
+								#{t}
+							</Link>
 						))}
 					</div>
 
