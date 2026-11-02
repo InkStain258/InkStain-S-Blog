@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import { Type, X } from 'lucide-react'
 
 type Prefs = { size: number; leading: number; font: 'sans' | 'serif' | 'system'; width: number }
@@ -61,24 +60,17 @@ export default function ReadingPrefs() {
 
 	return (
 		<>
-			<motion.button
+			<button
 				type='button'
 				onClick={() => setOpen(v => !v)}
 				aria-label='阅读设置'
-				whileHover={{ scale: 1.06 }}
-				whileTap={{ scale: 0.94 }}
-				className='glass-2 text-secondary hover:text-brand fixed right-6 bottom-[8.75rem] z-40 grid h-11 w-11 place-items-center rounded-full'>
+				className='glass-2 text-secondary hover:text-brand fixed right-6 bottom-[8.75rem] z-40 grid h-11 w-11 place-items-center rounded-full transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 				<Type className='h-4 w-4' />
-			</motion.button>
+			</button>
 
-			<AnimatePresence>
-				{open && (
-					<motion.div
-						initial={{ opacity: 0, y: 8, scale: 0.97 }}
-						animate={{ opacity: 1, y: 0, scale: 1 }}
-						exit={{ opacity: 0, y: 8, scale: 0.97 }}
-						transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-						className='glass-overlay fixed right-4 bottom-[12.5rem] z-40 max-h-[calc(100vh-230px)] w-[228px] overflow-y-auto rounded-2xl p-3.5'>
+			{open && (
+					<div
+						className='ink-pop-up glass-overlay fixed right-4 bottom-[12.5rem] z-40 max-h-[calc(100vh-230px)] w-[228px] overflow-y-auto rounded-2xl p-3.5'>
 						<div className='mb-3 flex items-center justify-between'>
 							<span className='text-[12px] font-medium'>阅读设置</span>
 							<button type='button' onClick={() => setOpen(false)} aria-label='收起' className='text-secondary hover:text-primary'>
@@ -155,9 +147,8 @@ export default function ReadingPrefs() {
 						</div>
 
 						<p className='text-secondary mt-3 text-[10px] leading-relaxed opacity-50'>设置存在本地，只影响你的浏览器。</p>
-					</motion.div>
-				)}
-			</AnimatePresence>
+					</div>
+			)}
 		</>
 	)
 }

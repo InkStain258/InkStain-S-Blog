@@ -912,3 +912,69 @@ html.sepia .cursor-glow {
   opacity: 0.72;
   word-break: break-all;
 }
+
+/* ------------------------------------------------------------------
+ * 首屏入场动画（CSS）—— 替掉 motion，降低首屏 JS
+ * 原来的 fade()/motion.section 用 JS 算 opacity/transform，
+ * 这些一次性的入场动画用 CSS keyframes 完全不差分毫，但不用下载动画库。
+ * ------------------------------------------------------------------ */
+@keyframes ink-fade-up {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 14px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+@keyframes ink-fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+.ink-fade-up {
+	animation: ink-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+	will-change: opacity, transform;
+}
+.ink-fade-in {
+	animation: ink-fade-in 0.9s ease both;
+}
+/* 弹层入场（搜索框、阅读设置、确认框） */
+@keyframes ink-pop {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -10px, 0) scale(0.985);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+.ink-pop {
+	animation: ink-pop 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ink-pop-up {
+	animation: ink-pop-up 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ink-pop-up {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 8px, 0) scale(0.97);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.ink-fade-up,
+	.ink-fade-in,
+	.ink-pop,
+	.ink-pop-up {
+		animation: none !important;
+	}
+}

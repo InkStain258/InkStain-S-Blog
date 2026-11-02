@@ -4,7 +4,6 @@ import Card from '@/components/card'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'motion/react'
 import { FlaskConical, MessageSquareText } from 'lucide-react'
 import { useCenterStore } from '@/hooks/use-center'
 import { CARD_SPACING } from '@/consts'
@@ -189,26 +188,28 @@ export default function NavCard() {
 							{form !== 'icons' && <div className='text-secondary mt-4 text-xs tracking-wider uppercase'>General</div>}
 
 							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-6 space-y-0')}>
-								<motion.div
-									className='absolute max-w-[230px] rounded-full border'
-									layoutId='nav-hover'
-									initial={false}
-									animate={
+								{/* 悬停高亮：原来用 motion 的 spring 滑块，改成 CSS 过渡的绝对定位块。
+								    竖直列表是等高的，translate 到 hoveredIndex × 行高即可，观感一致但不下载动画库。 */}
+								<div
+									aria-hidden='true'
+									className='pointer-events-none absolute max-w-[230px] rounded-full border transition-all duration-[220ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none'
+									style={
 										form === 'icons'
 											? {
 													left: hoveredIndex * (itemHeight + 24) - extraSize,
 													top: -extraSize,
 													width: itemHeight + extraSize * 2,
-													height: itemHeight + extraSize * 2
+													height: itemHeight + extraSize * 2,
+													backgroundImage: 'linear-gradient(to right bottom, var(--color-border) 60%, var(--color-card) 100%)'
 												}
-											: { top: hoveredIndex * (itemHeight + rowGap), left: 0, width: '100%', height: itemHeight }
+											: {
+													top: hoveredIndex * (itemHeight + rowGap),
+													left: 0,
+													width: '100%',
+													height: itemHeight,
+													backgroundImage: 'linear-gradient(to right bottom, var(--color-border) 60%, var(--color-card) 100%)'
+												}
 									}
-									transition={{
-										type: 'spring',
-										stiffness: 400,
-										damping: 30
-									}}
-									style={{ backgroundImage: 'linear-gradient(to right bottom, var(--color-border) 60%, var(--color-card) 100%)' }}
 								/>
 
 								{list.map((item, index) => (

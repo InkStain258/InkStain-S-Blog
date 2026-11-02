@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { motion } from 'motion/react'
 import clsx from 'clsx'
 import { ChevronUp, RefreshCw, KeyRound } from 'lucide-react'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
@@ -74,12 +73,7 @@ export default function SiteFooter() {
 	const expanded = open || !canHover
 
 	return (
-		<motion.footer
-			initial={{ opacity: 0, y: 24 }}
-			whileInView={{ opacity: 1, y: 0 }}
-			viewport={{ once: true, amount: 0.2 }}
-			transition={{ duration: 0.5, ease: 'easeOut' }}
-			className='relative z-10 mx-auto mt-16 w-full max-w-[1140px] px-6 pb-10 max-sm:px-4'>
+		<footer className='ink-fade-up relative z-10 mx-auto mt-16 w-full max-w-[1140px] px-6 pb-10 max-sm:px-4'>
 			<div
 				className='relative h-14'
 				onMouseEnter={() => canHover && setOpen(true)}
@@ -89,14 +83,12 @@ export default function SiteFooter() {
 					if (canHover && !e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false)
 				}}>
 				{/* ---------------- 展开态 ---------------- */}
-				<motion.div
-					initial={false}
-					animate={{ opacity: expanded ? 1 : 0, y: expanded ? 0 : 18, scale: expanded ? 1 : 0.985 }}
-					transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+				<div
 					aria-hidden={!expanded}
 					className={clsx(
 						'bg-card absolute inset-x-0 bottom-0 overflow-hidden rounded-[28px] border shadow-[0_26px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur-md',
-						!expanded && 'pointer-events-none'
+						'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+						expanded ? 'translate-y-0 scale-100 opacity-100' : 'pointer-events-none translate-y-[18px] scale-[0.985] opacity-0'
 					)}>
 					<div className='h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--color-brand)] to-transparent opacity-60' />
 
@@ -211,17 +203,15 @@ export default function SiteFooter() {
 							</div>
 						</div>
 					</div>
-				</motion.div>
+				</div>
 
 				{/* ---------------- 收起态 ---------------- */}
-				<motion.div
-					initial={false}
-					animate={{ opacity: expanded ? 0 : 1, y: expanded ? 10 : 0 }}
-					transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+				<div
 					aria-hidden={expanded}
 					className={clsx(
 						'bg-card absolute inset-x-0 bottom-0 flex h-14 items-center justify-between rounded-2xl border px-5 backdrop-blur-md',
-						expanded && 'pointer-events-none'
+						'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+						expanded ? 'pointer-events-none translate-y-[10px] opacity-0' : 'translate-y-0 opacity-100'
 					)}>
 					<div className='flex min-w-0 items-center gap-3'>
 						<Image src='/images/avatar.png' alt={name} width={28} height={28} className='ring-brand/30 h-7 w-7 rounded-full object-cover ring-2' />
@@ -248,8 +238,8 @@ export default function SiteFooter() {
 							悬停展开
 						</span>
 					</div>
-				</motion.div>
+				</div>
 			</div>
-		</motion.footer>
+		</footer>
 	)
 }

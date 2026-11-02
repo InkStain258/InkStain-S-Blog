@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'motion/react'
 import EmptyState from '@/components/empty-state'
 import { Search, CornerDownLeft, X } from 'lucide-react'
 
@@ -112,22 +111,14 @@ export default function SearchDialog() {
 				<Search className='h-4 w-4' />
 			</button>
 
-			<AnimatePresence>
-				{open && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.18 }}
-						onClick={() => setOpen(false)}
-						className='fixed inset-0 z-[80] flex items-start justify-center bg-black/25 px-4 pt-[12vh] backdrop-blur-sm'>
-						<motion.div
-							initial={{ opacity: 0, y: -12, scale: 0.985 }}
-							animate={{ opacity: 1, y: 0, scale: 1 }}
-							exit={{ opacity: 0, y: -8, scale: 0.99 }}
-							transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-							onClick={e => e.stopPropagation()}
-							className='glass-overlay w-full max-w-[580px] overflow-hidden rounded-2xl'>
+			{open && (
+				<div
+					onClick={() => setOpen(false)}
+					className='ink-fade-in fixed inset-0 z-[80] flex items-start justify-center bg-black/25 px-4 pt-[12vh] backdrop-blur-sm'
+					style={{ animationDuration: '0.18s' }}>
+					<div
+						onClick={e => e.stopPropagation()}
+						className='ink-pop glass-overlay w-full max-w-[580px] overflow-hidden rounded-2xl'>
 							<div className='flex items-center gap-2.5 border-b px-4 py-3'>
 								<Search className='text-secondary h-4 w-4 shrink-0' />
 								<input
@@ -197,10 +188,9 @@ export default function SearchDialog() {
 									<span className='tabular-nums'>{took !== null ? `${took}ms` : ''}</span>
 								</div>
 							)}
-						</motion.div>
-					</motion.div>
-				)}
-			</AnimatePresence>
+					</div>
+				</div>
+			)}
 		</>
 	)
 }

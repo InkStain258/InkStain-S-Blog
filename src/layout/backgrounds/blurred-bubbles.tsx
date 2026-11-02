@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'motion/react'
 import siteContent from '@/config/site-content.json'
 import { makeNoise2D, rand } from './utils'
 
@@ -326,13 +325,8 @@ export default function BlurredBubblesBackground({
 	}, [colors, regenerateKey])
 
 	return (
-		<motion.div
-			animate={{ opacity: 1 }}
-			initial={{ opacity: 0 }}
-			transition={{ duration: 1 }}
-			className='fixed inset-0 z-0 overflow-hidden'
-			style={{ filter: 'blur(50px)' }}>
+		<div className='ink-fade-in fixed inset-0 z-0 overflow-hidden' style={{ filter: 'blur(50px)' }}>
 			<canvas ref={ref} className='h-full w-full' style={{ display: 'block' }} />
-		</motion.div>
+		</div>
 	)
 }

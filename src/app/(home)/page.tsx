@@ -1,7 +1,6 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { motion } from 'motion/react'
 import { useLayoutEditStore } from './stores/layout-edit-store'
 import { useConfigStore } from './stores/config-store'
 import { toast } from 'sonner'
@@ -54,17 +53,15 @@ export default function Home() {
 					<div className='pointer-events-auto flex items-center gap-3 rounded-2xl bg-white/80 px-4 py-2 elev-3 backdrop-blur'>
 						<span className='text-xs text-gray-600'>正在编辑首页布局，拖拽卡片调整位置</span>
 						<div className='flex gap-2'>
-							<motion.button
+							<button
 								type='button'
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
 								onClick={handleCancel}
-								className='rounded-xl border bg-white px-3 py-1 text-xs font-medium text-gray-700'>
+								className='rounded-xl border bg-white px-3 py-1 text-xs font-medium text-gray-700 transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 								取消
-							</motion.button>
-							<motion.button type='button' whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSave} className='brand-btn px-3 py-1 text-xs'>
+							</button>
+							<button type='button' onClick={handleSave} className='brand-btn px-3 py-1 text-xs transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 								保存偏移
-							</motion.button>
+							</button>
 						</div>
 					</div>
 				</div>

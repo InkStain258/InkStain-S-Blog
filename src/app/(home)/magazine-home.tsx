@@ -3,7 +3,6 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import { motion } from 'motion/react'
 import { ArrowRight, BookMarked, Clock3 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
@@ -35,17 +34,17 @@ export default function MagazineHome() {
 		return [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14)
 	}, [items])
 
+	// 入场动画改由 CSS 负责（globals.css 的 .ink-fade-up），这里只算延迟
 	const fade = (delay = 0) => ({
-		initial: { opacity: 0, y: 14 },
-		animate: { opacity: 1, y: 0 },
-		transition: { delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] as const }
+		className: 'ink-fade-up',
+		style: { animationDelay: `${delay}s` }
 	})
 
 	return (
 		<div className='mx-auto w-full max-w-[1460px] px-6 pt-28 pb-24 max-sm:px-4 lg:pl-[330px]'>
 			<div className='max-w-[980px]'>
 			{/* 主视觉 */}
-			<motion.section {...fade()} className='grid items-center gap-9 md:grid-cols-[1.08fr_0.92fr]'>
+			<section {...fade()} className='ink-fade-up grid items-center gap-9 md:grid-cols-[1.08fr_0.92fr]'>
 				<div>
 					<div className='text-secondary text-[10.5px] tracking-[0.32em] uppercase opacity-60'>InkStain · 技术杂谈</div>
 					<h1 className='mt-3.5 text-[34px] leading-[1.24] font-semibold tracking-tight max-sm:text-[27px]'>
@@ -104,7 +103,7 @@ export default function MagazineHome() {
 						</div>
 					</Link>
 				)}
-			</motion.section>
+			</section>
 
 			{/* 精选 */}
 			{featured.length > 0 && (
@@ -117,7 +116,7 @@ export default function MagazineHome() {
 					</div>
 					<div className='grid gap-3.5 md:grid-cols-3'>
 						{featured.map((it, i) => (
-							<motion.div key={it.slug} {...fade(0.08 + i * 0.06)}>
+							<div key={it.slug} {...fade(0.08 + i * 0.06)}>
 								<Link href={`/blog/${it.slug}`} className='glass-1 glass-gloss relative flex h-full w-full flex-col overflow-hidden rounded-2xl transition-colors hover:border-brand/35'>
 									<div className='bg-border/30 aspect-[3/2] overflow-hidden'>
 										{it.cover ? (
@@ -139,7 +138,7 @@ export default function MagazineHome() {
 										<div className='text-secondary mt-auto pt-2 text-[10px] opacity-45'>{dayjs(it.date).format('YYYY-MM-DD')}</div>
 									</div>
 								</Link>
-							</motion.div>
+							</div>
 						))}
 					</div>
 				</section>
