@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 
 export default function SplashScreen() {
   const [show, setShow] = useState(false)
@@ -10,10 +10,12 @@ export default function SplashScreen() {
     setMounted(true)
     if (sessionStorage.getItem('splash-seen')) return
     setShow(true)
+    // 2s 太长：首访要等满两秒才看见内容。压到 1.2s，退出动画也从 0.6s 收到 0.35s。
+    // 它是 fixed 覆盖层，不参与文档流，所以不会造成布局位移。
     const t = setTimeout(() => {
       setShow(false)
       sessionStorage.setItem('splash-seen', 'true')
-    }, 2000)
+    }, 1200)
     return () => clearTimeout(t)
   }, [])
 
@@ -23,8 +25,9 @@ export default function SplashScreen() {
     <AnimatePresence>
       {show && (
         <motion.div exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-          transition={{ duration: 0.6 }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-white dark:bg-slate-950">
+          transition={{ duration: 0.35 }}
+          aria-hidden='true'
+          className="pointer-events-none fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-white dark:bg-slate-950">
           <div className="relative z-10 flex flex-col items-center">
             <div className="relative w-20 h-20 mb-6">
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}

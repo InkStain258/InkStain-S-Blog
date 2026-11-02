@@ -11,9 +11,12 @@ export const dynamic = 'force-static'
  */
 export default function sitemap(): MetadataRoute.Sitemap {
 	const posts = blogIndex as BlogIndexItem[]
-	const staticPages = ['/blog', '/archive', '/series', '/about', '/projects', '/share', '/guestbook', '/bloggers']
+	const staticPages = ['/blog', '/archive', '/series', '/about', '/projects', '/share', '/guestbook', '/bloggers', '/lab']
 	const categories = [...new Set(posts.map(p => p.category).filter(Boolean))] as string[]
-	const tags = [...new Set(posts.flatMap(p => p.tags || []))]
+	// 只用过一次的标签：页面保留（老链接不 404），但不进 sitemap、也不让搜索引擎收录
+	const tagCount = new Map<string, number>()
+	for (const p of posts) for (const t of p.tags || []) tagCount.set(t, (tagCount.get(t) ?? 0) + 1)
+	const tags = [...tagCount.entries()].filter(([, n]) => n >= 2).map(([t]) => t)
 
 	const entries: MetadataRoute.Sitemap = [
 		{ url: `${SITE_URL}/`, changeFrequency: 'daily', priority: 1, lastModified: new Date() },
