@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'motion/react'
 import { Dices } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { toast } from 'sonner'
@@ -34,34 +33,27 @@ export default function RandomRoam() {
 
 	return (
 		<div className='fixed right-6 bottom-40 z-40 max-sm:right-4 max-sm:bottom-36'>
-			<motion.button
+			<button
 				type='button'
 				onClick={roam}
-				whileHover={{ scale: 1.08 }}
-				whileTap={{ scale: 0.92 }}
 				aria-label='随机看一篇'
 				title='随机看一篇'
-				className='bg-card border-backdrop group relative grid h-11 w-11 place-items-center rounded-full border elev-3 backdrop-blur-md'>
-				<motion.span animate={spinning ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 0.42, ease: 'easeInOut' }}>
+				className='bg-card border-backdrop elev-3 group relative grid h-11 w-11 place-items-center rounded-full border backdrop-blur-md transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
+				<span className={spinning ? 'spin-once inline-block' : 'inline-block'}>
 					<Dices className='text-brand h-4.5 w-4.5' />
-				</motion.span>
+				</span>
 				<span className='border-brand/20 bg-card pointer-events-none absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap opacity-0 elev-2 transition-opacity group-hover:opacity-100 sm:block'>
 					随机看一篇
 				</span>
-			</motion.button>
+			</button>
 
-			<AnimatePresence>
-				{spinning && (
-					<motion.span
-						initial={{ opacity: 0, y: 6 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -6 }}
-						className='text-secondary bg-card border-backdrop absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap elev-2 sm:block'
-						style={{ bottom: 0 }}>
-						掷骰中…
-					</motion.span>
-				)}
-			</AnimatePresence>
+			{spinning && (
+				<span
+					className='ink-pop-up text-secondary bg-card border-backdrop elev-2 absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap sm:block'
+					style={{ bottom: 0 }}>
+					掷骰中…
+				</span>
+			)}
 		</div>
 	)
 }

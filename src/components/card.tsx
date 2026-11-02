@@ -1,7 +1,6 @@
 'use client'
 
 import { ANIMATION_DELAY } from '@/consts'
-import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { useEffect, useState } from 'react'
 import { useSize } from '@/hooks/use-size'
@@ -36,17 +35,13 @@ export default function Card({ children, order, width, height, x, y, className, 
 
 	if (show)
 		return (
-			<motion.div
-				className={cn('card squircle', className)}
-				initial={{ opacity: 0, scale: 0.6, left: x, top: y, width, height }}
-				animate={{ opacity: 1, scale: 1, left: x, top: y, width, height }}
-				transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-				whileHover={{ scale: 1.05 }}
-				whileTap={{ scale: 0.95 }}
+			<div
+				className={cn('card squircle ink-card-in', className)}
+				style={{ left: x, top: y, width, height }}
 				onMouseEnter={onMouseEnter}
 				onMouseLeave={onMouseLeave}>
 				{children}
-			</motion.div>
+			</div>
 		)
 
 	return null

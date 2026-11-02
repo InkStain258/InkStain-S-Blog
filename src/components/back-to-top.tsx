@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
 
 const SIZE = 44
@@ -40,19 +39,13 @@ export default function BackToTop() {
 	}, [])
 
 	return (
-		<AnimatePresence>
+		<>
 			{visible && (
-				<motion.button
-					initial={{ opacity: 0, scale: 0.6, y: 8 }}
-					animate={{ opacity: 1, scale: 1, y: 0 }}
-					exit={{ opacity: 0, scale: 0.6, y: 8 }}
-					transition={{ duration: 0.22, ease: 'easeOut' }}
-					whileHover={{ scale: 1.08 }}
-					whileTap={{ scale: 0.94 }}
+				<button
 					onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 					aria-label='回到顶部'
 					title='回到顶部'
-					className='bg-card border-backdrop fixed right-6 bottom-24 z-40 grid place-items-center rounded-full border elev-3 backdrop-blur-md max-sm:right-4 max-sm:bottom-20'
+					className='ink-pop-up bg-card border-backdrop elev-3 fixed right-6 bottom-24 z-40 grid place-items-center rounded-full border backdrop-blur-md transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none max-sm:right-4 max-sm:bottom-20'
 					style={{ width: SIZE, height: SIZE }}>
 					<svg width={SIZE} height={SIZE} className='absolute inset-0 -rotate-90' aria-hidden>
 						<circle cx={SIZE / 2} cy={SIZE / 2} r={R} fill='none' stroke='currentColor' strokeWidth={STROKE} className='text-secondary/15' />
@@ -70,8 +63,8 @@ export default function BackToTop() {
 						/>
 					</svg>
 					<ArrowUp className='text-brand relative h-4 w-4' />
-				</motion.button>
+				</button>
 			)}
-		</AnimatePresence>
+		</>
 	)
 }

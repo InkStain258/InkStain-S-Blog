@@ -960,6 +960,64 @@ html.sepia .cursor-glow {
 .ink-pop-up {
 	animation: ink-pop-up 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+/* 随机看一篇：骰子转一圈再跳转 */
+@keyframes ink-spin-once {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+.spin-once {
+	animation: ink-spin-once 0.42s ease-in-out;
+}
+
+/* ---------------- 开场层（splash） ---------------- */
+@keyframes ink-splash-bar {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
+	}
+}
+.ink-splash-bar {
+	animation: ink-splash-bar 1.5s ease-in-out both;
+}
+@keyframes ink-splash-ring {
+	to {
+		transform: rotate(360deg);
+	}
+}
+.ink-splash-ring {
+	animation: ink-splash-ring 3s linear infinite;
+}
+@keyframes ink-splash-out {
+	to {
+		opacity: 0;
+		filter: blur(10px);
+		transform: scale(1.05);
+	}
+}
+.ink-splash-out {
+	animation: ink-splash-out 0.35s ease-in forwards;
+}
+
+/* ---------------- 卡片入场（卡片版首页用，被 Card 组件共享） ---------------- */
+@keyframes ink-card-in {
+	from {
+		opacity: 0;
+		transform: scale(0.92);
+	}
+	to {
+		opacity: 1;
+		 transform: none;
+	}
+}
+.ink-card-in {
+	animation: ink-card-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 @keyframes ink-pop-up {
 	from {
 		opacity: 0;
@@ -974,7 +1032,13 @@ html.sepia .cursor-glow {
 	.ink-fade-up,
 	.ink-fade-in,
 	.ink-pop,
-	.ink-pop-up {
+	.ink-pop-up,
+	.spin-once,
+	.ink-card-in {
+		animation: none !important;
+	}
+	.ink-splash-ring,
+	.ink-splash-bar {
 		animation: none !important;
 	}
 }
