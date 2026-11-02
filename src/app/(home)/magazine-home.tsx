@@ -3,27 +3,15 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import { ChevronRight, BookMarked, Clock3, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
+import { ChevronRight, BookMarked, Clock3 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 import { plainInline } from '@/lib/utils'
 import PostList from '@/components/post-list'
 import { SmartImage } from '@/components/smart-image'
 import InlinePlayer from '@/components/inline-player'
-import { LAB_TOOLS } from '@/lib/lab-tools'
 
 const origin = ''
-
-const LAB_ICONS = {
-	clock: Clock,
-	image: ImageIcon,
-	images: Images,
-	music: Music,
-	shapes: Shapes,
-	code: Code2,
-	sparkles: Sparkles,
-	gamepad: Gamepad2
-} as const
 
 /**
  * 杂志式首页。
@@ -57,6 +45,43 @@ export default function MagazineHome() {
 			.filter(([, n]) => n >= 2)
 			.sort((a, b) => b[1] - a[1])
 			.slice(0, 12)
+	}, [items])
+
+	// 统计面板：标签总数、分类数、最近 12 个月的写作节奏
+	const tagTotal = useMemo(() => {
+		const set = new Set<string>()
+		for (const it of items) for (const t of it.tags || []) set.add(t)
+		return set.size
+	}, [items])
+
+	const categoryCount = useMemo(() => {
+		const set = new Set<string>()
+		for (const it of items) {
+			const leaf = it.categoryPath?.length ? it.categoryPath[it.categoryPath.length - 1] : it.category
+			if (leaf) set.add(leaf)
+		}
+		return set.size
+	}, [items])
+
+	const { monthly, monthMax, latestLabel } = useMemo(() => {
+		const buckets: { key: string; label: string; n: number }[] = []
+		const now = dayjs()
+		for (let i = 11; i >= 0; i--) {
+			const d = now.subtract(i, 'month')
+			buckets.push({ key: d.format('YYYY-MM'), label: d.format('M 月'), n: 0 })
+		}
+		const index = new Map(buckets.map((b, i) => [b.key, i]))
+		for (const it of items) {
+			const k = dayjs(it.date).format('YYYY-MM')
+			const i = index.get(k)
+			if (i !== undefined) buckets[i].n += 1
+		}
+		const latest = items.reduce((acc, it) => (it.date > acc ? it.date : acc), '')
+		return {
+			monthly: buckets,
+			monthMax: Math.max(1, ...buckets.map(b => b.n)),
+			latestLabel: latest ? dayjs(latest).format('M 月 D 日') : '—'
+		}
 	}, [items])
 
 	const fade = (delay = 0) => ({ style: { animationDelay: `${delay}s` } })
@@ -145,28 +170,47 @@ export default function MagazineHome() {
 
 					<aside {...fade(0.12)} className='ink-fade-up'>
 						<div className='mb-3 flex items-baseline justify-between'>
-							<h2 className='text-[15px] font-semibold tracking-tight'>实验室</h2>
-							<Link href='/lab' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
-								全部
+							<h2 className='text-[15px] font-semibold tracking-tight'>统计</h2>
+							<Link href='/about' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
+								关于
 							</Link>
 						</div>
-						<p className='text-secondary mb-3 text-[11px] leading-relaxed'>顺手做的小工具，平时自己也在用。</p>
 
+						{/* 四格数字 */}
 						<div className='grid grid-cols-2 gap-2'>
-							{LAB_TOOLS.map(t => {
-								const Icon = LAB_ICONS[t.icon]
-								return (
-									<Link
-										key={t.href}
-										href={t.href}
-										className='group glass-2 hover:border-brand/40 flex items-center gap-2 rounded-xl px-2.5 py-2.5 transition-colors'>
-										<span className='bg-brand/10 text-brand-ink grid h-7 w-7 shrink-0 place-items-center rounded-lg'>
-											<Icon className='h-3.5 w-3.5' />
-										</span>
-										<span className='min-w-0 flex-1 truncate text-[11.5px] max-sm:text-[12.5px]'>{t.title}</span>
-									</Link>
-								)
-							})}
+							{[
+								{ v: items.length, l: '篇笔记' },
+								{ v: tagTotal, l: '个标签' },
+								{ v: categoryCount, l: '个分类' },
+								{ v: seriesCount, l: '个系列' }
+							].map(cell => (
+								<div key={cell.l} className='glass-1 rounded-xl px-3.5 py-3'>
+									<div className='text-[22px] leading-none font-semibold tabular-nums'>{cell.v}</div>
+									<div className='text-secondary mt-1.5 text-[10.5px]'>{cell.l}</div>
+								</div>
+							))}
+						</div>
+
+						{/* 最近 12 个月的写作节奏 */}
+						<div className='glass-1 mt-2 rounded-xl px-3.5 py-3'>
+							<div className='text-secondary flex items-baseline justify-between text-[10px]'>
+								<span>按月 · 最近 12 个月</span>
+								<span className='tabular-nums'>最近 {latestLabel}</span>
+							</div>
+							<div className='mt-2.5 flex h-14 items-end gap-[3px]'>
+								{monthly.map(m => (
+									<div key={m.key} className='group/bar relative flex h-full flex-1 items-end' title={`${m.label} · ${m.n} 篇`}>
+										<div
+											className={m.n > 0 ? 'bg-brand/70 group-hover/bar:bg-brand w-full rounded-[3px] transition-colors' : 'bg-secondary/20 w-full rounded-[3px]'}
+											style={{ height: `${Math.max(m.n > 0 ? 12 : 4, (m.n / monthMax) * 100)}%` }}
+										/>
+									</div>
+								))}
+							</div>
+							<div className='text-secondary mt-1.5 flex justify-between text-[9px] tabular-nums'>
+								<span>{monthly[0]?.label}</span>
+								<span>{monthly[11]?.label}</span>
+							</div>
 						</div>
 
 						<div className='mt-5'>

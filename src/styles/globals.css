@@ -256,7 +256,7 @@
 		inset 0 1px 0 var(--glass-hi),
 		inset 0 -1px 0 var(--glass-lo),
 		var(--glass-shadow-1);
-	backdrop-filter: blur(16px) saturate(1.22);
+	backdrop-filter: blur(30px) saturate(1.3);
 }
 
 @utility glass-2 {
@@ -270,7 +270,7 @@
 		inset 0 1px 0 var(--glass-hi),
 		inset 0 -1px 0 var(--glass-lo),
 		var(--glass-shadow-2);
-	backdrop-filter: blur(22px) saturate(1.24);
+	backdrop-filter: blur(38px) saturate(1.34);
 }
 
 @utility glass-overlay {
