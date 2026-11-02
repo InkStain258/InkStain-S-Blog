@@ -15,6 +15,18 @@ const {
 const SITE_NAME = 'InkStain'
 
 export const metadata: Metadata = {
+  // 标签页图标 = 头像。favicon.ico 给老浏览器，其余给高分屏与 iOS 主屏
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' }
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/favicon.ico']
+  },
   metadataBase: new URL(SITE_URL),
   title: { default: title, template: `%s | ${SITE_NAME}` },
   description,

@@ -5,7 +5,6 @@ export default function Head() {
 		<head>
 			<link rel='manifest' href='/manifest.json' />
 
-			<link rel='icon' href='/favicon.png' />
 
 			<link rel='preconnect' href='https://fonts.googleapis.cn' />
 			<link rel='preconnect' href='https://fonts.gstatic.cn' crossOrigin='anonymous' />
