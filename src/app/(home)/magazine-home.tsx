@@ -76,13 +76,13 @@ export default function MagazineHome() {
 					</div>
 
 					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[29px]'>
-						把想说的话，
+						赋术予文，
 						<br />
-						说清楚。
+						泼墨为痕
 					</h1>
 
 					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9] max-sm:text-[13.5px] max-sm:leading-[1.95]'>
-						有些念头在脑子里转了很久，落到纸上才发现根本没想明白。于是我读一点、写一点，试着把话说清楚。不成体系，但都是真想过的。
+						原想着给未来脑腐的自己留下一片清醒的慰藉，实际上只是一个可怜虫找的一片栖身之所罢。
 					</p>
 
 					<div className='mt-6 flex flex-wrap items-center gap-3'>
