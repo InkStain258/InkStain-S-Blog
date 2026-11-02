@@ -56,13 +56,6 @@ export const LAB_TOOLS: LabTool[] = [
 		icon: 'code'
 	},
 	{
-		href: '/live2d',
-		title: 'Live2D 看板娘',
-		desc: '模型查看器，试试拖动与换装。',
-		tag: '玩具',
-		icon: 'sparkles'
-	},
-	{
 		href: '/wuthering-waves',
 		title: '鸣潮抽卡分析',
 		desc: '导入抽卡记录，看保底进度与出货曲线。',

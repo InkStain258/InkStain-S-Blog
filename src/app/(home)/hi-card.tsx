@@ -86,7 +86,7 @@ export default function HiCard() {
 						animate={{ y: hovering ? -3 : 0 }}
 						transition={{ type: 'spring', stiffness: 260, damping: 24 }}
 						className='flex h-full w-full flex-col items-center justify-center'>
-						<Link href='/live2d' style={{ transform: 'translateZ(38px)' }}>
+						<Link href='/about' style={{ transform: 'translateZ(38px)' }}>
 							<img
 								src='/images/avatar.png'
 								className='mx-auto rounded-full transition-shadow duration-300'

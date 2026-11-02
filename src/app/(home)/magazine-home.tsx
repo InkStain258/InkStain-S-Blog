@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import { ChevronRight, BookMarked, Clock3 } from 'lucide-react'
+import { ChevronRight, BookMarked, Clock3, PenLine } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 import { plainInline } from '@/lib/utils'
@@ -122,6 +122,12 @@ export default function MagazineHome() {
 						<Link href='/series' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 px-1 text-[12.5px] transition-colors'>
 							<BookMarked className='h-3.5 w-3.5' />
 							按系列读
+						</Link>
+						<Link
+							href='/write'
+							className='glass-1 text-brand-ink hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12px] transition-colors'>
+							<PenLine className='h-3.5 w-3.5' />
+							写文章
 						</Link>
 					</div>
 
