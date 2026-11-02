@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { motion } from 'motion/react'
-import { ArrowLeft, BookMarked, ArrowRight } from 'lucide-react'
+import { ChevronLeft, BookMarked, ChevronRight } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 
@@ -16,7 +16,7 @@ export default function SeriesIndexPage() {
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
 				<Link href='/blog' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
-					<ArrowLeft className='h-3.5 w-3.5' />
+					<ChevronLeft className='h-3.5 w-3.5' />
 					返回博客
 				</Link>
 				<div className='mt-4'>
@@ -43,7 +43,7 @@ export default function SeriesIndexPage() {
 									<div className='min-w-0'>
 										<div className='group-hover:text-brand-ink flex items-center gap-2 text-[15px] font-semibold transition-colors'>
 											{g.name}
-											<ArrowRight className='h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-60' />
+											<ChevronRight className='h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-60' />
 										</div>
 										{g.categoryPath.length > 0 && (
 											<div className='text-brand-ink/80 mt-1.5 text-[10.5px] tracking-[0.06em]'>

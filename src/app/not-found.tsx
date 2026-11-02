@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowLeft, Search } from 'lucide-react'
+import { ChevronLeft, Search } from 'lucide-react'
 
 export default function NotFound() {
 	return (
@@ -21,7 +21,7 @@ export default function NotFound() {
 				<Link
 					href='/'
 					className='bg-brand inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[12.5px] font-medium text-white transition-opacity hover:opacity-90'>
-					<ArrowLeft className='h-3.5 w-3.5' />
+					<ChevronLeft className='h-3.5 w-3.5' />
 					回首页
 				</Link>
 				<Link

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { motion } from 'motion/react'
-import { ArrowLeft, ArrowRight, BookMarked } from 'lucide-react'
+import { ChevronLeft, ChevronRight, BookMarked } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { seriesContext } from '@/lib/series'
 
@@ -40,10 +40,10 @@ export default function PostNav({ slug }: { slug: string }) {
 					href={`/blog/${post.slug}`}
 					className={`glass-1 group block h-full rounded-2xl p-4 transition-colors hover:border-brand/35 ${isOlder ? '' : 'text-right'}`}>
 					<div className={`text-secondary flex items-center gap-1.5 text-[11px] ${isOlder ? '' : 'justify-end'}`}>
-						{isOlder && <ArrowLeft className='h-3 w-3' />}
+						{isOlder && <ChevronLeft className='h-3 w-3' />}
 						{label}
 						{chapter ? <span className='opacity-50'>· 第 {chapter} 篇</span> : null}
-						{!isOlder && <ArrowRight className='h-3 w-3' />}
+						{!isOlder && <ChevronRight className='h-3 w-3' />}
 					</div>
 					<div className='group-hover:text-brand-ink mt-1.5 line-clamp-2 text-[13.5px] leading-snug font-medium transition-colors'>
 						{chapterTitle || post.title}

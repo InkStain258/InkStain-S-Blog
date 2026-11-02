@@ -5,7 +5,7 @@ import Link from 'next/link'
 import dayjs from 'dayjs'
 import { useParams } from 'next/navigation'
 import { motion } from 'motion/react'
-import { ArrowLeft, ArrowRight, Circle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Circle } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 
@@ -34,7 +34,7 @@ export default function SeriesDetailPage() {
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
 				<Link href='/series' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
-					<ArrowLeft className='h-3.5 w-3.5' />
+					<ChevronLeft className='h-3.5 w-3.5' />
 					全部系列
 				</Link>
 
@@ -69,7 +69,7 @@ export default function SeriesDetailPage() {
 						href={`/blog/${first.slug}`}
 						className='bg-brand mt-5 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12.5px] font-medium text-white transition-opacity hover:opacity-90'>
 						从第一篇开始读
-						<ArrowRight className='h-3.5 w-3.5' />
+						<ChevronRight className='h-3.5 w-3.5' />
 					</Link>
 				)}
 			</motion.div>

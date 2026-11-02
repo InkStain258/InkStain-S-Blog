@@ -304,7 +304,7 @@ export default function Page() {
 					className='space-y-2 text-center'>
 					<p className='text-secondary text-xs tracking-[0.2em] uppercase'>Image Toolbox</p>
 					<h1 className='text-2xl font-semibold'>PNG / JPG 转 WEBP</h1>
-					<p className='text-secondary'>选择图片 → 调整质量 → 一键转换下载</p>
+					<p className='text-secondary'>选择图片、调整质量，然后一键转换下载</p>
 				</motion.div>
 
 				<motion.label

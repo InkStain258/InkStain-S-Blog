@@ -85,8 +85,8 @@ export default function ImageLightbox() {
 			return imgs[(cur + dir + imgs.length) % imgs.length]
 		}
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-			const target = step(e.key === 'ArrowRight' ? 1 : -1)
+			if (e.key !== 'ChevronLeft' && e.key !== 'ChevronRight') return
+			const target = step(e.key === 'ChevronRight' ? 1 : -1)
 			if (!target) return
 			e.preventDefault()
 			setSrc(target.currentSrc || target.src)
@@ -230,7 +230,7 @@ export default function ImageLightbox() {
 			)}
 
 			<div className='pointer-events-none absolute bottom-6 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/40 px-4 py-1.5 text-center text-xs whitespace-nowrap text-white/70 backdrop-blur'>
-				{multi ? `第 ${curIdx + 1} / ${gallery.length} 张 · ← → 切换 · ` : ''}滚轮缩放 · 放大后拖拽移动 · 双击复位 · Esc 关闭
+				{multi ? `第 ${curIdx + 1} / ${gallery.length} 张 · 方向键切换 · ` : ''}滚轮缩放 · 放大后拖拽移动 · 双击复位 · Esc 关闭
 			</div>
 		</div>
 	)

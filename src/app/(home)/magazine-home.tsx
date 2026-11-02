@@ -3,20 +3,7 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import {
-	ArrowRight,
-	ArrowUpRight,
-	BookMarked,
-	Clock3,
-	Clock,
-	Image as ImageIcon,
-	Images,
-	Music,
-	Shapes,
-	Code2,
-	Sparkles,
-	Gamepad2
-} from 'lucide-react'
+import { ChevronRight, ArrowUpRight, BookMarked, Clock3, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 import { plainInline } from '@/lib/utils'
@@ -99,7 +86,7 @@ export default function MagazineHome() {
 							href={hero ? `/blog/${hero.slug}` : '/blog'}
 							className='bg-brand inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[12.5px] font-medium text-white transition-opacity hover:opacity-90'>
 							读最新一篇
-							<ArrowRight className='h-3.5 w-3.5' />
+							<ChevronRight className='h-3.5 w-3.5' />
 						</Link>
 						<Link
 							href='/blog'
@@ -157,7 +144,7 @@ export default function MagazineHome() {
 						<div className='mb-3 flex items-baseline justify-between'>
 							<h2 className='text-[13px] font-semibold tracking-wide'>实验室</h2>
 							<Link href='/lab' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
-								全部 →
+								全部
 							</Link>
 						</div>
 						<p className='text-secondary mb-3 text-[11px] leading-relaxed'>顺手做的小工具，平时自己也在用。</p>
@@ -184,7 +171,7 @@ export default function MagazineHome() {
 							<div className='mb-2 flex items-baseline justify-between'>
 								<h2 className='text-[13px] font-semibold tracking-wide'>边写边听</h2>
 								<Link href='/music' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
-									Music →
+									Music
 								</Link>
 							</div>
 							<InlinePlayer />
@@ -198,7 +185,7 @@ export default function MagazineHome() {
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[16px] font-semibold tracking-tight'>最近写的</h2>
 							<Link href='/blog' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
-								全部文章 →
+								全部文章
 							</Link>
 						</div>
 
@@ -227,7 +214,7 @@ export default function MagazineHome() {
 									<h3 className='group-hover:text-brand-ink mt-2 text-[16px] leading-[1.5] font-medium transition-colors max-sm:text-[16.5px]'>{big.title}</h3>
 									<p className='text-secondary mt-2 line-clamp-4 text-[12px] leading-[1.85]'>{plainInline(big.summary)}</p>
 									<span className='text-brand-ink mt-auto inline-flex items-center gap-1 pt-3 text-[11px] opacity-0 transition-opacity group-hover:opacity-100'>
-										继续读 <ArrowRight className='h-3 w-3' />
+										继续读 <ChevronRight className='h-3 w-3' />
 									</span>
 								</div>
 							</Link>
@@ -255,7 +242,7 @@ export default function MagazineHome() {
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 								<h2 className='text-[16px] font-semibold tracking-tight'>系列</h2>
 								<Link href='/series' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
-									全部 →
+									全部
 								</Link>
 							</div>
 
@@ -282,7 +269,7 @@ export default function MagazineHome() {
 															{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M 月 D 日')}
 														</span>
 													</span>
-													<ArrowRight className='text-secondary h-3.5 w-3.5 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-50' />
+													<ChevronRight className='text-secondary h-3.5 w-3.5 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-50' />
 												</Link>
 											))}
 										</div>
@@ -296,7 +283,7 @@ export default function MagazineHome() {
 						<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[16px] font-semibold tracking-tight'>再往前</h2>
 							<Link href='/archive' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
-								归档 →
+								归档
 							</Link>
 						</div>
 						<PostList items={rest} dense showTags={false} empty={loading ? '加载中…' : '还没有文章'} />

@@ -114,8 +114,8 @@ export default function InlinePlayer() {
 					onKeyDown={e => {
 						const a = audioRef.current
 						if (!a) return
-						if (e.key === 'ArrowRight') a.currentTime = Math.min(a.duration || 0, a.currentTime + 5)
-						if (e.key === 'ArrowLeft') a.currentTime = Math.max(0, a.currentTime - 5)
+						if (e.key === 'ChevronRight') a.currentTime = Math.min(a.duration || 0, a.currentTime + 5)
+						if (e.key === 'ChevronLeft') a.currentTime = Math.max(0, a.currentTime - 5)
 					}}
 					className='group mt-1.5 cursor-pointer py-1'>
 					<div className='bg-border/60 h-[3px] w-full overflow-hidden rounded-full'>
