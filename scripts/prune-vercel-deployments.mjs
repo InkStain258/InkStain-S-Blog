@@ -16,7 +16,21 @@
  *   - 副作用：旧 preview URL 失效、回滚可选的版本变少
  */
 
-const TOKEN = process.env.VERCEL_TOKEN
+// 取 token：环境变量优先，其次项目根的 .env / .env.local（都在 .gitignore 里）
+import fs from 'node:fs'
+import path from 'node:path'
+
+const readDotEnv = () => {
+	for (const f of ['.env.local', '.env']) {
+		const full = path.join(process.cwd(), f)
+		if (!fs.existsSync(full)) continue
+		const m = fs.readFileSync(full, 'utf8').match(/^VERCEL_TOKEN\s*=\s*['"]?([^'"\n]+)/m)
+		if (m) return m[1].trim()
+	}
+	return undefined
+}
+
+const TOKEN = process.env.VERCEL_TOKEN || readDotEnv()
 const PROJECT_ID = process.env.VERCEL_PROJECT_ID || 'prj_iQ9lIG7HOgcYrLNUUBxbtNQUtN4o'
 const TEAM_ID = process.env.VERCEL_ORG_ID || 'team_b5IA7ZGeZt5MsKNo8JlPgVpK'
 
