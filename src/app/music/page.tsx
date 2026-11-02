@@ -66,7 +66,7 @@ export default function MusicPage() {
 		<div className='mx-auto max-w-[900px] px-6 pt-28 pb-12 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: INIT_DELAY }}>
 				<div className='flex items-center gap-3'>
-					<span className='bg-brand/10 text-brand grid h-10 w-10 place-items-center rounded-xl'>
+					<span className='bg-brand/10 text-brand-ink grid h-10 w-10 place-items-center rounded-xl'>
 						<Music2 className='h-5 w-5' />
 					</span>
 					<div>
@@ -85,7 +85,7 @@ export default function MusicPage() {
 							<button
 								onClick={() => toggle(i)}
 								className={`grid h-9 w-9 shrink-0 place-items-center rounded-full transition-transform active:scale-95 ${
-									playing === i ? 'bg-brand text-white' : 'bg-brand/10 text-brand hover:bg-brand/20'
+									playing === i ? 'bg-brand text-white' : 'bg-brand/10 text-brand-ink hover:bg-brand/20'
 								}`}
 								title={playing === i ? '暂停' : '播放'}>
 								{playing === i ? <Pause className='h-3.5 w-3.5' /> : <Play className='ml-0.5 h-3.5 w-3.5' />}
@@ -100,7 +100,7 @@ export default function MusicPage() {
 							</div>
 
 							<span className='text-secondary shrink-0 text-[11px] tabular-nums'>{fmt(t.duration)}</span>
-							<span className='border-brand/20 bg-brand/5 text-brand hidden shrink-0 rounded-full border px-2 py-0.5 text-[10px] sm:inline'>
+							<span className='border-brand/20 bg-brand/5 text-brand-ink hidden shrink-0 rounded-full border px-2 py-0.5 text-[10px] sm:inline'>
 								{licenseLabel(t.license)}
 							</span>
 							{t.source && (
@@ -108,7 +108,7 @@ export default function MusicPage() {
 									href={t.source}
 									target='_blank'
 									rel='noreferrer'
-									className='text-secondary hover:text-brand shrink-0 transition-colors'
+									className='text-secondary hover:text-brand-ink shrink-0 transition-colors'
 									title='查看来源与授权'>
 									<ExternalLink className='h-3.5 w-3.5' />
 								</a>

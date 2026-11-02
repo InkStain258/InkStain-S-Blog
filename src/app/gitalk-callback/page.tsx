@@ -59,7 +59,7 @@ export default function GitalkCallbackPage() {
 		<div className='mx-auto flex min-h-[60vh] w-full max-w-[520px] flex-col items-center justify-center px-6 text-center'>
 			{idle ? (
 				<>
-					<ShieldAlert className='text-brand mb-3 h-8 w-8' />
+					<ShieldAlert className='text-brand-ink mb-3 h-8 w-8' />
 					<h1 className='text-[16px] font-semibold'>GitHub 授权回调页</h1>
 					<p className='text-secondary mt-2 text-[12px] leading-relaxed opacity-75'>
 						这个地址只在登录时被 GitHub 跳转过来，直接打开没有参数。
@@ -81,7 +81,7 @@ export default function GitalkCallbackPage() {
 				</>
 			) : (
 				<>
-					<Loader2 className='text-brand mb-3 h-7 w-7 animate-spin' />
+					<Loader2 className='text-brand-ink mb-3 h-7 w-7 animate-spin' />
 					<h1 className='text-[15px] font-semibold'>正在返回文章…</h1>
 					<p className='text-secondary mt-2 text-[12px] opacity-70'>正在用 GitHub 账号完成登录</p>
 				</>

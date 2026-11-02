@@ -25,7 +25,7 @@ export default function ArchivePage() {
 	return (
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
-				<Link href='/blog' className='text-secondary hover:text-brand inline-flex items-center gap-1.5 text-xs transition-colors'>
+				<Link href='/blog' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
 					<ArrowLeft className='h-3.5 w-3.5' />
 					返回博客
 				</Link>
@@ -36,7 +36,7 @@ export default function ArchivePage() {
 						<h1 className='text-[28px] leading-tight font-semibold'>全部文章</h1>
 					</div>
 					<div className='text-secondary text-right text-xs'>
-						<div className='text-brand text-2xl leading-none font-semibold tabular-nums'>{loading && !total ? '—' : total}</div>
+						<div className='text-brand-ink text-2xl leading-none font-semibold tabular-nums'>{loading && !total ? '—' : total}</div>
 						<div className='mt-1 opacity-60'>篇 · {years.length} 年</div>
 					</div>
 				</div>
@@ -44,7 +44,7 @@ export default function ArchivePage() {
 				{years.length > 1 && (
 					<div className='mt-5 flex flex-wrap gap-2'>
 						{years.map(([y, list]) => (
-							<a key={y} href={`#y-${y}`} className='text-secondary hover:border-brand/40 hover:text-brand rounded-full border px-3 py-1 text-[11.5px] transition-colors'>
+							<a key={y} href={`#y-${y}`} className='text-secondary hover:border-brand/40 hover:text-brand-ink rounded-full border px-3 py-1 text-[11.5px] transition-colors'>
 								{y}
 								<span className='ml-1 opacity-50'>{list.length}</span>
 							</a>

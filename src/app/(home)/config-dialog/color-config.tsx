@@ -208,14 +208,14 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handleRandomizeColors}
-							className='text-secondary hover:text-brand hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
+							className='text-secondary hover:text-brand-ink hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
 							随机配色
 						</motion.button>
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handleAddColor}
-							className='text-secondary hover:text-brand hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
+							className='text-secondary hover:text-brand-ink hover:border-brand/40 rounded-lg border px-3 py-1 text-xs whitespace-nowrap transition-colors'>
 							+ 添加颜色
 						</motion.button>
 					</div>
@@ -258,7 +258,7 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 							))}
 						</div>
 
-						<span className='group-hover:text-brand text-[13px] font-medium whitespace-nowrap transition-colors'>{preset.name}</span>
+						<span className='group-hover:text-brand-ink text-[13px] font-medium whitespace-nowrap transition-colors'>{preset.name}</span>
 					</button>
 				))}
 			</div>

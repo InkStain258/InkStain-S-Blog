@@ -125,7 +125,7 @@ export default function GuestbookPage() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: INIT_DELAY }}
 				className='text-center'>
-				<span className='border-brand/25 bg-brand/10 text-brand mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-medium'>
+				<span className='border-brand/25 bg-brand/10 text-brand-ink mx-auto mb-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-medium'>
 					<Sparkles className='h-3 w-3' />
 					无需登录，留个名字就行
 				</span>
@@ -182,7 +182,7 @@ export default function GuestbookPage() {
 							仅记录 IP 哈希用于限流
 						</span>
 						{cooldown > 0 && (
-							<span className='text-brand flex items-center gap-1'>
+							<span className='text-brand-ink flex items-center gap-1'>
 								<Clock3 className='h-3 w-3' />
 								{cooldown}s 后可再发
 							</span>
@@ -207,7 +207,7 @@ export default function GuestbookPage() {
 			{/* 列表 */}
 			<div className='mt-10 flex items-center gap-3'>
 				<h2 className='flex items-center gap-1.5 text-sm font-medium'>
-					<MessageSquareQuote className='text-brand h-4 w-4' />
+					<MessageSquareQuote className='text-brand-ink h-4 w-4' />
 					大家说
 				</h2>
 				<span className='text-secondary text-[11px] opacity-70'>{loading ? '加载中…' : `共 ${total} 条`}</span>
@@ -248,7 +248,7 @@ export default function GuestbookPage() {
 											animate={{ opacity: 1, y: 0 }}
 											transition={{ delay: 0.08 }}
 											className='border-brand/40 bg-brand/[0.06] mt-2.5 rounded-r-xl border-l-2 px-3 py-2'>
-											<div className='text-brand flex items-center gap-1 text-[10px] font-medium'>
+											<div className='text-brand-ink flex items-center gap-1 text-[10px] font-medium'>
 												<CornerDownRight className='h-3 w-3' />
 												站长回复
 												{m.reply.at && <span className='text-secondary ml-1 font-normal opacity-60'>{timeAgo(m.reply.at)}</span>}
@@ -264,7 +264,7 @@ export default function GuestbookPage() {
 			</div>
 
 			<p className='text-secondary mt-10 text-center text-[11px] opacity-50'>
-				<Link href='/guestbook/manage' className='hover:text-brand transition-colors'>
+				<Link href='/guestbook/manage' className='hover:text-brand-ink transition-colors'>
 					管理
 				</Link>
 			</p>

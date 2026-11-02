@@ -98,18 +98,18 @@ export default function Page() {
 			<ul className='text-secondary list-inside list-disc text-sm'>
 				<li>
 					进入{' '}
-					<a href='https://mc.kurogames.com/cloud/#/tools' target='_blank' className='text-brand hover:underline'>
+					<a href='https://mc.kurogames.com/cloud/#/tools' target='_blank' className='text-brand-ink hover:underline'>
 						https://mc.kurogames.com/cloud/#/tools
 					</a>
 					，登录账号。
 				</li>
 				<li>
-					点击 <span className='text-brand'>F12</span>，点击右侧 <span className='text-brand'>Network</span> 面板。左侧选择<span className='text-brand'>换取记录</span>
-					，右侧观察出现最新的 <span className='text-brand'>query</span> 请求。
+					点击 <span className='text-brand-ink'>F12</span>，点击右侧 <span className='text-brand-ink'>Network</span> 面板。左侧选择<span className='text-brand-ink'>换取记录</span>
+					，右侧观察出现最新的 <span className='text-brand-ink'>query</span> 请求。
 				</li>
 				<li>
-					点击 <span className='text-brand'>query</span> 请求，点击 <span className='text-brand'>Preview</span> 面板，右键 <span className='text-brand'>data</span> 值{' '}
-					<span className='text-brand'>Copy Value</span>。
+					点击 <span className='text-brand-ink'>query</span> 请求，点击 <span className='text-brand-ink'>Preview</span> 面板，右键 <span className='text-brand-ink'>data</span> 值{' '}
+					<span className='text-brand-ink'>Copy Value</span>。
 				</li>
 				<li>最后粘贴到下方输入框 - 分析。</li>
 			</ul>

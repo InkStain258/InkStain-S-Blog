@@ -107,7 +107,7 @@ export default function SearchDialog() {
 				onClick={() => setOpen(true)}
 				aria-label='搜索'
 				title='搜索（⌘K）'
-				className='glass-2 text-secondary hover:text-brand fixed top-16 right-4 z-40 hidden h-11 w-11 place-items-center rounded-xl transition-colors hover:scale-105 md:grid'>
+				className='glass-2 text-secondary hover:text-brand-ink fixed top-16 right-4 z-40 hidden h-11 w-11 place-items-center rounded-xl transition-colors hover:scale-105 md:grid'>
 				<Search className='h-4 w-4' />
 			</button>
 

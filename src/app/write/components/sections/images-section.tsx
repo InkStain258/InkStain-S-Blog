@@ -113,7 +113,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 					{busy ? (
 						<span className='text-secondary animate-pulse text-[10px]'>压缩中…</span>
 					) : (
-						<span className='text-2xl leading-none text-neutral-400 group-hover:text-brand transition-colors'>+</span>
+						<span className='text-2xl leading-none text-neutral-400 group-hover:text-brand-ink transition-colors'>+</span>
 					)}
 				</div>
 

@@ -151,7 +151,7 @@ export default function ClockPage() {
 						}}
 						className={cn(
 							`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all`,
-							mode === 'stopwatch' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand'
+							mode === 'stopwatch' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand-ink'
 						)}>
 						秒表
 					</motion.button>
@@ -169,7 +169,7 @@ export default function ClockPage() {
 						}}
 						className={cn(
 							`flex-1 rounded-xl px-4 py-3 text-sm font-medium transition-all`,
-							mode === 'timer' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand'
+							mode === 'timer' ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand-ink'
 						)}>
 						计时器
 					</motion.button>

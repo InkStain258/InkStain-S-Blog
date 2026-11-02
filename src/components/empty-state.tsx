@@ -34,7 +34,7 @@ export default function EmptyState({ title, hint, icon: Icon = Inbox, action, de
 			{action && (
 				<Link
 					href={action.href}
-					className='text-brand hover:border-brand/40 mt-1 rounded-full border px-3 py-1 text-[11.5px] transition-colors'>
+					className='text-brand-ink hover:border-brand/40 mt-1 rounded-full border px-3 py-1 text-[11.5px] transition-colors'>
 					{action.label}
 				</Link>
 			)}

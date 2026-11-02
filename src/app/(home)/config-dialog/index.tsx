@@ -282,7 +282,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 										type='button'
 										onClick={() => setActiveTab(tab.id)}
 										className={`relative flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-[12.5px] font-medium transition-colors ${
-											active ? 'text-brand' : 'text-secondary hover:text-primary'
+											active ? 'text-brand-ink' : 'text-secondary hover:text-primary'
 										}`}>
 										{active && (
 											<motion.span
@@ -337,7 +337,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 									首次保存需要导入私钥，之后自动记住
 								</>
 							)}
-							{dirty && <span className='text-brand ml-1'>· 有未保存的改动</span>}
+							{dirty && <span className='text-brand-ink ml-1'>· 有未保存的改动</span>}
 						</p>
 
 						<div className='flex items-center gap-2'>

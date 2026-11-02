@@ -328,6 +328,18 @@ export default function BlogPage() {
 			/>
 
 			<div className='flex flex-col items-center justify-center gap-6 px-6 pt-24 max-sm:pt-24'>
+				{/* 页头：原来这一页没有 h1，读屏与搜索引擎都拿不到标题 */}
+				<header className='ink-fade-up w-full max-w-[840px]'>
+					<div className='border-border/60 flex items-center justify-between border-b pb-3'>
+						<span className='text-brand-ink text-[10.5px] tracking-[0.3em] uppercase'>Archive</span>
+						<span className='text-secondary text-[10.5px] tabular-nums opacity-55'>{loading ? '…' : `${items.length} 篇`}</span>
+					</div>
+					<h1 className='mt-5 text-[27px] leading-[1.3] font-semibold tracking-[-0.015em] max-sm:text-[23px]'>全部文章</h1>
+					<p className='text-secondary mt-2 max-w-[520px] text-[12.5px] leading-[1.9] opacity-80'>
+						按时间从近到远。想按主题看，用下面的分类或标签；想从头读，去归档。
+					</p>
+				</header>
+
 				{/* 入口：分类 / 标签 / 系列 / 归档 */}
 				<motion.div
 					initial={{ opacity: 0, y: -6 }}
@@ -342,7 +354,7 @@ export default function BlogPage() {
 					].map((l, i) => (
 						<span key={l.href} className='flex items-center gap-1'>
 							{i > 0 && <span className='opacity-30'>·</span>}
-							<Link href={l.href} className='hover:text-brand transition-colors'>
+							<Link href={l.href} className='hover:text-brand-ink transition-colors'>
 								{l.label}
 							</Link>
 						</span>
@@ -368,7 +380,7 @@ export default function BlogPage() {
 								onClick={() => setDisplayMode(option.value as DisplayMode)}
 								className={cn(
 									'btn-rounded px-3 py-1.5 text-xs font-medium transition-all',
-									displayMode === option.value ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand hover:bg-white/60'
+									displayMode === option.value ? 'bg-brand text-white elev-1' : 'text-secondary hover:text-brand-ink hover:bg-white/60'
 								)}>
 								{option.label}
 							</motion.button>
@@ -405,8 +417,8 @@ export default function BlogPage() {
 												className={cn(
 													'rounded-lg border px-3 py-1 text-xs transition-colors',
 													groupAllSelected
-														? 'border-brand/40 bg-brand/10 text-brand hover:bg-brand/20'
-														: 'text-secondary hover:border-brand/40 hover:text-brand border-transparent bg-white/60 hover:bg-white/80'
+														? 'border-brand/40 bg-brand/10 text-brand-ink hover:bg-brand/20'
+														: 'text-secondary hover:border-brand/40 hover:text-brand-ink border-transparent bg-white/60 hover:bg-white/80'
 												)}>
 												{groupAllSelected ? '取消全选' : '全选该分组'}
 											</motion.button>
@@ -451,7 +463,7 @@ export default function BlogPage() {
 											<div
 												className={cn(
 													'flex-1 truncate text-sm font-medium transition-all',
-													editMode ? null : 'group-hover:text-brand group-hover:translate-x-2'
+													editMode ? null : 'group-hover:text-brand-ink group-hover:translate-x-2'
 												)}>
 												{it.title || it.slug}
 												{hasRead && <span className='text-secondary ml-2 text-xs'>[已阅读]</span>}

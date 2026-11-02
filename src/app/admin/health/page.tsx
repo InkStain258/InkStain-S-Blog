@@ -122,7 +122,7 @@ export default function HealthPage() {
 				<div className='bg-card rounded-2xl border px-5 py-4'>
 					{byCategory.map(([c, n]) => (
 						<div key={c} className='flex items-center gap-3 py-1.5'>
-							<Link href={`/blog/category/${encodeURIComponent(c)}`} className='hover:text-brand w-28 shrink-0 truncate text-[12px] transition-colors'>
+							<Link href={`/blog/category/${encodeURIComponent(c)}`} className='hover:text-brand-ink w-28 shrink-0 truncate text-[12px] transition-colors'>
 								{c}
 							</Link>
 							<div className='bg-border/40 h-1.5 flex-1 overflow-hidden rounded-full'>
@@ -146,7 +146,7 @@ export default function HealthPage() {
 						<div key={`${i.s}-${i.k}-${idx}`} className='flex items-start gap-3 border-b py-2.5 last:border-0'>
 							<ImageOff className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${KIND[i.k]?.color ?? 'text-secondary'}`} />
 							<div className='min-w-0 flex-1'>
-								<Link href={`/blog/${i.s}`} className='hover:text-brand block truncate text-[12.5px] font-medium transition-colors'>
+								<Link href={`/blog/${i.s}`} className='hover:text-brand-ink block truncate text-[12.5px] font-medium transition-colors'>
 									{i.t}
 								</Link>
 								<div className='text-secondary mt-0.5 truncate text-[11px] opacity-70'>{i.v}</div>
@@ -169,7 +169,7 @@ export default function HealthPage() {
 						<Link
 							key={t}
 							href={`/blog/tag/${encodeURIComponent(t)}`}
-							className='text-secondary hover:border-brand/40 hover:text-brand rounded-full border px-2.5 py-1 text-[11px] transition-colors'>
+							className='text-secondary hover:border-brand/40 hover:text-brand-ink rounded-full border px-2.5 py-1 text-[11px] transition-colors'>
 							#{t}
 						</Link>
 					))}

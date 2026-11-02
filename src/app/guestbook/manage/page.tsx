@@ -119,13 +119,13 @@ export default function GuestbookManagePage() {
 							<span className='text-[13px] font-medium'>{m.name}</span>
 							<span className='text-secondary text-[10px] opacity-60'>{when(m.createdAt)}</span>
 							<span className='text-secondary text-[10px] opacity-50'>#{m.id}</span>
-							{m.contact && <span className='text-brand/80 text-[10px]'>{m.contact}</span>}
+							{m.contact && <span className='text-brand-ink/80 text-[10px]'>{m.contact}</span>}
 						</div>
 						<p className='mt-1.5 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
 
 						{m.reply && !open && (
 							<div className='border-brand/40 bg-brand/5 mt-2 rounded-r-lg border-l-2 px-3 py-2'>
-								<div className='text-brand flex items-center gap-1 text-[10px]'>
+								<div className='text-brand-ink flex items-center gap-1 text-[10px]'>
 									<CornerDownRight className='h-3 w-3' />
 									我的回复
 								</div>
@@ -175,7 +175,7 @@ export default function GuestbookManagePage() {
 								setReplyOpen(m.id)
 								setReplyText(m.reply?.content || '')
 							}}
-							className='text-brand/80 hover:bg-brand/10 inline-flex items-center gap-1 rounded-lg bg-white/50 px-2.5 py-1.5 text-[11px] font-medium hover:text-brand dark:bg-white/10 dark:hover:bg-white/20'>
+							className='text-brand-ink/80 hover:bg-brand/10 inline-flex items-center gap-1 rounded-lg bg-white/50 px-2.5 py-1.5 text-[11px] font-medium hover:text-brand-ink dark:bg-white/10 dark:hover:bg-white/20'>
 							<CornerDownRight className='h-3 w-3' />
 							{m.reply ? '改回复' : '回复'}
 						</button>
@@ -222,7 +222,7 @@ export default function GuestbookManagePage() {
 						sessionStorage.removeItem(KEY_STORE)
 						setKey('')
 					}}
-					className='text-secondary hover:text-brand inline-flex items-center gap-1 text-[12px] transition-colors'>
+					className='text-secondary hover:text-brand-ink inline-flex items-center gap-1 text-[12px] transition-colors'>
 					<LogOut className='h-3.5 w-3.5' />
 					退出
 				</button>
@@ -230,7 +230,7 @@ export default function GuestbookManagePage() {
 
 			<div className='mt-6 flex items-center gap-2'>
 				<h2 className='text-sm font-medium'>待审核</h2>
-				<span className='bg-brand/10 text-brand rounded-full px-2 py-0.5 text-[10px]'>{pending.length}</span>
+				<span className='bg-brand/10 text-brand-ink rounded-full px-2 py-0.5 text-[10px]'>{pending.length}</span>
 				<div className='from-border h-px flex-1 bg-gradient-to-r to-transparent' />
 			</div>
 			<div className='mt-3 grid gap-2.5'>
@@ -242,7 +242,7 @@ export default function GuestbookManagePage() {
 
 			<div className='mt-8 flex items-center gap-2'>
 				<h2 className='text-sm font-medium'>已展示</h2>
-				<span className='bg-brand/10 text-brand rounded-full px-2 py-0.5 text-[10px]'>{approved.length}</span>
+				<span className='bg-brand/10 text-brand-ink rounded-full px-2 py-0.5 text-[10px]'>{approved.length}</span>
 				<div className='from-border h-px flex-1 bg-gradient-to-r to-transparent' />
 			</div>
 			<div className='mt-3 grid gap-2.5'>

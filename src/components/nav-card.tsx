@@ -180,7 +180,7 @@ export default function NavCard() {
 							className='rounded-full'
 						/>
 						{form === 'full' && <span className='font-averia text-xl leading-none font-medium whitespace-nowrap'>{siteContent.meta.title}</span>}
-						{form === 'full' && <span className='text-brand text-[11px] font-medium'>(开发中)</span>}
+						{form === 'full' && <span className='text-brand-ink text-[11px] font-medium'>(开发中)</span>}
 					</Link>
 
 					{(form === 'full' || form === 'icons') && (
@@ -216,11 +216,12 @@ export default function NavCard() {
 									<Link
 												key={item.href}
 												aria-current={pathname === item.href ? 'page' : undefined}
+												aria-label={item.label}
 												href={item.href}
 										className={cn('text-secondary text-md relative z-10 flex items-center gap-3 rounded-full px-5 py-2', form === 'icons' && 'p-0')}
 										onMouseEnter={() => setHoveredIndex(index)}>
 										<div className='flex h-7 w-7 items-center justify-center'>
-											{hoveredIndex == index ? <item.iconActive className='text-brand absolute h-7 w-7' /> : <item.icon className='absolute h-7 w-7' />}
+											{hoveredIndex == index ? <item.iconActive className='text-brand-ink absolute h-7 w-7' /> : <item.icon className='absolute h-7 w-7' />}
 										</div>
 										{form !== 'icons' && <span className={clsx(index == hoveredIndex && 'text-primary font-medium')}>{item.label}</span>}
 									</Link>

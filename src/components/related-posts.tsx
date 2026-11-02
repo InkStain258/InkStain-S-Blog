@@ -56,12 +56,12 @@ export default function RelatedPosts({ slug, tags, category, title, limit = 3 }:
 							className='glass-1 glass-gloss hover:border-brand/35 flex h-full flex-col rounded-2xl p-3.5 transition-colors'>
 							<div className='text-secondary mb-1.5 flex flex-wrap items-center gap-1 text-[10px]'>
 								{reasons.map(r => (
-									<span key={r} className='bg-brand/10 text-brand rounded-full px-1.5 py-0.5 leading-none'>
+									<span key={r} className='bg-brand/10 text-brand-ink rounded-full px-1.5 py-0.5 leading-none'>
 										{r}
 									</span>
 								))}
 							</div>
-							<div className='group-hover:text-brand line-clamp-2 text-[13px] leading-snug font-medium transition-colors'>
+							<div className='group-hover:text-brand-ink line-clamp-2 text-[13px] leading-snug font-medium transition-colors'>
 								{item.title || item.slug}
 							</div>
 							<div className='text-secondary mt-auto pt-2 text-[10.5px] opacity-60'>{dayjs(item.date).format('YYYY-MM-DD')}</div>

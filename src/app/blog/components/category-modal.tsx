@@ -75,7 +75,7 @@ export function CategoryModal({
 		<DialogModal open={open} onClose={onClose} className='card w-[720px] max-w-[90vw] rounded-2xl p-6'>
 			<div className='mb-4 flex items-center justify-between'>
 				<div className='text-lg font-semibold'>文章分类</div>
-				<button onClick={onClose} className='text-secondary hover:text-brand text-sm'>
+				<button onClick={onClose} className='text-secondary hover:text-brand-ink text-sm'>
 					关闭
 				</button>
 			</div>
@@ -110,7 +110,7 @@ export function CategoryModal({
 								<button
 									type='button'
 									onClick={() => onRemoveCategory(cat)}
-									className='text-secondary hover:text-brand inline-flex h-4 w-4 items-center justify-center'
+									className='text-secondary hover:text-brand-ink inline-flex h-4 w-4 items-center justify-center'
 									aria-label='Remove category'>
 									<X className='h-3 w-3' />
 								</button>

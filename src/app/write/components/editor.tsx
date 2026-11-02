@@ -214,7 +214,7 @@ export function WriteEditor() {
 					onDrop={handleDrop}
 				/>
 				{dragging && (
-					<div className='border-brand/60 bg-brand/5 text-brand pointer-events-none absolute inset-0 grid place-items-center rounded-xl border-2 border-dashed text-sm'>
+					<div className='border-brand/60 bg-brand/5 text-brand-ink pointer-events-none absolute inset-0 grid place-items-center rounded-xl border-2 border-dashed text-sm'>
 						松开即可插入图片
 					</div>
 				)}

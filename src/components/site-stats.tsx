@@ -60,7 +60,7 @@ export default function SiteStats() {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.05 * i, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
 						<div className='flex items-baseline gap-1'>
-							<span className='text-brand text-[30px] leading-none font-semibold tabular-nums'>{loading && !total ? '—' : s.value}</span>
+							<span className='text-brand-ink text-[30px] leading-none font-semibold tabular-nums'>{loading && !total ? '—' : s.value}</span>
 							<span className='text-secondary text-[11px]'>{s.label}</span>
 						</div>
 					</motion.div>

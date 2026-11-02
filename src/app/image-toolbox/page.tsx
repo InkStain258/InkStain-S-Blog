@@ -319,7 +319,7 @@ export default function Page() {
 						isDragging ? 'border-brand bg-white' : ''
 					}`}>
 					<input type='file' accept='image/*' multiple className='hidden' onChange={event => handleFiles(event.target.files)} />
-					<div className='bg-brand/10 text-brand/60 group-hover:bg-brand/10 flex h-20 w-20 items-center justify-center rounded-full text-3xl transition'>
+					<div className='bg-brand/10 text-brand-ink/60 group-hover:bg-brand/10 flex h-20 w-20 items-center justify-center rounded-full text-3xl transition'>
 						📷
 					</div>
 					<div>
@@ -360,12 +360,12 @@ export default function Page() {
 												<>
 													<button
 														onClick={() => handleCompareImage(index)}
-														className='border-brand text-brand hover:bg-brand/10 rounded-full border px-3 py-1 font-semibold transition'>
+														className='border-brand text-brand-ink hover:bg-brand/10 rounded-full border px-3 py-1 font-semibold transition'>
 														对比
 													</button>
 													<button
 														onClick={() => handleDownloadImage(index)}
-														className='border-brand text-brand hover:bg-brand/10 rounded-full border px-3 py-1 font-semibold transition'>
+														className='border-brand text-brand-ink hover:bg-brand/10 rounded-full border px-3 py-1 font-semibold transition'>
 														下载
 													</button>
 												</>
@@ -445,7 +445,7 @@ export default function Page() {
 							<button
 								onClick={handleDownloadAll}
 								disabled={!hasConverted}
-								className='border-brand text-brand rounded-full border px-4 py-2 font-semibold transition disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-300'>
+								className='border-brand text-brand-ink rounded-full border px-4 py-2 font-semibold transition disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-300'>
 								全部下载
 							</button>
 						</div>

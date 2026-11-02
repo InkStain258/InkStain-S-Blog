@@ -64,7 +64,7 @@ export default function ReadingPrefs() {
 				type='button'
 				onClick={() => setOpen(v => !v)}
 				aria-label='阅读设置'
-				className='glass-2 text-secondary hover:text-brand fixed right-6 bottom-[8.75rem] z-40 grid h-11 w-11 place-items-center rounded-full transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
+				className='glass-2 text-secondary hover:text-brand-ink fixed right-6 bottom-[8.75rem] z-40 grid h-11 w-11 place-items-center rounded-full transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 				<Type className='h-4 w-4' />
 			</button>
 
@@ -91,7 +91,7 @@ export default function ReadingPrefs() {
 									key={o.v}
 									type='button'
 									onClick={() => update({ size: o.v })}
-									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.size === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand'}`}>
+									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.size === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand-ink'}`}>
 									{o.l}
 								</button>
 							))}
@@ -109,7 +109,7 @@ export default function ReadingPrefs() {
 									key={o.v}
 									type='button'
 									onClick={() => update({ leading: o.v })}
-									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.leading === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand'}`}>
+									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.leading === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand-ink'}`}>
 									{o.l}
 								</button>
 							))}
@@ -123,7 +123,7 @@ export default function ReadingPrefs() {
 									type='button'
 									onClick={() => update({ font: f.id })}
 									style={{ fontFamily: f.css || undefined }}
-									className={`flex-1 rounded-lg py-1.5 text-[11px] transition-colors ${p.font === f.id ? 'bg-brand text-white' : 'text-secondary border hover:text-brand'}`}>
+									className={`flex-1 rounded-lg py-1.5 text-[11px] transition-colors ${p.font === f.id ? 'bg-brand text-white' : 'text-secondary border hover:text-brand-ink'}`}>
 									{f.label}
 								</button>
 							))}
@@ -140,7 +140,7 @@ export default function ReadingPrefs() {
 									key={o.v}
 									type='button'
 									onClick={() => update({ width: o.v })}
-									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.width === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand'}`}>
+									className={`flex-1 rounded-lg py-1.5 text-[10.5px] transition-colors ${p.width === o.v ? 'bg-brand text-white' : 'text-secondary border hover:text-brand-ink'}`}>
 									{o.l}
 								</button>
 							))}

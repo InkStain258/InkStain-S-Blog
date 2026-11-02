@@ -1,14 +1,13 @@
+import Link from 'next/link'
 import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
 import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
-import { useRouter } from 'next/navigation'
 import { HomeDraggableLayer } from './home-draggable-layer'
 
 export default function ArtCard() {
 	const center = useCenterStore()
 	const { cardStyles, siteContent } = useConfigStore()
-	const router = useRouter()
 	const styles = cardStyles.artCard
 	const hiCardStyles = cardStyles.hiCard
 
@@ -34,7 +33,10 @@ export default function ArtCard() {
 					</>
 				)}
 
-				<img onClick={() => router.push('/pictures')} src={artUrl} alt='wall art' className='h-full w-full rounded-[32px] object-cover' />
+				{/* 图片可点击进相册：用 Link 包一层，键盘 Tab 也能到，读屏有名字 */}
+				<Link href='/pictures' aria-label='打开相册' className='block h-full w-full'>
+					<img src={artUrl} alt='相册封面' className='h-full w-full rounded-[32px] object-cover' />
+				</Link>
 			</Card>
 		</HomeDraggableLayer>
 	)

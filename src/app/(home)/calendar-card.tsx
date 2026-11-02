@@ -46,7 +46,7 @@ export default function CalendarCard() {
 					{new Array(7).fill(0).map((_, index) => {
 						const isCurrentWeekday = index === currentWeekday
 						return (
-							<li key={index} className={cn('flex items-center justify-center font-medium', isCurrentWeekday && 'text-brand')}>
+							<li key={index} className={cn('flex items-center justify-center font-medium', isCurrentWeekday && 'text-brand-ink')}>
 								{dates[index]}
 							</li>
 						)

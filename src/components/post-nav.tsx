@@ -45,7 +45,7 @@ export default function PostNav({ slug }: { slug: string }) {
 						{chapter ? <span className='opacity-50'>· 第 {chapter} 篇</span> : null}
 						{!isOlder && <ArrowRight className='h-3 w-3' />}
 					</div>
-					<div className='group-hover:text-brand mt-1.5 line-clamp-2 text-[13.5px] leading-snug font-medium transition-colors'>
+					<div className='group-hover:text-brand-ink mt-1.5 line-clamp-2 text-[13.5px] leading-snug font-medium transition-colors'>
 						{chapterTitle || post.title}
 					</div>
 					<div className='text-secondary mt-1.5 text-[10.5px] opacity-60'>{dayjs(post.date).format('YYYY-MM-DD')}</div>
@@ -69,7 +69,7 @@ export default function PostNav({ slug }: { slug: string }) {
 				</span>
 				<div className='from-border h-px flex-1 bg-gradient-to-r to-transparent' />
 				{inSeries && (
-					<Link href={`/series/${encodeURIComponent(ctx!.group.slug)}`} className='text-secondary hover:text-brand shrink-0 text-[11px] transition-colors'>
+					<Link href={`/series/${encodeURIComponent(ctx!.group.slug)}`} className='text-secondary hover:text-brand-ink shrink-0 text-[11px] transition-colors'>
 						系列目录
 					</Link>
 				)}

@@ -43,7 +43,7 @@ export default function LabPage() {
 							className='ink-fade-up glass-2 group flex h-full flex-col gap-2 rounded-2xl border p-4 transition-colors hover:border-brand/40'
 							style={{ animationDelay: `${0.04 * i}s` }}>
 							<div className='flex items-center gap-2.5'>
-								<span className='bg-brand/10 text-brand grid h-8 w-8 place-items-center rounded-xl'>
+								<span className='bg-brand/10 text-brand-ink grid h-8 w-8 place-items-center rounded-xl'>
 									<Icon className='h-4 w-4' />
 								</span>
 								<span className='text-[14px] font-medium'>{t.title}</span>

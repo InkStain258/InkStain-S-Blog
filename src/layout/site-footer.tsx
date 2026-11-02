@@ -117,9 +117,9 @@ export default function SiteFooter() {
 								title='换一句'
 								className='group border-brand/20 bg-brand/5 hover:bg-brand/10 mt-5 w-full max-w-md rounded-2xl border p-4 text-left transition-colors'>
 								<div className='text-sm leading-relaxed'>
-									<span className='text-brand mr-1'>「</span>
+									<span className='text-brand-ink mr-1'>「</span>
 									{mounted ? quote.text : QUOTES[0].text}
-									<span className='text-brand ml-1'>」</span>
+									<span className='text-brand-ink ml-1'>」</span>
 								</div>
 								<div className='text-secondary mt-2 flex items-center justify-between text-[11px]'>
 									<span>— {mounted ? quote.from : QUOTES[0].from}</span>
@@ -137,7 +137,7 @@ export default function SiteFooter() {
 							<ul className='space-y-2.5'>
 								{NAV_LINKS.map(l => (
 									<li key={l.href}>
-										<Link href={l.href} className='text-secondary hover:text-brand text-sm transition-colors'>
+										<Link href={l.href} className='text-secondary hover:text-brand-ink text-sm transition-colors'>
 											{l.label}
 										</Link>
 									</li>
@@ -155,13 +155,13 @@ export default function SiteFooter() {
 											href={s.type === 'email' ? `mailto:${s.value}` : s.value}
 											target={s.type === 'email' ? undefined : '_blank'}
 											rel='noreferrer'
-											className='text-secondary hover:text-brand text-sm transition-colors'>
+											className='text-secondary hover:text-brand-ink text-sm transition-colors'>
 											{s.label || (s.type === 'email' ? '邮箱' : s.type)}
 										</a>
 									</li>
 								))}
 								<li>
-									<a href='/rss.xml' className='text-secondary hover:text-brand text-sm transition-colors'>
+									<a href='/rss.xml' className='text-secondary hover:text-brand-ink text-sm transition-colors'>
 										RSS 订阅
 									</a>
 								</li>
@@ -185,7 +185,7 @@ export default function SiteFooter() {
 								© {year} {name} · 保留所有权利
 							</div>
 							<div className='flex items-center gap-3'>
-								<Link href='/guestbook/manage' className='hover:text-brand flex items-center gap-1 transition-colors'>
+								<Link href='/guestbook/manage' className='hover:text-brand-ink flex items-center gap-1 transition-colors'>
 									<KeyRound className='h-3 w-3' />
 									留言审核
 								</Link>
@@ -193,7 +193,7 @@ export default function SiteFooter() {
 								<span>Powered by Next.js</span>
 								{beian?.text ? (
 									beian.link ? (
-										<a href={beian.link} target='_blank' rel='noreferrer' className='hover:text-brand transition-colors'>
+										<a href={beian.link} target='_blank' rel='noreferrer' className='hover:text-brand-ink transition-colors'>
 											{beian.text}
 										</a>
 									) : (
@@ -223,14 +223,14 @@ export default function SiteFooter() {
 						<Link
 							href='/guestbook/manage'
 							title='留言审核'
-							className='text-secondary hover:text-brand flex items-center gap-1 text-[11px] transition-colors'>
+							className='text-secondary hover:text-brand-ink flex items-center gap-1 text-[11px] transition-colors'>
 							<KeyRound className='h-3.5 w-3.5' />
 							<span className='hidden sm:inline'>审核</span>
 						</Link>
-						<Link href='/blog' className='text-secondary hover:text-brand hidden text-[11px] transition-colors sm:inline'>
+						<Link href='/blog' className='text-secondary hover:text-brand-ink hidden text-[11px] transition-colors sm:inline'>
 							博客
 						</Link>
-						<Link href='/guestbook' className='text-secondary hover:text-brand hidden text-[11px] transition-colors sm:inline'>
+						<Link href='/guestbook' className='text-secondary hover:text-brand-ink hidden text-[11px] transition-colors sm:inline'>
 							留言板
 						</Link>
 						<span className='text-secondary flex items-center gap-1 text-[11px] opacity-45'>

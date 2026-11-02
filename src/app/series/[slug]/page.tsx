@@ -20,7 +20,7 @@ export default function SeriesDetailPage() {
 		return (
 			<div className='mx-auto w-full max-w-[800px] px-6 pt-32 pb-24 text-center'>
 				<div className='text-secondary text-sm'>没有这个系列</div>
-				<Link href='/series' className='text-brand mt-4 inline-block text-xs underline underline-offset-4'>
+				<Link href='/series' className='text-brand-ink mt-4 inline-block text-xs underline underline-offset-4'>
 					看看其它系列
 				</Link>
 			</div>
@@ -33,7 +33,7 @@ export default function SeriesDetailPage() {
 	return (
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
-				<Link href='/series' className='text-secondary hover:text-brand inline-flex items-center gap-1.5 text-xs transition-colors'>
+				<Link href='/series' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
 					<ArrowLeft className='h-3.5 w-3.5' />
 					全部系列
 				</Link>
@@ -44,7 +44,7 @@ export default function SeriesDetailPage() {
 						<h1 className='text-[26px] leading-tight font-semibold'>{group?.name ?? '…'}</h1>
 					</div>
 					<div className='text-secondary shrink-0 text-right text-xs'>
-						<div className='text-brand text-2xl leading-none font-semibold tabular-nums'>{group?.items.length ?? '—'}</div>
+						<div className='text-brand-ink text-2xl leading-none font-semibold tabular-nums'>{group?.items.length ?? '—'}</div>
 						<div className='mt-1 opacity-60'>篇</div>
 					</div>
 				</div>
@@ -70,9 +70,9 @@ export default function SeriesDetailPage() {
 							<span className='text-secondary/60 mt-0.5 w-7 shrink-0 text-right text-[11px] tabular-nums'>
 								{String(it.chapter).padStart(2, '0')}
 							</span>
-							<Circle className='text-secondary/25 group-hover:text-brand mt-1.5 h-2 w-2 shrink-0 fill-current transition-colors' />
+							<Circle className='text-secondary/25 group-hover:text-brand-ink mt-1.5 h-2 w-2 shrink-0 fill-current transition-colors' />
 							<span className='flex min-w-0 flex-1 flex-col'>
-								<span className='group-hover:text-brand block truncate text-[13.5px] font-medium transition-colors'>{it.chapterTitle || it.title}</span>
+								<span className='group-hover:text-brand-ink block truncate text-[13.5px] font-medium transition-colors'>{it.chapterTitle || it.title}</span>
 								<span className='text-secondary mt-1 block truncate text-[11px] opacity-60'>{it.summary || it.title}</span>
 							</span>
 							<span className='text-secondary mt-0.5 shrink-0 text-[11px] tabular-nums opacity-50'>{dayjs(it.date).format('YYYY-MM-DD')}</span>

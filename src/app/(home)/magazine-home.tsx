@@ -71,7 +71,7 @@ export default function MagazineHome() {
 				{/* 刊头 */}
 				<header {...fade()} className='ink-fade-up'>
 					<div className='border-border/60 flex items-center justify-between border-b pb-3'>
-						<span className='text-brand text-[10.5px] font-medium tracking-[0.3em] uppercase'>InkStain</span>
+						<span className='text-brand-ink text-[10.5px] font-medium tracking-[0.3em] uppercase'>InkStain</span>
 						<span className='text-secondary text-[10.5px] tabular-nums opacity-55'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
 					</div>
 
@@ -94,10 +94,10 @@ export default function MagazineHome() {
 						</Link>
 						<Link
 							href='/blog'
-							className='text-secondary hover:text-brand border-border/70 hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-[12.5px] transition-colors'>
+							className='text-secondary hover:text-brand-ink border-border/70 hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-[12.5px] transition-colors'>
 							按时间翻
 						</Link>
-						<Link href='/series' className='text-secondary hover:text-brand inline-flex items-center gap-1.5 px-1 text-[12.5px] transition-colors'>
+						<Link href='/series' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 px-1 text-[12.5px] transition-colors'>
 							<BookMarked className='h-3.5 w-3.5' />
 							按系列读
 						</Link>
@@ -134,10 +134,10 @@ export default function MagazineHome() {
 								)}
 							</div>
 							<div className='mt-4 flex items-center gap-2.5 text-[10.5px]'>
-								{hero.category && <span className='text-brand tracking-wider'>{hero.category}</span>}
+								{hero.category && <span className='text-brand-ink tracking-wider'>{hero.category}</span>}
 								<span className='text-secondary opacity-45'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
 							</div>
-							<h2 className='group-hover:text-brand mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[17px]'>
+							<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[17px]'>
 								{hero.title}
 							</h2>
 							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8] opacity-75'>{plainInline(hero.summary)}</p>
@@ -147,7 +147,7 @@ export default function MagazineHome() {
 					<aside {...fade(0.12)} className='ink-fade-up'>
 						<div className='mb-3 flex items-baseline justify-between'>
 							<h2 className='text-[13px] font-semibold tracking-wide'>实验室</h2>
-							<Link href='/lab' className='text-secondary hover:text-brand text-[11px] transition-colors'>
+							<Link href='/lab' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 								全部 →
 							</Link>
 						</div>
@@ -161,7 +161,7 @@ export default function MagazineHome() {
 										key={t.href}
 										href={t.href}
 										className='group glass-1 hover:border-brand/40 flex items-center gap-2 rounded-xl px-2.5 py-2.5 transition-colors'>
-										<span className='bg-brand/10 text-brand grid h-7 w-7 shrink-0 place-items-center rounded-lg'>
+										<span className='bg-brand/10 text-brand-ink grid h-7 w-7 shrink-0 place-items-center rounded-lg'>
 											<Icon className='h-3.5 w-3.5' />
 										</span>
 										<span className='min-w-0 flex-1 truncate text-[11.5px]'>{t.title}</span>
@@ -174,7 +174,7 @@ export default function MagazineHome() {
 						<div className='mt-5'>
 							<div className='mb-2 flex items-baseline justify-between'>
 								<h2 className='text-[13px] font-semibold tracking-wide'>边写边听</h2>
-								<Link href='/music' className='text-secondary hover:text-brand text-[11px] transition-colors'>
+								<Link href='/music' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 									Music →
 								</Link>
 							</div>
@@ -188,7 +188,7 @@ export default function MagazineHome() {
 					<section className='mt-16'>
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[14px] font-semibold tracking-wide'>最近写的</h2>
-							<Link href='/blog' className='text-secondary hover:text-brand text-[11px] transition-colors'>
+							<Link href='/blog' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 								全部文章 →
 							</Link>
 						</div>
@@ -212,12 +212,12 @@ export default function MagazineHome() {
 								</div>
 								<div className='flex flex-col'>
 									<div className='flex items-center gap-2 text-[10.5px]'>
-										{big.category && <span className='text-brand tracking-wider'>{big.category}</span>}
+										{big.category && <span className='text-brand-ink tracking-wider'>{big.category}</span>}
 										<span className='text-secondary opacity-45'>{dayjs(big.date).format('YYYY-MM-DD')}</span>
 									</div>
-									<h3 className='group-hover:text-brand mt-2 text-[16px] leading-[1.5] font-medium transition-colors'>{big.title}</h3>
+									<h3 className='group-hover:text-brand-ink mt-2 text-[16px] leading-[1.5] font-medium transition-colors'>{big.title}</h3>
 									<p className='text-secondary mt-2 line-clamp-4 text-[12px] leading-[1.85] opacity-70'>{plainInline(big.summary)}</p>
-									<span className='text-brand mt-auto inline-flex items-center gap-1 pt-3 text-[11px] opacity-0 transition-opacity group-hover:opacity-100'>
+									<span className='text-brand-ink mt-auto inline-flex items-center gap-1 pt-3 text-[11px] opacity-0 transition-opacity group-hover:opacity-100'>
 										继续读 <ArrowRight className='h-3 w-3' />
 									</span>
 								</div>
@@ -228,9 +228,9 @@ export default function MagazineHome() {
 									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group block py-4 first:pt-0'>
 										<div className='text-secondary flex items-center gap-2 text-[10.5px] opacity-55'>
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
-											{it.category && <span className='text-brand opacity-90'>{it.category}</span>}
+											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
 										</div>
-										<h3 className='group-hover:text-brand mt-1.5 text-[14px] leading-[1.55] font-medium transition-colors'>{it.title}</h3>
+										<h3 className='group-hover:text-brand-ink mt-1.5 text-[14px] leading-[1.55] font-medium transition-colors'>{it.title}</h3>
 										<p className='text-secondary mt-1 line-clamp-2 text-[11.5px] leading-[1.8] opacity-65'>{plainInline(it.summary)}</p>
 									</Link>
 								))}
@@ -245,7 +245,7 @@ export default function MagazineHome() {
 						<section>
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 								<h2 className='text-[14px] font-semibold tracking-wide'>系列</h2>
-								<Link href='/series' className='text-secondary hover:text-brand text-[11px] transition-colors'>
+								<Link href='/series' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 									全部 →
 								</Link>
 							</div>
@@ -256,7 +256,7 @@ export default function MagazineHome() {
 										href={`/series/${encodeURIComponent(g.slug)}`}
 										className='group flex items-center justify-between gap-3 border-b border-transparent py-2.5 transition-colors'>
 										<span className='min-w-0'>
-											<span className='group-hover:text-brand block truncate text-[12.5px] font-medium transition-colors'>{g.name}</span>
+											<span className='group-hover:text-brand-ink block truncate text-[12.5px] font-medium transition-colors'>{g.name}</span>
 											<span className='text-secondary mt-0.5 block text-[10.5px] opacity-55'>
 												{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M 月 D 日')}
 											</span>
@@ -271,7 +271,7 @@ export default function MagazineHome() {
 					<section>
 						<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[14px] font-semibold tracking-wide'>再往前</h2>
-							<Link href='/archive' className='text-secondary hover:text-brand text-[11px] transition-colors'>
+							<Link href='/archive' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 								归档 →
 							</Link>
 						</div>
@@ -290,7 +290,7 @@ export default function MagazineHome() {
 								<Link
 									key={t}
 									href={`/blog/tag/${encodeURIComponent(t)}`}
-									className='text-secondary hover:border-brand/40 hover:text-brand border-border/50 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
+									className='text-secondary hover:border-brand/40 hover:text-brand-ink border-border/50 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
 									{t}
 									<span className='ml-1 opacity-40'>{n}</span>
 								</Link>

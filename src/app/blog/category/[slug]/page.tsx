@@ -29,7 +29,7 @@ export default function CategoryPage() {
 	return (
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
-				<Link href='/blog' className='text-secondary hover:text-brand inline-flex items-center gap-1.5 text-xs transition-colors'>
+				<Link href='/blog' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
 					<ArrowLeft className='h-3.5 w-3.5' />
 					返回博客
 				</Link>
@@ -40,7 +40,7 @@ export default function CategoryPage() {
 						<h1 className='text-[28px] leading-tight font-semibold'>{name}</h1>
 					</div>
 					<div className='text-secondary text-right text-xs'>
-						<div className='text-brand text-2xl leading-none font-semibold tabular-nums'>{loading && !list.length ? '—' : list.length}</div>
+						<div className='text-brand-ink text-2xl leading-none font-semibold tabular-nums'>{loading && !list.length ? '—' : list.length}</div>
 						<div className='mt-1 opacity-60'>篇文章</div>
 					</div>
 				</div>
@@ -51,7 +51,7 @@ export default function CategoryPage() {
 							<Link
 								key={t}
 								href={`/blog/tag/${encodeURIComponent(t)}`}
-								className='text-secondary hover:border-brand/40 hover:text-brand rounded-full border px-2.5 py-1 text-[11px] transition-colors'>
+								className='text-secondary hover:border-brand/40 hover:text-brand-ink rounded-full border px-2.5 py-1 text-[11px] transition-colors'>
 								#{t}
 								<span className='ml-1 opacity-50'>{n}</span>
 							</Link>
@@ -66,7 +66,7 @@ export default function CategoryPage() {
 								key={c}
 								href={`/blog/category/${encodeURIComponent(c)}`}
 								className={`rounded-full px-3 py-1 text-[11.5px] transition-colors ${
-									c === name ? 'bg-brand text-white' : 'text-secondary hover:text-brand border'
+									c === name ? 'bg-brand text-white' : 'text-secondary hover:text-brand-ink border'
 								}`}>
 								{c}
 							</Link>

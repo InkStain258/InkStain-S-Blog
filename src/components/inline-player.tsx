@@ -93,7 +93,7 @@ export default function InlinePlayer() {
 	return (
 		<div className='glass-1 flex items-center gap-2.5 rounded-2xl px-3 py-3 max-sm:gap-2 max-sm:px-2.5'>
 			{/* 封面位：没有封面就用图标镇住，别留空洞 */}
-			<span className='bg-brand/10 text-brand grid h-9 w-9 shrink-0 place-items-center rounded-xl'>
+			<span className='bg-brand/10 text-brand-ink grid h-9 w-9 shrink-0 place-items-center rounded-xl'>
 				<Music2 className='h-4 w-4' />
 			</span>
 
@@ -134,7 +134,7 @@ export default function InlinePlayer() {
 			</div>
 
 			<div className='flex shrink-0 items-center gap-0.5 max-sm:gap-0'>
-				<button type='button' aria-label='上一首' onClick={() => step(-1)} className='text-secondary hover:text-brand grid h-8 w-8 place-items-center rounded-lg transition-colors max-sm:hidden'>
+				<button type='button' aria-label='上一首' onClick={() => step(-1)} className='text-secondary hover:text-brand-ink grid h-8 w-8 place-items-center rounded-lg transition-colors max-sm:hidden'>
 					<SkipBack className='h-3.5 w-3.5' />
 				</button>
 				<button
@@ -144,7 +144,7 @@ export default function InlinePlayer() {
 					className='bg-brand grid h-9 w-9 place-items-center rounded-full text-white transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 					{playing ? <Pause className='h-4 w-4' /> : <Play className='h-4 w-4 translate-x-[1px]' />}
 				</button>
-				<button type='button' aria-label='下一首' onClick={() => step(1)} className='text-secondary hover:text-brand grid h-8 w-8 place-items-center rounded-lg transition-colors max-sm:hidden'>
+				<button type='button' aria-label='下一首' onClick={() => step(1)} className='text-secondary hover:text-brand-ink grid h-8 w-8 place-items-center rounded-lg transition-colors max-sm:hidden'>
 					<SkipForward className='h-3.5 w-3.5' />
 				</button>
 			</div>

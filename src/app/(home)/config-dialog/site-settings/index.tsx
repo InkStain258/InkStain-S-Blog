@@ -109,7 +109,7 @@ export function SiteSettings({
 							type='button'
 							onClick={() => setFormData({ ...formData, homeLayout: o.v })}
 							className={`rounded-lg px-3.5 py-1.5 text-[12px] transition-colors ${
-								(formData.homeLayout || 'cards') === o.v ? 'bg-brand text-white' : 'text-secondary hover:text-brand'
+								(formData.homeLayout || 'cards') === o.v ? 'bg-brand text-white' : 'text-secondary hover:text-brand-ink'
 							}`}>
 							{o.label}
 						</button>

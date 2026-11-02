@@ -83,7 +83,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 					{series && series.total > 1 && (
 						<Link
 							href={`/series/${encodeURIComponent(series.group.slug)}`}
-							className='text-secondary hover:border-brand/40 hover:text-brand mx-auto mb-3 flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
+							className='text-secondary hover:border-brand/40 hover:text-brand-ink mx-auto mb-3 flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
 							<BookMarked className='h-3 w-3' />
 							{series.group.name} · 第 {series.index + 1} / {series.total} 篇
 						</Link>
@@ -93,7 +93,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 
 					<div className='text-secondary mt-4 flex flex-wrap items-center justify-center gap-3 px-8 text-center text-sm'>
 						{tags.map(t => (
-							<Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className='hover:text-brand transition-colors'>
+							<Link key={t} href={`/blog/tag/${encodeURIComponent(t)}`} className='hover:text-brand-ink transition-colors'>
 								#{t}
 							</Link>
 						))}

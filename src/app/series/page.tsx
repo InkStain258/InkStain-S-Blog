@@ -15,7 +15,7 @@ export default function SeriesIndexPage() {
 	return (
 		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
-				<Link href='/blog' className='text-secondary hover:text-brand inline-flex items-center gap-1.5 text-xs transition-colors'>
+				<Link href='/blog' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
 					<ArrowLeft className='h-3.5 w-3.5' />
 					返回博客
 				</Link>
@@ -41,7 +41,7 @@ export default function SeriesIndexPage() {
 							<Link href={`/series/${encodeURIComponent(g.slug)}`} className='card relative w-full group block px-6 py-5 transition-colors hover:border-brand/35'>
 								<div className='flex items-center justify-between gap-4'>
 									<div className='min-w-0'>
-										<div className='group-hover:text-brand flex items-center gap-2 text-[15px] font-semibold transition-colors'>
+										<div className='group-hover:text-brand-ink flex items-center gap-2 text-[15px] font-semibold transition-colors'>
 											{g.name}
 											<ArrowRight className='h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-60' />
 										</div>
@@ -49,7 +49,7 @@ export default function SeriesIndexPage() {
 											共 {g.items.length} 篇 · 最近更新 {dayjs(last.date).format('YYYY-MM-DD')}
 										</div>
 									</div>
-									<div className='text-brand shrink-0 text-2xl leading-none font-semibold tabular-nums opacity-80'>{g.items.length}</div>
+									<div className='text-brand-ink shrink-0 text-2xl leading-none font-semibold tabular-nums opacity-80'>{g.items.length}</div>
 								</div>
 								<div className='bg-brand/8 mt-4 h-1 overflow-hidden rounded-full'>
 									<div className='from-brand to-brand-secondary h-full w-full rounded-full bg-gradient-to-r opacity-70' />

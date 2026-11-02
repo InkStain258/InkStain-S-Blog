@@ -864,6 +864,10 @@ html.sepia {
   --color-primary: #3b332a !important;
   --color-secondary: #7b6c5b !important;
   --color-brand: #a8743c !important;
+  /* 纸色下 #a8743c 作文字只有 3.42:1，加深到 #8a5a26 后 5.0:1 */
+  --color-brand-ink: #8a5a26 !important;
+  --color-on-brand: #ffffff !important;
+  --color-secondary: #756654 !important;
   --color-brand-secondary: #c9a227 !important;
 
   /* 纸色主题的玻璃：暖白填充、暖灰投影，别用冷灰把纸感冲掉。
@@ -1076,4 +1080,18 @@ a.glass-2:active {
 	a.glass-2:hover {
 		transform: none;
 	}
+}
+
+/* ------------------------------------------------------------------
+ * 品牌色实心按钮的文字色修正（ink-on-brand-fix）
+ *
+ * 亮色 #35bfab 上白字 2.28:1、暗色 #2fcbe7 上白字 1.94:1，都不够 AA。
+ * 组件里那 34 处 `bg-brand ... text-white` 不动，统一在这里按主题给文字换色：
+ * 亮/纸 → 深墨，暗 → 深蓝。特异性 (0,2,0) 高于 tailwind 的 .text-white，稳赢。
+ * ------------------------------------------------------------------ */
+.bg-brand.text-white {
+	color: var(--color-on-brand);
+}
+.bg-brand.text-white svg {
+	color: currentColor;
 }

@@ -44,7 +44,7 @@ export default function PostList({ items, showTags = true, prefix, empty = 'è¿™é
 							<span className='bg-secondary/50 group-hover:bg-brand h-[5px] w-[5px] rounded-full transition-all group-hover:h-3.5' />
 						</span>
 
-						<span className={`group-hover:text-brand min-w-0 flex-1 truncate font-medium transition-all group-hover:translate-x-1 ${dense ? 'text-[12.5px]' : 'text-[13.5px]'}`}>
+						<span className={`group-hover:text-brand-ink min-w-0 flex-1 truncate font-medium transition-all group-hover:translate-x-1 ${dense ? 'text-[12.5px]' : 'text-[13.5px]'}`}>
 							{it.title || it.slug}
 						</span>
 

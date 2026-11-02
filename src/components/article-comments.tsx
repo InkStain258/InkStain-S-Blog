@@ -72,7 +72,7 @@ export default function ArticleComments({ slug }: { slug: string }) {
 		<section className='mx-auto mt-14 w-full max-w-[760px] px-1'>
 			<div className='mb-4 flex items-center justify-between'>
 				<h2 className='flex items-center gap-2 text-[15px] font-semibold'>
-					<MessageSquare className='text-brand h-4 w-4' />
+					<MessageSquare className='text-brand-ink h-4 w-4' />
 					说两句
 					<span className='text-secondary text-[11px] font-normal opacity-60'>{items.length ? `${items.length} 条` : '还没有评论'}</span>
 				</h2>
@@ -157,7 +157,7 @@ export default function ArticleComments({ slug }: { slug: string }) {
 						<p className='text-secondary mt-1.5 text-[12.5px] leading-relaxed whitespace-pre-wrap'>{c.content}</p>
 						{c.reply?.content && (
 							<div className='mt-2.5 rounded-xl border-l-2 border-brand/40 pl-3'>
-								<div className='text-brand flex items-center gap-1 text-[10.5px]'>
+								<div className='text-brand-ink flex items-center gap-1 text-[10.5px]'>
 									<CornerDownRight className='h-3 w-3' />
 									站长回复
 								</div>

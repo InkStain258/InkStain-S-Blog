@@ -122,7 +122,7 @@ export default function MobileToc({ toc, activeId = '', progress = 0, resume, on
 									jump(resume.id)
 									onResume?.()
 								}}
-								className='text-secondary hover:text-brand mb-2 flex w-full shrink-0 items-center gap-1.5 rounded-lg border border-dashed px-2 py-1.5 text-left text-[11px] transition-colors'>
+								className='text-secondary hover:text-brand-ink mb-2 flex w-full shrink-0 items-center gap-1.5 rounded-lg border border-dashed px-2 py-1.5 text-left text-[11px] transition-colors'>
 								<Bookmark className='h-3 w-3 shrink-0' />
 								<span className='truncate'>上次读到 · {resume.text}</span>
 							</button>
@@ -144,7 +144,7 @@ export default function MobileToc({ toc, activeId = '', progress = 0, resume, on
 										style={{ paddingLeft: (t.level - 1) * 12 }}
 										className={clsx(
 											'block w-full truncate py-1.5 text-left text-[12.5px] transition-colors',
-											active ? 'text-brand font-medium' : 'text-secondary hover:text-brand'
+											active ? 'text-brand-ink font-medium' : 'text-secondary hover:text-brand-ink'
 										)}>
 										{t.text}
 									</button>
@@ -168,7 +168,7 @@ export default function MobileToc({ toc, activeId = '', progress = 0, resume, on
 				className='glass-2 text-secondary fixed bottom-6 left-5 z-40 flex h-11 items-center gap-1.5 rounded-full px-3.5 text-[11.5px]'>
 				<List className='h-3.5 w-3.5' />
 				目录
-				<span className='text-brand tabular-nums opacity-80'>{percent}%</span>
+				<span className='text-brand-ink tabular-nums opacity-80'>{percent}%</span>
 			</button>
 
 			{mounted && createPortal(drawer, document.body)}

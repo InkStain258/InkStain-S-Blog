@@ -46,7 +46,7 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0, resume, o
 	const head = (
 		<div className='mb-2 flex items-baseline justify-between gap-2'>
 			<h2 className='text-secondary font-medium'>目录</h2>
-			<span className='text-brand text-[10.5px] tabular-nums opacity-80'>{percent}%</span>
+			<span className='text-brand-ink text-[10.5px] tabular-nums opacity-80'>{percent}%</span>
 		</div>
 	)
 
@@ -78,7 +78,7 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0, resume, o
 						document.getElementById(resume.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 						onResume?.()
 					}}
-					className='text-secondary hover:border-brand/40 hover:text-brand mb-2 flex w-full items-center gap-1.5 rounded-lg border border-dashed px-2 py-1 text-left text-[10.5px] transition-colors'>
+					className='text-secondary hover:border-brand/40 hover:text-brand-ink mb-2 flex w-full items-center gap-1.5 rounded-lg border border-dashed px-2 py-1 text-left text-[10.5px] transition-colors'>
 					<Bookmark className='h-3 w-3 shrink-0' />
 					<span className='truncate'>上次读到 · {resume.text}</span>
 				</button>
@@ -107,7 +107,7 @@ export function BlogToc({ toc, delay = 0, activeId = '', progress = 0, resume, o
 									aria-current={active ? 'location' : undefined}
 									className={clsx(
 										'relative block py-[3px] text-[12.5px] leading-snug transition-colors',
-										active ? 'text-brand font-medium' : 'text-secondary hover:text-brand'
+										active ? 'text-brand-ink font-medium' : 'text-secondary hover:text-brand-ink'
 									)}
 									style={{ paddingLeft: 14 + (item.level - 1) * 8 }}>
 									<span

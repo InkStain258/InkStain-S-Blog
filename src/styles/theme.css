@@ -5,6 +5,8 @@
   --color-bg: var(--ink-bg);
   --color-border: var(--ink-border);
   --color-brand: var(--ink-brand);
+  --color-brand-ink: var(--ink-brand-ink);
+  --color-on-brand: var(--ink-brand-on);
   --color-card: var(--ink-card);
   --color-article: var(--ink-article);
 
@@ -16,11 +18,16 @@
 
 :root {
   --ink-primary: #334f52;
-  --ink-secondary: #62707a;
+  --ink-secondary: #5e6c76;  /* 原 #62707a 在 #eeeeee 上只有 4.40，差一点点 */
   --ink-brand-secondary: #1fc9e7;
   --ink-bg: #eeeeee;
   --ink-border: #fff;
   --ink-brand: #35bfab;
+  /* 文字用的品牌色：比装饰用的亮青绿深一档，保证在 #eeeeee 上 ≥4.5:1。
+     装饰/背景仍用 --ink-brand，视觉不变。 */
+  --ink-brand-ink: #14796a;
+  /* 品牌色实心底上的文字：亮青绿底配白字只有 2.28:1，改深墨色后 5.4:1 */
+  --ink-brand-on: #062f2a;
   --ink-card: #ffffff66;
   --ink-article: #ffffffcc;
 
@@ -45,6 +52,8 @@
   --ink-bg: #1a1a2e;
   --ink-border: #2a2a4a;
   --ink-brand: #2fcbe7;
+  --ink-brand-ink: #2fcbe7;  /* 暗底上亮青本身就达标（8.79:1），文字色不用降 */
+  --ink-brand-on: #08243a;   /* 亮青底上白字只有 1.94，必须用深字 */
   --ink-card: #16213e88;
   --ink-article: #1e2a3a88;
 

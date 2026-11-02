@@ -40,7 +40,7 @@ export default function RandomRoam() {
 				title='随机看一篇'
 				className='bg-card border-backdrop elev-3 group relative grid h-11 w-11 place-items-center rounded-full border backdrop-blur-md transition-transform hover:scale-105 active:scale-95 motion-reduce:transform-none'>
 				<span className={spinning ? 'spin-once inline-block' : 'inline-block'}>
-					<Dices className='text-brand h-4.5 w-4.5' />
+					<Dices className='text-brand-ink h-4.5 w-4.5' />
 				</span>
 				<span className='border-brand/20 bg-card pointer-events-none absolute right-full mr-2 hidden rounded-lg border px-2 py-1 text-[11px] whitespace-nowrap opacity-0 elev-2 transition-opacity group-hover:opacity-100 sm:block'>
 					随机看一篇

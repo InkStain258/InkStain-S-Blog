@@ -62,7 +62,7 @@ export default function BackToTop() {
 							style={{ transition: 'stroke-dashoffset 120ms linear' }}
 						/>
 					</svg>
-					<ArrowUp className='text-brand relative h-4 w-4' />
+					<ArrowUp className='text-brand-ink relative h-4 w-4' />
 				</button>
 			)}
 		</>

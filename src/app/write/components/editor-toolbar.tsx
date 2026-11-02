@@ -139,7 +139,7 @@ export function EditorToolbar({ onAction, onTemplate, words, savedAt }: Props) {
 					title={b.title}
 					onMouseDown={e => e.preventDefault()}
 					onClick={() => onAction(b.action)}
-					className='text-secondary hover:bg-brand/10 hover:text-brand grid h-8 w-8 place-items-center rounded-lg transition-colors'>
+					className='text-secondary hover:bg-brand/10 hover:text-brand-ink grid h-8 w-8 place-items-center rounded-lg transition-colors'>
 					{b.icon}
 				</button>
 			))}
@@ -194,7 +194,7 @@ export function EditorToolbar({ onAction, onTemplate, words, savedAt }: Props) {
 				onMouseDown={e => e.preventDefault()}
 				onClick={() => setOpen(v => !v)}
 				className={`flex h-8 items-center gap-1 rounded-lg px-2 text-xs transition-colors ${
-					open ? 'bg-brand/15 text-brand' : 'text-secondary hover:bg-brand/10 hover:text-brand'
+					open ? 'bg-brand/15 text-brand-ink' : 'text-secondary hover:bg-brand/10 hover:text-brand-ink'
 				}`}>
 				<FileText className='h-4 w-4' />
 				模板
@@ -209,7 +209,7 @@ export function EditorToolbar({ onAction, onTemplate, words, savedAt }: Props) {
 					拖拽图片到此处可插入
 				</span>
 				<span>{words} 字</span>
-				{savedAt && <span className='text-brand/70'>草稿已存 {savedAt}</span>}
+				{savedAt && <span className='text-brand-ink/70'>草稿已存 {savedAt}</span>}
 			</div>
 		</div>
 	)

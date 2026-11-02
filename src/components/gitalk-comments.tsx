@@ -92,7 +92,7 @@ export default function GitalkComments() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--color-brand)] to-transparent opacity-60" />
 
         <header className="mb-6 flex items-center gap-3">
-          <span className="bg-brand/10 text-brand grid h-9 w-9 shrink-0 place-items-center rounded-xl">
+          <span className="bg-brand/10 text-brand-ink grid h-9 w-9 shrink-0 place-items-center rounded-xl">
             <MessageCircle className="h-[18px] w-[18px]" />
           </span>
           <div className="min-w-0">

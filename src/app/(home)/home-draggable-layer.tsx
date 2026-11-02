@@ -227,7 +227,7 @@ export function HomeDraggableLayer({ cardKey, x, y, width, height, children }: H
 							className='absolute right-0 bottom-0 z-50 translate-x-1 translate-y-1 cursor-nwse-resize hover:scale-110'
 							onMouseDown={handleResizeMouseDown}
 							onTouchStart={handleResizeTouchStart}>
-							<DraggerSVG className='text-brand size-5' />
+							<DraggerSVG className='text-brand-ink size-5' />
 						</div>
 					)}
 				</div>

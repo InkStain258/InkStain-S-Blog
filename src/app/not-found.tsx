@@ -5,7 +5,7 @@ export default function NotFound() {
 	return (
 		<div className='mx-auto flex min-h-[70vh] w-full max-w-[560px] flex-col items-center justify-center px-6 text-center'>
 			<div
-				className='text-brand/15 text-[104px] leading-none font-semibold tracking-tighter select-none'
+				className='text-brand-ink/15 text-[104px] leading-none font-semibold tracking-tighter select-none'
 				style={{ letterSpacing: '-0.04em' }}>
 				404
 			</div>
@@ -26,7 +26,7 @@ export default function NotFound() {
 				</Link>
 				<Link
 					href='/blog'
-					className='text-secondary hover:text-brand border-border/70 hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-[12.5px] transition-colors'>
+					className='text-secondary hover:text-brand-ink border-border/70 hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-[12.5px] transition-colors'>
 					<Search className='h-3.5 w-3.5' />
 					翻文章列表
 				</Link>

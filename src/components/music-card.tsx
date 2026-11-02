@@ -281,7 +281,7 @@ export default function MusicCard() {
 				</div>
 
 				<div className='flex shrink-0 items-center gap-0.5'>
-					<button onClick={prev} className='text-secondary hover:text-brand grid h-6 w-6 place-items-center rounded-full transition-colors' title='上一首'>
+					<button onClick={prev} className='text-secondary hover:text-brand-ink grid h-6 w-6 place-items-center rounded-full transition-colors' title='上一首'>
 						<SkipBack className='h-3.5 w-3.5' />
 					</button>
 					<button
@@ -290,7 +290,7 @@ export default function MusicCard() {
 						title={isPlaying ? '暂停' : '播放'}>
 						{isPlaying ? <Pause className='h-3.5 w-3.5' /> : <Play className='ml-0.5 h-3.5 w-3.5' />}
 					</button>
-					<button onClick={next} className='text-secondary hover:text-brand grid h-6 w-6 place-items-center rounded-full transition-colors' title='下一首'>
+					<button onClick={next} className='text-secondary hover:text-brand-ink grid h-6 w-6 place-items-center rounded-full transition-colors' title='下一首'>
 						<SkipForward className='h-3.5 w-3.5' />
 					</button>
 				</div>

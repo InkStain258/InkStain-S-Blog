@@ -95,7 +95,7 @@ export function BloggerCard({ blogger, isEditMode = false, onUpdate, onDelete }:
 							contentEditable={canEdit}
 							suppressContentEditableWarning
 							onBlur={e => handleFieldChange('name', e.currentTarget.textContent || '')}
-							className={cn('group-hover:text-brand text-lg font-bold transition-colors focus:outline-none', canEdit && 'cursor-text')}>
+							className={cn('group-hover:text-brand-ink text-lg font-bold transition-colors focus:outline-none', canEdit && 'cursor-text')}>
 							{localBlogger.name}
 						</h3>
 						{canEdit ? (
@@ -111,7 +111,7 @@ export function BloggerCard({ blogger, isEditMode = false, onUpdate, onDelete }:
 								href={localBlogger.url}
 								target='_blank'
 								rel='noopener noreferrer'
-								className='text-secondary hover:text-brand mt-1 block max-w-[200px] truncate text-xs hover:underline'>
+								className='text-secondary hover:text-brand-ink mt-1 block max-w-[200px] truncate text-xs hover:underline'>
 								{localBlogger.url}
 							</a>
 						)}

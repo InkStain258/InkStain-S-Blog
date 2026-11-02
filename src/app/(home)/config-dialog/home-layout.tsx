@@ -62,7 +62,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeL
 						type='button'
 						onClick={handleStartManualLayout}
 						disabled={editing}
-							className='text-brand hover:bg-brand/10 border-brand/30 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'>
+							className='text-brand-ink hover:bg-brand/10 border-brand/30 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'>
 						{editing ? '主页正在编辑中' : '进入主页拖拽布局'}
 					</button>
 				</div>
