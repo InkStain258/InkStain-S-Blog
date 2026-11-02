@@ -164,7 +164,7 @@ export default function NavCard() {
 					x={position.x}
 					y={position.y}
 					className={clsx(
-						'z-50',
+						'z-[70]',
 						form != 'full' && 'overflow-hidden',
 						form === 'mini' && 'p-3',
 						form === 'icons' && 'flex items-center gap-6 p-3'
@@ -228,7 +228,7 @@ export default function NavCard() {
 												aria-current={pathname === item.href ? 'page' : undefined}
 												aria-label={item.label}
 												href={item.href}
-										className={cn('text-secondary text-md relative z-10 flex items-center gap-3 rounded-full px-5 py-2', form === 'icons' && 'p-0')}
+										className={cn('text-secondary text-md relative z-10 flex items-center gap-3 rounded-full px-5 py-2', form === 'icons' && 'nav-icon-hit p-0')}
 										onMouseEnter={() => setHoveredIndex(index)}>
 										<div className='flex h-7 w-7 items-center justify-center'>
 											{hoveredIndex == index ? <item.iconActive className='text-brand-ink absolute h-7 w-7' /> : <item.icon className='absolute h-7 w-7' />}

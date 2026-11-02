@@ -1095,3 +1095,20 @@ a.glass-2:active {
 .bg-brand.text-white svg {
 	color: currentColor;
 }
+
+/* ------------------------------------------------------------------
+ * 顶部图标导航的可点击区域
+ *
+ * icons 形态下图标只有 26px、间距 16px，鼠标偏一两个像素就落在缝里，
+ * 表现为「明显点在图标上却没反应」。用伪元素把每个链接的热区向外扩 8px，
+ * 视觉一点不动（透明、无背景），但相邻热区仍留 0px 空隙不会互相抢。
+ * ------------------------------------------------------------------ */
+.nav-icon-hit {
+	position: relative;
+}
+.nav-icon-hit::after {
+	content: '';
+	position: absolute;
+	inset: -8px;
+	border-radius: 9999px;
+}
