@@ -58,12 +58,12 @@
   --ink-article: #1e2a3a88;
 
   /* 玻璃材质（暗色）：描边亮度降下来，光靠内高光一线「刃口」，投影更深 */
-  --glass-1-bg: #1b2752a6;
-  --glass-2-bg: #1f2d5cb8;
+  --glass-1-bg: #1b275266;
+  --glass-2-bg: #1f2d5c8a;
   --glass-3-bg: #101a30f2;
-  --glass-edge-a: rgb(255 255 255 / 0.24);
-  --glass-edge-b: rgb(255 255 255 / 0.05);
-  --glass-hi: rgb(255 255 255 / 0.2);
+  --glass-edge-a: rgb(255 255 255 / 0.3);
+  --glass-edge-b: rgb(255 255 255 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.26);
   --glass-shadow-1: 0 1px 2px -1px rgb(0 0 0 / 0.35), 0 10px 24px -14px rgb(0 0 0 / 0.45);
   --glass-shadow-2: 0 2px 4px -2px rgb(0 0 0 / 0.4), 0 18px 40px -20px rgb(0 0 0 / 0.55);
   --glass-shadow-3: 0 6px 14px -6px rgb(0 0 0 / 0.5), 0 32px 72px -32px rgb(0 0 0 / 0.65);

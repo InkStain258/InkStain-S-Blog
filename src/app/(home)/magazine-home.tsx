@@ -62,7 +62,15 @@ export default function MagazineHome() {
 	const fade = (delay = 0) => ({ style: { animationDelay: `${delay}s` } })
 
 	return (
-		<div className='mx-auto w-full max-w-[1460px] px-6 pt-24 pb-24 max-sm:px-4 max-sm:pt-24 lg:pl-[330px]'>
+		<>
+			{/* 动态背景：三团缓慢漂移的光斑，玻璃卡片会把它模糊成底纹 */}
+			<div className='home-aurora' aria-hidden='true'>
+				<i />
+				<i />
+				<i />
+			</div>
+
+		<div className='relative z-10 mx-auto w-full max-w-[1460px] px-6 pt-24 pb-24 max-sm:px-4 max-sm:pt-24 lg:pl-[330px]'>
 			<div className='max-w-[1040px]'>
 				{/* 刊头 */}
 				<header {...fade()} className='ink-fade-up'>
@@ -129,20 +137,22 @@ export default function MagazineHome() {
 									<div className='from-brand/15 to-brand-secondary/15 h-full w-full bg-gradient-to-br' />
 								)}
 							</div>
-							<div className='mt-4 flex items-center gap-2.5 text-[10.5px]'>
-								{hero.category && <span className='text-brand-ink tracking-wider'>{hero.category}</span>}
-								<span className='text-secondary'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
+							<div className='glass-2 mt-3 rounded-xl px-4 py-4'>
+								<div className='flex items-center gap-2.5 text-[10.5px]'>
+									{hero.category && <span className='text-brand-ink tracking-wider'>{hero.category}</span>}
+									<span className='text-secondary'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
+								</div>
+								<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[18px]'>
+									{hero.title}
+								</h2>
+								<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8] max-sm:text-[13px]'>{plainInline(hero.summary)}</p>
 							</div>
-							<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[18px]'>
-								{hero.title}
-							</h2>
-							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8] max-sm:text-[13px]'>{plainInline(hero.summary)}</p>
 						</Link>
 					)}
 
 					<aside {...fade(0.12)} className='ink-fade-up'>
 						<div className='mb-3 flex items-baseline justify-between'>
-							<h2 className='text-[13px] font-semibold tracking-wide'>实验室</h2>
+							<h2 className='text-[15px] font-semibold tracking-tight'>实验室</h2>
 							<Link href='/lab' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 								全部
 							</Link>
@@ -205,7 +215,7 @@ export default function MagazineHome() {
 										)}
 									</div>
 								</div>
-								<div className='flex flex-col'>
+								<div className='glass-2 flex flex-col rounded-xl px-4 py-4'>
 									<div className='flex items-center gap-2 text-[10.5px]'>
 										{big.category && <span className='text-brand-ink tracking-wider'>{big.category}</span>}
 										<span className='text-secondary'>{dayjs(big.date).format('YYYY-MM-DD')}</span>
@@ -312,5 +322,6 @@ export default function MagazineHome() {
 				)}
 			</div>
 		</div>
+		</>
 	)
 }

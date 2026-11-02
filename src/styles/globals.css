@@ -255,7 +255,7 @@
 	box-shadow:
 		inset 0 1px 0 var(--glass-hi),
 		var(--glass-shadow-1);
-	backdrop-filter: blur(8px) saturate(1.08);
+	backdrop-filter: blur(16px) saturate(1.14);
 }
 
 @utility glass-2 {
@@ -268,7 +268,7 @@
 	box-shadow:
 		inset 0 1px 0 var(--glass-hi),
 		var(--glass-shadow-2);
-	backdrop-filter: blur(12px) saturate(1.12);
+	backdrop-filter: blur(24px) saturate(1.16);
 }
 
 @utility glass-overlay {
@@ -1152,4 +1152,79 @@ a.glass-2:active {
 	#main-content {
 		padding-bottom: env(safe-area-inset-bottom);
 	}
+}
+
+
+/* ===== 首页动态背景：三团缓慢漂移的光斑 =====
+   用 transform 动画（GPU 合成），不动 background-position，避免每帧重绘；
+   prefers-reduced-motion 下完全静止，光斑仍在但不动。 */
+.home-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  --aurora-cyan: rgb(47 203 231 / 0.2);
+  --aurora-violet: rgb(120 90 255 / 0.17);
+  --aurora-teal: rgb(53 191 171 / 0.18);
+}
+.dark .home-aurora,
+body.dark .home-aurora {
+  --aurora-cyan: rgb(47 203 231 / 0.5);
+  --aurora-violet: rgb(120 90 255 / 0.42);
+  --aurora-teal: rgb(53 191 171 / 0.4);
+}
+.home-aurora i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(54px);
+  will-change: transform;
+  animation: aurora-drift-a 46s ease-in-out infinite alternate;
+}
+.home-aurora i:nth-child(1) {
+  width: 58vw;
+  height: 58vw;
+  left: -14vw;
+  top: -16vw;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-cyan), transparent 68%);
+}
+.home-aurora i:nth-child(2) {
+  width: 48vw;
+  height: 48vw;
+  right: -12vw;
+  top: 8vh;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-violet), transparent 66%);
+  animation-name: aurora-drift-b;
+  animation-duration: 58s;
+}
+.home-aurora i:nth-child(3) {
+  width: 54vw;
+  height: 54vw;
+  left: 24vw;
+  bottom: -26vw;
+  background: radial-gradient(circle at 50% 50%, var(--aurora-teal), transparent 68%);
+  animation-name: aurora-drift-c;
+  animation-duration: 52s;
+}
+@keyframes aurora-drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(6vw, 4vh, 0) scale(1.08); }
+  100% { transform: translate3d(-3vw, 7vh, 0) scale(0.96); }
+}
+@keyframes aurora-drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-7vw, 6vh, 0) scale(1.1); }
+  100% { transform: translate3d(-2vw, -5vh, 0) scale(0.94); }
+}
+@keyframes aurora-drift-c {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-5vw, -6vh, 0) scale(1.06); }
+  100% { transform: translate3d(5vw, -2vh, 0) scale(1.02); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-aurora i { animation: none; }
+}
+@media (max-width: 640px) {
+  .home-aurora i { filter: blur(46px); }
 }
