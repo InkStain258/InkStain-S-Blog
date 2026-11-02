@@ -6,7 +6,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { motion } from 'motion/react'
 
 dayjs.extend(weekOfYear)
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { INIT_DELAY } from '@/consts'
 import ShortLineSVG from '@/svgs/short-line.svg'
@@ -130,6 +130,20 @@ export default function BlogPage() {
 			getGroupLabel: (key: string) => grouped[key]?.label || key
 		}
 	}, [displayItems, displayMode, categoryList])
+
+	// 分类模式下按一级大类统计，用于在大类标题旁给出「N 篇 · M 个分类」
+	const rootStats = useMemo(() => {
+		const m = new Map<string, { count: number; subs: number }>()
+		for (const k of groupKeys) {
+			const parts = getGroupLabel(k).split(' / ')
+			const root = parts[0]
+			const cur = m.get(root) ?? { count: 0, subs: 0 }
+			cur.count += groupedItems[k]?.items.length ?? 0
+			cur.subs += parts.length > 1 ? 1 : 0
+			m.set(root, cur)
+		}
+		return m
+	}, [groupKeys, groupedItems, getGroupLabel])
 
 	const selectedCount = selectedSlugs.size
 	const buttonText = isAuth ? '保存' : '导入密钥'
@@ -398,26 +412,33 @@ export default function BlogPage() {
 					const group = groupedItems[groupKey]
 					if (!group) return null
 
+					const label = getGroupLabel(groupKey)
+					const parts = label.split(' / ')
+					const rootName = parts[0]
+					const subName = parts[parts.length - 1]
+					const prevRoot = index > 0 ? getGroupLabel(groupKeys[index - 1]).split(' / ')[0] : ''
+					const showRoot = displayMode === 'category' && parts.length > 1 && rootName !== prevRoot
+					const stat = rootStats.get(rootName)
+
 					return (
+						<Fragment key={groupKey}>
+							{showRoot && (
+								<div className='mt-2 w-full max-w-[840px]'>
+									<h2 className='text-[17px] font-semibold tracking-tight'>{rootName}</h2>
+									<div className='text-secondary mt-1 text-[11px] tabular-nums'>
+										{stat?.count ?? group.items.length} 篇 · {stat?.subs ?? 1} 个分类
+									</div>
+								</div>
+							)}
 						<motion.div
 							onMouseLeave={cancelCoverPreview}
-							key={groupKey}
 							initial={{ opacity: 0, scale: 0.95 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							transition={{ delay: INIT_DELAY / 2 }}
 							className='card card-content relative w-full max-w-[840px] space-y-6'>
-							<div className='mb-3 flex items-center justify-between gap-3 text-base'>
+							<div className='mb-3 flex items-center justify-between gap-3'>
 								<div className='flex items-center gap-3'>
-									<div className='flex flex-wrap items-baseline gap-1.5 font-medium'>
-										{getGroupLabel(groupKey)
-											.split(' / ')
-											.map((seg, si, arr) => (
-												<span key={seg} className={si < arr.length - 1 ? 'text-secondary text-[11.5px]' : ''}>
-													{seg}
-													{si < arr.length - 1 ? ' /' : ''}
-												</span>
-											))}
-									</div>
+									<div className='text-[13.5px] font-medium tracking-[0.01em]'>{subName}</div>
 									<div className='h-2 w-2 rounded-full bg-[#D9D9D9]'></div>
 									<div className='text-secondary text-sm'>{group.items.length} 篇文章</div>
 								</div>
@@ -495,6 +516,7 @@ export default function BlogPage() {
 								})}
 							</div>
 						</motion.div>
+						</Fragment>
 					)
 				})}
 				{items.length > 0 && (

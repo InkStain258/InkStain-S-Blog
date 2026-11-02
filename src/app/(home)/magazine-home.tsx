@@ -52,7 +52,16 @@ export default function MagazineHome() {
 	const big = sorted[1]
 	const small = sorted.slice(2, 4)
 	const rest = sorted.slice(4, 14)
-	const series = useMemo(() => groupSeries(items).slice(0, 4), [items])
+	// 系列按一级大类归拢，首页直接展示「大类 → 子系列」两层
+	const seriesGroups = useMemo(() => {
+		const map = new Map<string, ReturnType<typeof groupSeries>>()
+		for (const g of groupSeries(items)) {
+			const root = g.categoryPath?.[0] || '未归类'
+			map.set(root, [...(map.get(root) ?? []), g])
+		}
+		return [...map.entries()].sort((a, b) => b[1].length - a[1].length)
+	}, [items])
+	const seriesCount = useMemo(() => seriesGroups.reduce((n, [, list]) => n + list.length, 0), [seriesGroups])
 
 	const tags = useMemo(() => {
 		const m = new Map<string, number>()
@@ -106,7 +115,7 @@ export default function MagazineHome() {
 					<div className='text-secondary mt-5 flex items-center gap-3 text-[10.5px]'>
 						<span>{items.length} 篇</span>
 						<span className='opacity-30'>/</span>
-						<span>{series.length} 个系列</span>
+						<span>{seriesCount} 个系列</span>
 						<span className='opacity-30'>/</span>
 						<span className='flex items-center gap-1'>
 							<Clock3 className='h-3 w-3' />
@@ -187,7 +196,7 @@ export default function MagazineHome() {
 				{big && (
 					<section className='mt-16 max-sm:mt-12'>
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
-							<h2 className='text-[14px] font-semibold tracking-wide'>最近写的</h2>
+							<h2 className='text-[16px] font-semibold tracking-tight'>最近写的</h2>
 							<Link href='/blog' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 								全部文章 →
 							</Link>
@@ -241,28 +250,43 @@ export default function MagazineHome() {
 
 				{/* 系列 / 再往前 */}
 				<div className='mt-16 grid gap-9 max-sm:mt-12 lg:grid-cols-[0.82fr_1.18fr]'>
-					{series.length > 0 && (
+					{seriesGroups.length > 0 && (
 						<section>
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
-								<h2 className='text-[14px] font-semibold tracking-wide'>系列</h2>
+								<h2 className='text-[16px] font-semibold tracking-tight'>系列</h2>
 								<Link href='/series' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 									全部 →
 								</Link>
 							</div>
-							<div>
-								{series.map(g => (
-									<Link
-										key={g.slug}
-										href={`/series/${encodeURIComponent(g.slug)}`}
-										className='group flex items-center justify-between gap-3 border-b border-transparent py-2.5 transition-colors'>
-										<span className='min-w-0'>
-											<span className='group-hover:text-brand-ink block truncate text-[12.5px] font-medium transition-colors'>{g.name}</span>
-											<span className='text-secondary mt-0.5 block text-[10.5px]'>
-												{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M 月 D 日')}
-											</span>
-										</span>
-										<ArrowRight className='text-secondary h-3.5 w-3.5 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-50' />
-									</Link>
+
+							<div className='space-y-5'>
+								{seriesGroups.map(([root, list]) => (
+									<div key={root}>
+										{/* 一级：大类 */}
+										<div className='flex items-baseline justify-between gap-3'>
+											<span className='text-[15px] leading-tight font-semibold tracking-[-0.01em]'>{root}</span>
+											<span className='text-secondary text-[10.5px] tabular-nums'>{list.length} 个系列</span>
+										</div>
+										{/* 二级：大类下的系列 */}
+										<div className='border-border/50 mt-1.5 space-y-0.5 border-l pl-3'>
+											{list.map(g => (
+												<Link
+													key={g.slug}
+													href={`/series/${encodeURIComponent(g.slug)}`}
+													className='group flex items-center justify-between gap-3 py-1.5 transition-colors'>
+													<span className='min-w-0'>
+														<span className='text-secondary group-hover:text-brand-ink block truncate text-[12.5px] transition-colors'>
+															{g.name}
+														</span>
+														<span className='text-secondary mt-0.5 block text-[10.5px] tabular-nums'>
+															{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M 月 D 日')}
+														</span>
+													</span>
+													<ArrowRight className='text-secondary h-3.5 w-3.5 shrink-0 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-50' />
+												</Link>
+											))}
+										</div>
+									</div>
 								))}
 							</div>
 						</section>
@@ -270,7 +294,7 @@ export default function MagazineHome() {
 
 					<section>
 						<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
-							<h2 className='text-[14px] font-semibold tracking-wide'>再往前</h2>
+							<h2 className='text-[16px] font-semibold tracking-tight'>再往前</h2>
 							<Link href='/archive' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
 								归档 →
 							</Link>
@@ -283,7 +307,7 @@ export default function MagazineHome() {
 				{tags.length > 0 && (
 					<section className='mt-14'>
 						<div className='border-border/60 mb-4 border-b pb-2.5'>
-							<h2 className='text-[14px] font-semibold tracking-wide'>常写的话题</h2>
+							<h2 className='text-[16px] font-semibold tracking-tight'>常写的话题</h2>
 						</div>
 						<div className='flex flex-wrap gap-1.5'>
 							{tags.map(([t, n]) => (
