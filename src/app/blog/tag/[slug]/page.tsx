@@ -54,7 +54,7 @@ export default function TagPage() {
 
 				{category && (
 					<Link
-						href={`/blog/category/${encodeURIComponent(category)}`}
+						href={`/blog/category/${(list[0]?.categoryPath?.length ? list[0].categoryPath : [category]).map(encodeURIComponent).join('/')}`}
 						className='text-secondary hover:text-brand-ink mt-4 inline-flex items-center gap-1 text-[11.5px] transition-colors'>
 						所属分类：{category}
 					</Link>

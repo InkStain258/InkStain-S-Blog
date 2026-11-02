@@ -13,7 +13,7 @@ import { useCategories } from '@/hooks/use-categories'
  */
 export default function SiteStats() {
 	const { items, loading } = useBlogIndex()
-	const { categories } = useCategories()
+	const { categories, tree } = useCategories()
 
 	const { total, tagCount, rows, latest } = useMemo(() => {
 		const counts = new Map<string, number>()
@@ -22,11 +22,26 @@ export default function SiteStats() {
 			counts.set(key, (counts.get(key) ?? 0) + 1)
 		}
 
-		const declared = [...categories].filter(Boolean)
-		const extra = [...counts.keys()].filter(k => k !== '未分类' && !declared.includes(k))
-		const rows = [...declared, ...extra].map(name => ({ name, count: counts.get(name) ?? 0 }))
+		// 有树就按「一级大类 → 子类」展示，没有就退回平铺
+		const rows: { name: string; count: number; depth: number }[] = []
+		if (tree.length) {
+			for (const root of tree) {
+				const rootCount = items.filter(it => {
+					const path = it.categoryPath?.length ? it.categoryPath : [it.category || '']
+					return path[0] === root.name
+				}).length
+				rows.push({ name: root.name, count: rootCount, depth: 0 })
+				for (const child of root.children ?? []) {
+					rows.push({ name: child.name, count: counts.get(child.name) ?? 0, depth: 1 })
+				}
+			}
+		} else {
+			const declared = [...categories].filter(Boolean)
+			const extra = [...counts.keys()].filter(k => k !== '未分类' && !declared.includes(k))
+			for (const name of [...declared, ...extra]) rows.push({ name, count: counts.get(name) ?? 0, depth: 0 })
+		}
 		const uncategorized = counts.get('未分类') ?? 0
-		if (uncategorized > 0) rows.push({ name: '未分类', count: uncategorized })
+		if (uncategorized > 0) rows.push({ name: '未分类', count: uncategorized, depth: 0 })
 
 		const tags = new Set<string>()
 		for (const it of items) for (const t of it.tags || []) tags.add(t)
@@ -51,7 +66,7 @@ export default function SiteStats() {
 			<div className='mt-4 flex items-end gap-8'>
 				{[
 					{ label: '篇文章', value: total },
-					{ label: '个分类', value: rows.filter(r => r.count > 0).length },
+					{ label: '个分类', value: rows.filter(r => r.count > 0 && (r.depth === 1 || !tree.length)).length },
 					{ label: '个标签', value: tagCount }
 				].map((s, i) => (
 					<motion.div
@@ -71,7 +86,12 @@ export default function SiteStats() {
 				{rows.length === 0 && <div className='text-secondary text-[11px] opacity-60'>还没有分类数据</div>}
 				{rows.map((r, i) => (
 					<div key={r.name} className='flex items-center gap-3'>
-						<span className={`w-32 shrink-0 truncate text-[11.5px] ${r.count ? '' : 'text-secondary opacity-45'}`} title={r.name}>
+						<span
+							className={`w-32 shrink-0 truncate text-[11.5px] ${
+								r.depth === 0 ? 'font-medium' : 'text-secondary pl-3'
+							} ${r.count ? '' : 'opacity-45'}`}
+							title={r.name}>
+							{r.depth === 1 && <span className='mr-1 opacity-40'>└</span>}
 							{r.name}
 						</span>
 						{r.count > 0 ? (
