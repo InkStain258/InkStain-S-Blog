@@ -16,6 +16,122 @@ type GuestMessage = {
 
 const KEY_STORE = 'ink-guestbook-key'
 
+function Item({
+	m,
+	mode,
+	open,
+	replyText,
+	onReplyText,
+	onAct,
+	onToggle,
+	busy
+}: {
+	m: GuestMessage
+	mode: 'pending' | 'approved'
+	open: boolean
+	replyText: string
+	onReplyText: (v: string) => void
+	onAct: (id: string, action: 'approve' | 'reject' | 'pending' | 'reply', reply?: string) => void
+	onToggle: (m: GuestMessage, open: boolean) => void
+	busy: string | null
+}) {
+	return (
+		<div className='bg-card rounded-2xl border p-4'>
+			<div className='flex items-start justify-between gap-3'>
+				<div className='min-w-0 flex-1'>
+					<div className='flex flex-wrap items-baseline gap-2'>
+						<span className='text-[13px] font-medium'>{m.name}</span>
+						<span className='text-secondary text-[10px] opacity-60'>{when(m.createdAt)}</span>
+						<span className='text-secondary text-[10px] opacity-50'>#{m.id}</span>
+						{m.contact && <span className='text-brand-ink/80 text-[10px]'>{m.contact}</span>}
+					</div>
+					<p className='mt-1.5 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
+
+					{m.reply && !open && (
+						<div className='border-brand/40 bg-brand/5 mt-2 rounded-r-lg border-l-2 px-3 py-2'>
+							<div className='text-brand-ink flex items-center gap-1 text-[10px]'>
+								<CornerDownRight className='h-3 w-3' />
+								我的回复
+							</div>
+							<p className='mt-1 text-[12px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
+						</div>
+					)}
+
+					{open && (
+						<div className='mt-2'>
+							<textarea
+								autoFocus
+								value={replyText}
+								onChange={e => onReplyText(e.target.value.slice(0, 500))}
+								rows={3}
+								placeholder='以站长身份回复，会和这条留言一起展示…'
+								className='bg-bg/60 focus:border-brand/50 w-full resize-none rounded-xl border px-3 py-2 text-[12px] leading-relaxed outline-none'
+							/>
+							<div className='mt-2 flex items-center gap-2'>
+								<button
+									onClick={() => onAct(m.id, 'reply', replyText)}
+									disabled={busy === m.id || !replyText.trim()}
+									className='bg-brand inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-white disabled:opacity-45'>
+									{busy === m.id ? <Loader2 className='h-3 w-3 animate-spin' /> : <Send className='h-3 w-3' />}
+									回复并展示
+								</button>
+								{m.reply && (
+									<button
+										onClick={() => onAct(m.id, 'reply', '')}
+										disabled={busy === m.id}
+										className='text-secondary inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] hover:text-red-500 disabled:opacity-45'>
+										<Trash2 className='h-3 w-3' />
+										删除回复
+									</button>
+								)}
+								<button onClick={() => onToggle(m, false)} className='text-secondary ml-auto text-[11px] opacity-60 hover:opacity-100'>
+									取消
+								</button>
+							</div>
+						</div>
+					)}
+				</div>
+
+				<div className='flex shrink-0 flex-col items-end gap-1.5'>
+					<button
+						onClick={() => onToggle(m, open)}
+						className='text-brand-ink/80 hover:bg-brand/10 inline-flex items-center gap-1 rounded-lg bg-white/50 px-2.5 py-1.5 text-[11px] font-medium hover:text-brand-ink dark:bg-white/10 dark:hover:bg-white/20'>
+						<CornerDownRight className='h-3 w-3' />
+						{m.reply ? '改回复' : '回复'}
+					</button>
+
+					{mode === 'pending' ? (
+						<>
+							<button
+								onClick={() => onAct(m.id, 'approve')}
+								disabled={busy === m.id}
+								className='inline-flex items-center gap-1 rounded-lg bg-emerald-500/12 px-2.5 py-1.5 text-[11px] font-medium text-emerald-600 hover:bg-emerald-500/20 disabled:opacity-50 dark:text-emerald-400'>
+								{busy === m.id ? <Loader2 className='h-3 w-3 animate-spin' /> : <Check className='h-3 w-3' />}
+								通过
+							</button>
+							<button
+								onClick={() => onAct(m.id, 'reject')}
+								disabled={busy === m.id}
+								className='inline-flex items-center gap-1 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-[11px] font-medium text-red-500 hover:bg-red-500/20 disabled:opacity-50'>
+								<X className='h-3 w-3' />
+								删除
+							</button>
+						</>
+					) : (
+						<button
+							onClick={() => onAct(m.id, 'pending')}
+							disabled={busy === m.id}
+							className='text-secondary inline-flex items-center gap-1 rounded-lg bg-white/60 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/80 disabled:opacity-50 dark:bg-white/10 dark:hover:bg-white/20'>
+							<Undo2 className='h-3 w-3' />
+							撤下
+						</button>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+	}
+
 function when(iso: string) {
 	const t = Date.parse(iso)
 	return Number.isNaN(t)
@@ -109,109 +225,6 @@ export default function GuestbookManagePage() {
 		)
 	}
 
-	const Item = ({ m, mode }: { m: GuestMessage; mode: 'pending' | 'approved' }) => {
-		const open = replyOpen === m.id
-		return (
-			<div className='bg-card rounded-2xl border p-4'>
-				<div className='flex items-start justify-between gap-3'>
-					<div className='min-w-0 flex-1'>
-						<div className='flex flex-wrap items-baseline gap-2'>
-							<span className='text-[13px] font-medium'>{m.name}</span>
-							<span className='text-secondary text-[10px] opacity-60'>{when(m.createdAt)}</span>
-							<span className='text-secondary text-[10px] opacity-50'>#{m.id}</span>
-							{m.contact && <span className='text-brand-ink/80 text-[10px]'>{m.contact}</span>}
-						</div>
-						<p className='mt-1.5 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
-
-						{m.reply && !open && (
-							<div className='border-brand/40 bg-brand/5 mt-2 rounded-r-lg border-l-2 px-3 py-2'>
-								<div className='text-brand-ink flex items-center gap-1 text-[10px]'>
-									<CornerDownRight className='h-3 w-3' />
-									我的回复
-								</div>
-								<p className='mt-1 text-[12px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
-							</div>
-						)}
-
-						{open && (
-							<div className='mt-2'>
-								<textarea
-									autoFocus
-									value={replyText}
-									onChange={e => setReplyText(e.target.value.slice(0, 500))}
-									rows={3}
-									placeholder='以站长身份回复，会和这条留言一起展示…'
-									className='bg-bg/60 focus:border-brand/50 w-full resize-none rounded-xl border px-3 py-2 text-[12px] leading-relaxed outline-none'
-								/>
-								<div className='mt-2 flex items-center gap-2'>
-									<button
-										onClick={() => act(m.id, 'reply', replyText)}
-										disabled={busy === m.id || !replyText.trim()}
-										className='bg-brand inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-white disabled:opacity-45'>
-										{busy === m.id ? <Loader2 className='h-3 w-3 animate-spin' /> : <Send className='h-3 w-3' />}
-										回复并展示
-									</button>
-									{m.reply && (
-										<button
-											onClick={() => act(m.id, 'reply', '')}
-											disabled={busy === m.id}
-											className='text-secondary inline-flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] hover:text-red-500 disabled:opacity-45'>
-											<Trash2 className='h-3 w-3' />
-											删除回复
-										</button>
-									)}
-									<button onClick={() => setReplyOpen(null)} className='text-secondary ml-auto text-[11px] opacity-60 hover:opacity-100'>
-										取消
-									</button>
-								</div>
-							</div>
-						)}
-					</div>
-
-					<div className='flex shrink-0 flex-col items-end gap-1.5'>
-						<button
-							onClick={() => {
-								if (open) return setReplyOpen(null)
-								setReplyOpen(m.id)
-								setReplyText(m.reply?.content || '')
-							}}
-							className='text-brand-ink/80 hover:bg-brand/10 inline-flex items-center gap-1 rounded-lg bg-white/50 px-2.5 py-1.5 text-[11px] font-medium hover:text-brand-ink dark:bg-white/10 dark:hover:bg-white/20'>
-							<CornerDownRight className='h-3 w-3' />
-							{m.reply ? '改回复' : '回复'}
-						</button>
-
-						{mode === 'pending' ? (
-							<>
-								<button
-									onClick={() => act(m.id, 'approve')}
-									disabled={busy === m.id}
-									className='inline-flex items-center gap-1 rounded-lg bg-emerald-500/12 px-2.5 py-1.5 text-[11px] font-medium text-emerald-600 hover:bg-emerald-500/20 disabled:opacity-50 dark:text-emerald-400'>
-									{busy === m.id ? <Loader2 className='h-3 w-3 animate-spin' /> : <Check className='h-3 w-3' />}
-									通过
-								</button>
-								<button
-									onClick={() => act(m.id, 'reject')}
-									disabled={busy === m.id}
-									className='inline-flex items-center gap-1 rounded-lg bg-red-500/10 px-2.5 py-1.5 text-[11px] font-medium text-red-500 hover:bg-red-500/20 disabled:opacity-50'>
-									<X className='h-3 w-3' />
-									删除
-								</button>
-							</>
-						) : (
-							<button
-								onClick={() => act(m.id, 'pending')}
-								disabled={busy === m.id}
-								className='text-secondary inline-flex items-center gap-1 rounded-lg bg-white/60 px-2.5 py-1.5 text-[11px] font-medium hover:bg-white/80 disabled:opacity-50 dark:bg-white/10 dark:hover:bg-white/20'>
-								<Undo2 className='h-3 w-3' />
-								撤下
-							</button>
-						)}
-					</div>
-				</div>
-			</div>
-		)
-	}
-
 	return (
 		<div className='mx-auto w-full max-w-[760px] px-6 pt-28 pb-16'>
 			<div className='flex items-center justify-between'>
@@ -236,7 +249,21 @@ export default function GuestbookManagePage() {
 			<div className='mt-3 grid gap-2.5'>
 				{pending.length === 0 && <p className='text-secondary py-8 text-center text-[12px] opacity-60'>没有待审核的留言</p>}
 				{pending.map(m => (
-					<Item key={m.id} m={m} mode='pending' />
+					<Item
+						key={m.id}
+						m={m}
+						mode='pending'
+						open={replyOpen === m.id}
+						replyText={replyText}
+						onReplyText={setReplyText}
+						onAct={act}
+						onToggle={(msg, isOpen) => {
+							if (isOpen) return setReplyOpen(null)
+							setReplyOpen(msg.id)
+							setReplyText(msg.reply?.content || '')
+						}}
+						busy={busy}
+					/>
 				))}
 			</div>
 
@@ -248,7 +275,21 @@ export default function GuestbookManagePage() {
 			<div className='mt-3 grid gap-2.5'>
 				{approved.length === 0 && <p className='text-secondary py-8 text-center text-[12px] opacity-60'>还没有展示中的留言</p>}
 				{approved.map(m => (
-					<Item key={m.id} m={m} mode='approved' />
+					<Item
+						key={m.id}
+						m={m}
+						mode='approved'
+						open={replyOpen === m.id}
+						replyText={replyText}
+						onReplyText={setReplyText}
+						onAct={act}
+						onToggle={(msg, isOpen) => {
+							if (isOpen) return setReplyOpen(null)
+							setReplyOpen(msg.id)
+							setReplyText(msg.reply?.content || '')
+						}}
+						busy={busy}
+					/>
 				))}
 			</div>
 
