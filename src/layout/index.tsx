@@ -69,6 +69,12 @@ export default function Layout({ children }: PropsWithChildren) {
 
 	return (
 		<>
+			{/* 键盘用户第一个 Tab 就能跳过导航与装饰层 */}
+			<a
+				href='#main-content'
+				className='sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100000] focus:rounded-xl focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black focus:shadow-lg'>
+				跳到正文
+			</a>
 			<SplashScreen />
 			{idle && wantClick && <ClickEffect />}
 			<ThemeToggle />
@@ -107,19 +113,15 @@ export default function Layout({ children }: PropsWithChildren) {
 			<BlurredBubblesBackground colors={siteContent.backgroundColors} regenerateKey={regenerateKey} />
 
 			{/* 键盘/读屏用户第一个 Tab 就能跳到正文，跳过导航与装饰层 */}
-			<a
-				href='#main-content'
-				className='sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100000] focus:rounded-xl focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-black focus:shadow-lg'>
-				跳到正文
-			</a>
+			
 
 			<main id='main-content' className='relative z-10 h-full'>
 				<ProseImageEnhancer />
 				<CodeBlockEnhancer />
+				<NavCard />
 				<RandomRoam />
 				<PageTransition>{children}</PageTransition>
 				<SiteFooter />
-				<NavCard />
 				{!maxSM && (siteContent as any).homeLayout !== 'magazine' && cardStyles.musicCard?.enabled !== false && <MusicCard />}
 				{!maxSM && isHome && (
 					<div className="fixed bottom-6 left-6 z-40 w-36">

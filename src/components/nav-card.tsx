@@ -4,7 +4,7 @@ import Card from '@/components/card'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { FlaskConical, MessageSquareText } from 'lucide-react'
+import { FlaskConical, Home as HomeIcon, MessageSquareText } from 'lucide-react'
 import { useCenterStore } from '@/hooks/use-center'
 import { CARD_SPACING } from '@/consts'
 import ScrollOutlineSVG from '@/svgs/scroll-outline.svg'
@@ -29,7 +29,16 @@ const GuestbookFilled = ({ className }: { className?: string }) => (
 	<MessageSquareText className={className} strokeWidth={1.7} fill='currentColor' fillOpacity={0.16} />
 )
 
+const HomeOutline = ({ className }: { className?: string }) => <HomeIcon className={className} strokeWidth={1.7} />
+const HomeFilled = ({ className }: { className?: string }) => <HomeIcon className={className} strokeWidth={1.7} fill='currentColor' fillOpacity={0.16} />
+
 const list = [
+	{
+		icon: HomeOutline,
+		iconActive: HomeFilled,
+		label: '首页',
+		href: '/'
+	},
 	{
 		icon: ScrollOutlineSVG,
 		iconActive: ScrollFilledSVG,
@@ -130,7 +139,7 @@ export default function NavCard() {
 
 	const size = useMemo(() => {
 		if (form === 'mini') return { width: 64, height: 64 }
-		else if (form === 'icons') return { width: 340, height: 64 }
+		else if (form === 'icons') return { width: 404, height: 64 }
 		else return { width: styles.width, height: styles.height }
 	}, [form, styles])
 
@@ -187,7 +196,7 @@ export default function NavCard() {
 						<>
 							{form !== 'icons' && <div className='text-secondary mt-4 text-xs tracking-wider uppercase'>General</div>}
 
-							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-6 space-y-0')}>
+							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-4 space-y-0')}>
 								{/* 悬停高亮：原来用 motion 的 spring 滑块，改成 CSS 过渡的绝对定位块。
 								    竖直列表是等高的，translate 到 hoveredIndex × 行高即可，观感一致但不下载动画库。 */}
 								<div

@@ -455,7 +455,18 @@ export default function Page() {
 
 			{compareIndex !== null && images[compareIndex]?.converted && (
 				<DialogModal open={true} onClose={handleCloseCompare} className='w-full'>
-					<div className='grid w-full grid-cols-2 gap-4' onClick={handleCloseCompare}>
+					<div
+						role='button'
+						tabIndex={0}
+						aria-label='关闭对比视图'
+						className='grid w-full grid-cols-2 gap-4'
+						onClick={handleCloseCompare}
+						onKeyDown={e => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault()
+								handleCloseCompare()
+							}
+						}}>
 						<div className='flex flex-col items-end p-4'>
 							<div>
 								<div className='text-secondary text-center text-sm font-medium'>原图 ({formatBytes(images[compareIndex].file.size)})</div>
