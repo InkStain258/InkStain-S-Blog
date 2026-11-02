@@ -90,7 +90,7 @@ export default function MagazineHome() {
 						</Link>
 						<Link
 							href='/blog'
-							className='text-secondary hover:text-brand-ink border-border/70 hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full border px-5 py-2.5 text-[12.5px] transition-colors'>
+							className='glass-1 text-secondary hover:text-brand-ink hover:border-brand/40 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[12.5px] transition-colors'>
 							按时间翻
 						</Link>
 						<Link href='/series' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 px-1 text-[12.5px] transition-colors'>
@@ -143,7 +143,7 @@ export default function MagazineHome() {
 					<aside {...fade(0.12)} className='ink-fade-up'>
 						<div className='mb-3 flex items-baseline justify-between'>
 							<h2 className='text-[13px] font-semibold tracking-wide'>实验室</h2>
-							<Link href='/lab' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+							<Link href='/lab' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 								全部
 							</Link>
 						</div>
@@ -156,7 +156,7 @@ export default function MagazineHome() {
 									<Link
 										key={t.href}
 										href={t.href}
-										className='group glass-1 hover:border-brand/40 flex items-center gap-2 rounded-xl px-2.5 py-2.5 transition-colors'>
+										className='group glass-2 hover:border-brand/40 flex items-center gap-2 rounded-xl px-2.5 py-2.5 transition-colors'>
 										<span className='bg-brand/10 text-brand-ink grid h-7 w-7 shrink-0 place-items-center rounded-lg'>
 											<Icon className='h-3.5 w-3.5' />
 										</span>
@@ -169,7 +169,7 @@ export default function MagazineHome() {
 						<div className='mt-5'>
 							<div className='mb-2 flex items-baseline justify-between'>
 								<h2 className='text-[13px] font-semibold tracking-wide'>边写边听</h2>
-								<Link href='/music' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+								<Link href='/music' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 									Music
 								</Link>
 							</div>
@@ -183,7 +183,7 @@ export default function MagazineHome() {
 					<section className='mt-16 max-sm:mt-12'>
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[16px] font-semibold tracking-tight'>最近写的</h2>
-							<Link href='/blog' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+							<Link href='/blog' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 								全部文章
 							</Link>
 						</div>
@@ -218,9 +218,9 @@ export default function MagazineHome() {
 								</div>
 							</Link>
 
-							<div className='divide-border/60 divide-y'>
+							<div className='space-y-2'>
 								{small.map((it, i) => (
-									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group block py-4 first:pt-0'>
+									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group glass-1 hover:border-brand/40 block rounded-xl px-3.5 py-3 transition-colors'>
 										<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
 											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
@@ -240,7 +240,7 @@ export default function MagazineHome() {
 						<section>
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 								<h2 className='text-[16px] font-semibold tracking-tight'>系列</h2>
-								<Link href='/series' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+								<Link href='/series' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 									全部
 								</Link>
 							</div>
@@ -254,12 +254,12 @@ export default function MagazineHome() {
 											<span className='text-secondary text-[10.5px] tabular-nums'>{list.length} 个系列</span>
 										</div>
 										{/* 二级：大类下的系列 */}
-										<div className='border-border/50 mt-1.5 space-y-0.5 border-l pl-3'>
+										<div className='mt-2 space-y-1.5'>
 											{list.map(g => (
 												<Link
 													key={g.slug}
 													href={`/series/${encodeURIComponent(g.slug)}`}
-													className='group flex items-center justify-between gap-3 py-1.5 transition-colors'>
+													className='group glass-1 hover:border-brand/40 flex items-center justify-between gap-3 rounded-lg px-3 py-2 transition-colors'>
 													<span className='min-w-0'>
 														<span className='text-secondary group-hover:text-brand-ink block truncate text-[12.5px] transition-colors'>
 															{g.name}
@@ -281,11 +281,13 @@ export default function MagazineHome() {
 					<section>
 						<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[16px] font-semibold tracking-tight'>再往前</h2>
-							<Link href='/archive' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+							<Link href='/archive' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
 								归档
 							</Link>
 						</div>
-						<PostList items={rest} dense showTags={false} empty={loading ? '加载中…' : '还没有文章'} />
+						<div className='glass-1 rounded-xl px-3.5 py-2'>
+							<PostList items={rest} dense showTags={false} empty={loading ? '加载中…' : '还没有文章'} />
+						</div>
 					</section>
 				</div>
 
@@ -300,7 +302,7 @@ export default function MagazineHome() {
 								<Link
 									key={t}
 									href={`/blog/tag/${encodeURIComponent(t)}`}
-									className='text-secondary hover:border-brand/40 hover:text-brand-ink border-border/50 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
+									className='glass-1 text-secondary hover:border-brand/40 hover:text-brand-ink rounded-full px-2.5 py-1 text-[10.5px] transition-colors'>
 									{t}
 									<span className='ml-1'>{n}</span>
 								</Link>
