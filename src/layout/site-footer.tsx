@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import clsx from 'clsx'
 import { ChevronUp, RefreshCw, KeyRound } from 'lucide-react'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 
@@ -43,21 +42,10 @@ export default function SiteFooter() {
 	const [qi, setQi] = useState(0)
 	const [mounted, setMounted] = useState(false)
 	const [open, setOpen] = useState(false)
-	const [canHover, setCanHover] = useState(true)
 
 	useEffect(() => {
 		setQi(Math.floor(Math.random() * QUOTES.length))
 		setMounted(true)
-
-		// 触屏设备没有 hover，页脚常驻展开
-		const mq = window.matchMedia('(hover: hover) and (pointer: fine)')
-		const apply = () => {
-			setCanHover(mq.matches)
-			if (!mq.matches) setOpen(true)
-		}
-		apply()
-		mq.addEventListener('change', apply)
-		return () => mq.removeEventListener('change', apply)
 	}, [])
 
 	// 首页是拖拽卡片画布，不放页脚
@@ -70,26 +58,14 @@ export default function SiteFooter() {
 	const quote = QUOTES[qi % QUOTES.length]
 	const year = new Date().getFullYear()
 
-	const expanded = open || !canHover
-
 	return (
 		<footer className='ink-fade-up relative z-10 mx-auto mt-16 w-full max-w-[1140px] px-6 pb-10 max-sm:px-4'>
-			<div
-				className='relative h-14'
-				onMouseEnter={() => canHover && setOpen(true)}
-				onMouseLeave={() => canHover && setOpen(false)}
-				onFocus={() => canHover && setOpen(true)}
-				onBlur={e => {
-					if (canHover && !e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false)
-				}}>
+			<div className='relative'>
 				{/* ---------------- 展开态 ---------------- */}
 				<div
-					aria-hidden={!expanded}
-					className={clsx(
-						'bg-card absolute inset-x-0 bottom-0 overflow-hidden rounded-[28px] border shadow-[0_26px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur-md',
-						'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-						expanded ? 'translate-y-0 scale-100 opacity-100' : 'pointer-events-none translate-y-[18px] scale-[0.985] opacity-0'
-					)}>
+					id='site-footer-panel'
+					hidden={!open}
+					className='bg-card ink-fade-up relative mb-2 overflow-hidden rounded-[28px] border shadow-[0_26px_70px_-30px_rgba(0,0,0,0.45)] backdrop-blur-md'>
 					<div className='h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--color-brand)] to-transparent opacity-60' />
 
 					<div className='grid gap-10 p-8 sm:grid-cols-2 lg:grid-cols-4 max-sm:p-6'>
@@ -203,16 +179,25 @@ export default function SiteFooter() {
 							</div>
 						</div>
 					</div>
+
+					{/* 收起 */}
+					<div className='flex justify-center px-8 pb-6 max-sm:px-6'>
+						<button
+							type='button'
+							onClick={() => setOpen(false)}
+							aria-expanded={open}
+							aria-controls='site-footer-panel'
+							className='text-secondary hover:text-brand-ink border-border/60 hover:border-brand/40 flex items-center gap-1 rounded-full border px-4 py-1.5 text-[11.5px] transition-colors'>
+							收起
+							<ChevronUp className='h-3.5 w-3.5 rotate-180' />
+						</button>
+					</div>
 				</div>
 
 				{/* ---------------- 收起态 ---------------- */}
 				<div
-					aria-hidden={expanded}
-					className={clsx(
-						'bg-card absolute inset-x-0 bottom-0 flex h-14 items-center justify-between rounded-2xl border px-5 backdrop-blur-md',
-						'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-						expanded ? 'pointer-events-none translate-y-[10px] opacity-0' : 'translate-y-0 opacity-100'
-					)}>
+					hidden={open}
+					className='bg-card flex h-14 items-center justify-between rounded-2xl border px-5 backdrop-blur-md'>
 					<div className='flex min-w-0 items-center gap-3'>
 						<Image src='/images/avatar.png' alt={name} width={28} height={28} className='ring-brand/30 h-7 w-7 rounded-full object-cover ring-2' />
 						<span className='truncate text-[13px] font-medium'>{name}</span>
@@ -233,10 +218,15 @@ export default function SiteFooter() {
 						<Link href='/guestbook' className='text-secondary hover:text-brand-ink hidden text-[11px] transition-colors sm:inline'>
 							留言板
 						</Link>
-						<span className='text-secondary flex items-center gap-1 text-[11px] opacity-45'>
-							<ChevronUp className='h-3.5 w-3.5 animate-bounce' style={{ animationDuration: '2.4s' }} />
-							悬停展开
-						</span>
+						<button
+							type='button'
+							onClick={() => setOpen(true)}
+							aria-expanded={open}
+							aria-controls='site-footer-panel'
+							className='text-secondary hover:text-brand-ink flex items-center gap-1 rounded-lg px-1.5 py-1 text-[11px] transition-colors'>
+							展开页脚
+							<ChevronUp className='h-3.5 w-3.5' />
+						</button>
 					</div>
 				</div>
 			</div>
