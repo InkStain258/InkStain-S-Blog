@@ -29,7 +29,7 @@ export default function LabPage() {
 				</div>
 				<h1 className='text-2xl font-semibold tracking-tight sm:text-[28px]'>实验室</h1>
 				<p className='text-secondary mt-2 max-w-[620px] text-[13px] leading-[1.9] opacity-80'>
-					都是我自己会用的小工具：计时、转图、听歌、翻素材。做得不大，能顺手用就行。
+					不符合实验室规范的废品回收站，也许可以淘宝
 				</p>
 			</header>
 

@@ -77,7 +77,7 @@ export default async function Page() {
 				</div>
 				<h1 className='mt-3 text-[27px] leading-[1.3] font-semibold tracking-[-0.01em] max-sm:text-[24px]'>我 star 的项目</h1>
 				<p className='text-secondary mt-2 max-w-[540px] text-[12.5px] leading-[1.85] max-sm:text-[13px]'>
-					平时刷到有意思的仓库就点个星，攒下来慢慢看。留下的大多是真的读过源码，或者最后用进项目里的。
+					多看多学，闭门造车不可取
 				</p>
 			</header>
 

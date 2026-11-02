@@ -25,7 +25,7 @@ export default function SeriesIndexPage() {
 						系列
 					</div>
 					<h1 className='text-[28px] leading-tight font-semibold'>按系列读</h1>
-					<p className='text-secondary mt-2 text-[12.5px]'>成组的笔记按章节顺序排好了，从第一篇往下读不会断线。</p>
+					<p className='text-secondary mt-2 text-[12.5px]'>成组的笔记按章节顺序排好了，从第一篇往下读不会断线。每一组都属于「汉语言文学的波纹」下面的某个子类。</p>
 				</div>
 			</motion.div>
 
@@ -45,7 +45,12 @@ export default function SeriesIndexPage() {
 											{g.name}
 											<ArrowRight className='h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-60' />
 										</div>
-										<div className='text-secondary mt-1.5 truncate text-[11.5px]'>
+										{g.categoryPath.length > 0 && (
+											<div className='text-brand-ink/80 mt-1.5 text-[10.5px] tracking-[0.06em]'>
+												{g.categoryPath.join(' · ')}
+											</div>
+										)}
+										<div className='text-secondary mt-1 truncate text-[11.5px]'>
 											共 {g.items.length} 篇 · 最近更新 {dayjs(last.date).format('YYYY-MM-DD')}
 										</div>
 									</div>

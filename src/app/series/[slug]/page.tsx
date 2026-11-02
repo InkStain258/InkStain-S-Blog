@@ -40,7 +40,22 @@ export default function SeriesDetailPage() {
 
 				<div className='mt-4 flex items-end justify-between gap-4'>
 					<div className='min-w-0'>
-						<div className='text-secondary mb-1.5 text-[11px] tracking-[0.18em] uppercase opacity-70'>系列</div>
+						{group?.categoryPath?.length ? (
+							<div className='text-secondary mb-1.5 flex flex-wrap items-center gap-1.5 text-[10.5px]'>
+								{group.categoryPath.map((seg, i) => (
+									<span key={seg} className='flex items-center gap-1.5'>
+										{i > 0 && <span className='opacity-40'>·</span>}
+										<Link
+											href={`/blog/category/${group.categoryPath.slice(0, i + 1).map(encodeURIComponent).join('/')}`}
+											className='hover:text-brand-ink transition-colors'>
+											{seg}
+										</Link>
+									</span>
+								))}
+							</div>
+						) : (
+							<div className='text-secondary mb-1.5 text-[11px] tracking-[0.18em] uppercase opacity-70'>系列</div>
+						)}
 						<h1 className='text-[26px] leading-tight font-semibold'>{group?.name ?? '…'}</h1>
 					</div>
 					<div className='text-secondary shrink-0 text-right text-xs'>

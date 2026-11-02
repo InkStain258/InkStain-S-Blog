@@ -29,6 +29,8 @@ export type SeriesGroup = {
 	name: string
 	slug: string
 	items: (BlogIndexItem & { chapter: number; chapterTitle: string })[]
+	/** 系列所属分类路径（取组内第一篇），用于按一级大类归拢 */
+	categoryPath: string[]
 }
 
 /** 把文章按系列归组，系列内按章节号升序 */
@@ -37,8 +39,9 @@ export function groupSeries(items: BlogIndexItem[]): SeriesGroup[] {
 	for (const it of items) {
 		const s = parseSeries(it.title || '')
 		if (!s) continue
-		const g = map.get(s.name) ?? { name: s.name, slug: seriesSlug(s.name), items: [] }
+		const g = map.get(s.name) ?? { name: s.name, slug: seriesSlug(s.name), items: [], categoryPath: [] as string[] }
 		g.items.push({ ...it, chapter: s.chapter, chapterTitle: s.chapterTitle })
+		if (!g.categoryPath.length) g.categoryPath = it.categoryPath ?? (it.category ? [it.category] : [])
 		map.set(s.name, g)
 	}
 	return [...map.values()]

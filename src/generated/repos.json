@@ -1,0 +1,242 @@
+{
+	"generatedAt": "2026-11-02",
+	"count": 21,
+	"items": [
+		{
+			"name": "InkStain-S-Blog",
+			"url": "https://github.com/InkStain258/InkStain-S-Blog",
+			"desc": "InkStain的技术杂谈",
+			"lang": "TypeScript",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-11-02",
+			"homepage": "https://www.yysuni.com/",
+			"topics": []
+		},
+		{
+			"name": "Xingtong_Image_Collection",
+			"url": "https://github.com/InkStain258/Xingtong_Image_Collection",
+			"desc": "用于星瞳图片AI二创的素材库",
+			"lang": "",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-10-31",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "ppt-master",
+			"url": "https://github.com/InkStain258/ppt-master",
+			"desc": "AI generates a real, editable PowerPoint from any document — native shapes & animations, editable charts & tables you can change the data on, speaker notes voiced as audio narration, and the option to follow your own .pptx template, not slide images · by Hugo He",
+			"lang": "Python",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-10-31",
+			"homepage": "https://hugohe3.github.io/ppt-master/",
+			"topics": []
+		},
+		{
+			"name": "remotion",
+			"url": "https://github.com/InkStain258/remotion",
+			"desc": "🎥      Make videos programmatically with React",
+			"lang": "TypeScript",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-10-31",
+			"homepage": "https://remotion.dev",
+			"topics": []
+		},
+		{
+			"name": "dsh-glass-skin",
+			"url": "https://github.com/InkStain258/dsh-glass-skin",
+			"desc": "Acrylic / frosted-glass appearance for DeepSeek Harness: translucent surfaces over the native window material, layered on top of any active theme.",
+			"lang": "JavaScript",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-10-30",
+			"homepage": "",
+			"topics": [
+				"acrylic",
+				"deepseek-harness",
+				"dsh",
+				"dsh-plugin"
+			]
+		},
+		{
+			"name": "awesome-dsh-plugin",
+			"url": "https://github.com/InkStain258/awesome-dsh-plugin",
+			"desc": "A curated list of plugins for DeepSeek Harness (dsh) · DeepSeek Harness 插件精选列表",
+			"lang": "",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-10-24",
+			"homepage": "https://awesome-dsh-plugin.com",
+			"topics": []
+		},
+		{
+			"name": "lora-scripts",
+			"url": "https://github.com/InkStain258/lora-scripts",
+			"desc": "SD-Trainer. LoRA & Dreambooth training scripts & GUI use kohya-ss's trainer, for diffusion model.",
+			"lang": "Python",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-10-19",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Ancient-Poems-and-Texts-for-Primary-and-Secondary-Schools",
+			"url": "https://github.com/InkStain258/Ancient-Poems-and-Texts-for-Primary-and-Secondary-Schools",
+			"desc": "",
+			"lang": "TypeScript",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-10-07",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "cloud-mail-for-harmonyos",
+			"url": "https://github.com/InkStain258/cloud-mail-for-harmonyos",
+			"desc": "Cloud Mail移植的HarmonyOS鸿蒙原生应用的邮件客户端",
+			"lang": "JavaScript",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-09-12",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "ECHO-Community",
+			"url": "https://github.com/InkStain258/ECHO-Community",
+			"desc": "The Bit-Perfect Bridge to Your Sonic Multiverse.",
+			"lang": "",
+			"stars": 0,
+			"fork": true,
+			"pushed": "2026-09-05",
+			"homepage": "https://echonext.moe",
+			"topics": []
+		},
+		{
+			"name": "daguan-art",
+			"url": "https://github.com/InkStain258/daguan-art",
+			"desc": "",
+			"lang": "",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-09-01",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Tutorial-Release-Siyuan",
+			"url": "https://github.com/InkStain258/Tutorial-Release-Siyuan",
+			"desc": "",
+			"lang": "",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-08-06",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "seal-extractor",
+			"url": "https://github.com/InkStain258/seal-extractor",
+			"desc": "Seal Extractor",
+			"lang": "HTML",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-07-22",
+			"homepage": "https://inkstain258.github.io/seal-extractor",
+			"topics": []
+		},
+		{
+			"name": "geo-tools",
+			"url": "https://github.com/InkStain258/geo-tools",
+			"desc": "",
+			"lang": "TypeScript",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-06-13",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Xingtong-concert-full-screen-bullet-comments-visualization",
+			"url": "https://github.com/InkStain258/Xingtong-concert-full-screen-bullet-comments-visualization",
+			"desc": "",
+			"lang": "HTML",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-06-09",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "-Zuiweng-Pavilion-Essay-Visual-Culture-Website",
+			"url": "https://github.com/InkStain258/-Zuiweng-Pavilion-Essay-Visual-Culture-Website",
+			"desc": "",
+			"lang": "HTML",
+			"stars": 1,
+			"fork": false,
+			"pushed": "2026-05-16",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Xueji-Bilingual-Intensive-Reading",
+			"url": "https://github.com/InkStain258/Xueji-Bilingual-Intensive-Reading",
+			"desc": "",
+			"lang": "HTML",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-05-14",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "xueji-Visual-presentation",
+			"url": "https://github.com/InkStain258/xueji-Visual-presentation",
+			"desc": "",
+			"lang": "HTML",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-05-14",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Collection-of-thesis-materials",
+			"url": "https://github.com/InkStain258/Collection-of-thesis-materials",
+			"desc": "Collection of thesis materials which come from “Research on the Design of Digital Narratives for Classical Chinese Texts from a Multimodal Perspective: A Case Study of The Literary Mind and the Carving of Dragons in Supporting Senior High School Chinese Argumentative Writing Instruction”",
+			"lang": "HTML",
+			"stars": 0,
+			"fork": false,
+			"pushed": "2026-04-28",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Xingtong_3DModel_Hunyuan-made",
+			"url": "https://github.com/InkStain258/Xingtong_3DModel_Hunyuan-made",
+			"desc": "由混元模型生成的星瞳粗模",
+			"lang": "HTML",
+			"stars": 1,
+			"fork": false,
+			"pushed": "2025-06-22",
+			"homepage": "",
+			"topics": []
+		},
+		{
+			"name": "Xingtong_RVC",
+			"url": "https://github.com/InkStain258/Xingtong_RVC",
+			"desc": "个人训练的虚拟偶像星瞳的RVC模型和特征库",
+			"lang": "",
+			"stars": 5,
+			"fork": false,
+			"pushed": "2025-06-22",
+			"homepage": "",
+			"topics": []
+		}
+	]
+}

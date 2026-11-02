@@ -27,7 +27,7 @@ type DisplayMode = 'day' | 'week' | 'month' | 'year' | 'category'
 
 export default function BlogPage() {
 	const { items, loading } = useBlogIndex()
-	const { categories: categoriesFromServer } = useCategories()
+	const { categories: categoriesFromServer, tree: categoryTree } = useCategories()
 	const { isRead } = useReadArticles()
 	const { isAuth, setPrivateKey } = useAuthStore()
 	const { siteContent } = useConfigStore()
@@ -69,7 +69,8 @@ export default function BlogPage() {
 
 				switch (displayMode) {
 					case 'category':
-						key = item.category || '未分类'
+						// 多层级分类：这一层先按一级大类归组，子类进大类页再看
+						key = (item.categoryPath && item.categoryPath[0]) || item.category || '未分类'
 						label = key
 						break
 					case 'day':
@@ -336,7 +337,7 @@ export default function BlogPage() {
 					</div>
 					<h1 className='mt-5 text-[27px] leading-[1.3] font-semibold tracking-[-0.015em] max-sm:text-[23px]'>全部文章</h1>
 					<p className='text-secondary mt-2 max-w-[520px] text-[12.5px] leading-[1.9] opacity-80'>
-						按时间从近到远。想按主题看，用下面的分类或标签；想从头读，去归档。
+						一锅出，大杂烩，尽情地享受吧
 					</p>
 				</header>
 
@@ -349,7 +350,7 @@ export default function BlogPage() {
 					{[
 						{ href: '/series', label: '系列' },
 						{ href: '/archive', label: '归档' },
-						...(categoryList.length ? [{ href: `/blog/category/${encodeURIComponent(categoryList[0])}`, label: '分类' }] : []),
+						...(categoryTree.length ? [{ href: `/blog/category/${encodeURIComponent(categoryTree[0].name)}`, label: '分类' }] : []),
 						...(items[0]?.tags?.length ? [{ href: `/blog/tag/${encodeURIComponent(items[0].tags[0])}`, label: '标签' }] : [])
 					].map((l, i) => (
 						<span key={l.href} className='flex items-center gap-1'>

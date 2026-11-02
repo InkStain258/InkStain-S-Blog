@@ -33,7 +33,7 @@ export default function GridView({ shares, isEditMode = false, onUpdate, onDelet
 				</div>
 				<h1 className='mt-5 text-[27px] leading-[1.3] font-semibold tracking-[-0.015em] max-sm:text-[23px]'>友链</h1>
 				<p className='text-secondary mt-2 max-w-[520px] text-[12.5px] leading-[1.9]'>
-					常去的地方。都是自己真的会点开的站，不是为换链接凑数。
+					大家走个面儿，多看看这些，比我的垃圾更有趣
 				</p>
 			</header>
 
