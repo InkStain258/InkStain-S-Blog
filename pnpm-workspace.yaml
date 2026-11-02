@@ -1,6 +1,7 @@
-# pnpm 10+ 默认不再执行依赖的安装脚本（esbuild/sharp/workerd 需要编译二进制）。
-# 显式放行这三个，否则 pnpm install / next build 会因 ERR_PNPM_IGNORED_BUILDS 中断。
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
-  - workerd
+# pnpm 11 用 allowBuilds 声明允许执行安装脚本的包（旧键 onlyBuiltDependencies 已不再读取）。
+# esbuild / sharp / workerd 需要下载或编译平台二进制，不放行会导致：
+#   ERR_PNPM_IGNORED_BUILDS → pnpm install 退出码 1 → Vercel 构建在依赖检查阶段就失败。
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
