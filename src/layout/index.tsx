@@ -116,7 +116,10 @@ export default function Layout({ children }: PropsWithChildren) {
 			{/* 键盘/读屏用户第一个 Tab 就能跳到正文，跳过导航与装饰层 */}
 			
 
-			<main id='main-content' className='relative z-10 h-full'>
+			{/* min-h-full 而不是 h-full：内容比视口高时，main 要能被撑开，
+			    否则页面高度锁在 100vh，滚动落到 body 上，window.scrollY 永远是 0
+			    —— 阅读进度条、回到顶部、滚动联动全部失效（手机上尤其明显）。 */}
+			<main id='main-content' className='relative z-10 min-h-full'>
 				<ProseImageEnhancer />
 				<TaskListLabels />
 				<CodeBlockEnhancer />

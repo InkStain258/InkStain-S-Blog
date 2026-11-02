@@ -1112,3 +1112,28 @@ a.glass-2:active {
 	inset: -8px;
 	border-radius: 9999px;
 }
+
+/* ------------------------------------------------------------------
+ * 竖屏横向兜底（ink-mobile-x-clip）
+ *
+ * 玻璃卡片、绝对定位的导航、宽表格都可能比视口宽一点，
+ * 一旦溢出浏览器就允许左右拖动，整页会"跟着手指晃"。
+ * 手机上直接禁掉横向滚动；桌面保持原样（那里横向滚动偶尔有用）。
+ * ------------------------------------------------------------------ */
+@media (max-width: 640px) {
+	html,
+	body {
+		/* 必须用 clip：hidden 会把 overflow-y 算成 auto，页面滚的是 body 而不是窗口，
+		   window.scrollY 就永远是 0，阅读进度条和回到顶部都会失效 */
+		overflow-x: clip;
+	}
+	.prose table {
+		display: block;
+		overflow-x: auto;
+		max-width: 100%;
+	}
+	.prose img,
+	.prose pre {
+		max-width: 100%;
+	}
+}

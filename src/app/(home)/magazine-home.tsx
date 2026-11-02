@@ -66,7 +66,7 @@ export default function MagazineHome() {
 	const fade = (delay = 0) => ({ style: { animationDelay: `${delay}s` } })
 
 	return (
-		<div className='mx-auto w-full max-w-[1460px] px-6 pt-24 pb-24 max-sm:px-4 lg:pl-[330px]'>
+		<div className='mx-auto w-full max-w-[1460px] px-6 pt-24 max-sm:pt-20 pb-24 max-sm:px-4 lg:pl-[330px]'>
 			<div className='max-w-[1040px]'>
 				{/* 刊头 */}
 				<header {...fade()} className='ink-fade-up'>

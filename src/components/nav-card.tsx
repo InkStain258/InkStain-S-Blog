@@ -89,7 +89,7 @@ export default function NavCard() {
 	const pathname = usePathname()
 	const center = useCenterStore()
 	const [show, setShow] = useState(false)
-	const { maxSM, maxLG } = useSize()
+	const { maxSM, maxLG, width: viewportW } = useSize()
 	const [hoveredIndex, setHoveredIndex] = useState<number>(0)
 	const { siteContent, cardStyles } = useConfigStore()
 	const styles = cardStyles.navCard
@@ -139,11 +139,16 @@ export default function NavCard() {
 
 	const size = useMemo<{ width: number; height?: number }>(() => {
 		if (form === 'mini') return { width: 64, height: 64 }
-		else if (form === 'icons') return { width: 404, height: 64 }
+		else if (form === 'icons') {
+			// 竖屏时 8 个图标放不进 404；而且右上角有固定的主题切换按钮，
+			// 宽度要给它留出位置，否则最后一个图标会被盖住。
+			const avail = viewportW ? Math.min(404, viewportW - 76) : 404
+			return { width: Math.max(268, avail), height: 60 }
+		}
 		// 竖向导航的高度交给内容自己决定：
 		// 列表项会变（这一轮加了「首页」），写死高度就会让最后一项掉到玻璃底板外面。
 		return { width: styles.width }
-	}, [form, styles])
+	}, [form, styles, viewportW])
 
 	useEffect(() => {
 		if (form === 'icons' && activeIndex !== undefined && hoveredIndex !== activeIndex) {
@@ -154,7 +159,9 @@ export default function NavCard() {
 		}
 	}, [hoveredIndex, activeIndex, form])
 
-	if (maxSM) position = { x: center.x - size.width / 2, y: 16 }
+	// center.x 是初始化那一刻的窗口中心，旋转屏幕或改窗口宽度后就不准了，
+	// 移动端直接用实时视口宽度算，避免导航左侧跑出屏幕（cardLeft 变成负数）。
+	if (maxSM) position = { x: 12, y: 10 }
 
 	if (show)
 		return (
@@ -199,7 +206,7 @@ export default function NavCard() {
 						<>
 							{form !== 'icons' && <div className='text-secondary mt-4 pl-5 text-xs tracking-wider uppercase'>General</div>}
 
-							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-4 space-y-0')}>
+							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-3 space-y-0 max-sm:gap-1.5')}>
 								{/* 悬停高亮：原来用 motion 的 spring 滑块，改成 CSS 过渡的绝对定位块。
 								    竖直列表是等高的，translate 到 hoveredIndex × 行高即可，观感一致但不下载动画库。 */}
 								<div

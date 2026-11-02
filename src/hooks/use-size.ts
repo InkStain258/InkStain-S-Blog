@@ -5,6 +5,7 @@ import { create } from 'zustand'
 
 type SizeState = {
 	init: boolean
+	width: number
 	maxXL: boolean
 	maxLG: boolean
 	maxMD: boolean
@@ -15,6 +16,7 @@ type SizeState = {
 
 const initState = {
 	init: false,
+	width: 0,
 	maxXL: false,
 	maxLG: false,
 	maxMD: false,
@@ -28,6 +30,7 @@ const computeSize = (): Omit<SizeState, 'recalc'> => {
 
 		return {
 			init: true,
+			width,
 			maxXL: width < 1280,
 			maxLG: width < 1024,
 			maxMD: width < 768,
