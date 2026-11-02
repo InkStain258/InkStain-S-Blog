@@ -173,13 +173,13 @@ export default function GuestbookPage() {
 						placeholder='想说的话…'
 						className='bg-bg/60 focus:border-brand/50 w-full resize-none rounded-xl border px-3.5 py-3 pb-8 text-[13px] leading-relaxed outline-none transition-colors'
 					/>
-					<span className='text-secondary pointer-events-none absolute right-3 bottom-2.5 text-[10px] tabular-nums opacity-60'>
+					<span className='text-secondary pointer-events-none absolute right-3 bottom-2.5 text-[10px] tabular-nums'>
 						{content.length}/600
 					</span>
 				</div>
 
 				<div className='mt-3 flex flex-wrap items-center justify-between gap-3'>
-					<div className='text-secondary flex items-center gap-4 text-[11px] opacity-75'>
+					<div className='text-secondary flex items-center gap-4 text-[11px]'>
 						<span className='flex items-center gap-1'>
 							<ShieldCheck className='h-3 w-3' />
 							仅记录 IP 哈希用于限流
@@ -213,12 +213,12 @@ export default function GuestbookPage() {
 					<MessageSquareQuote className='text-brand-ink h-4 w-4' />
 					大家说
 				</h2>
-				<span className='text-secondary text-[11px] opacity-70'>{loading ? '加载中…' : `共 ${total} 条`}</span>
+				<span className='text-secondary text-[11px]'>{loading ? '加载中…' : `共 ${total} 条`}</span>
 				<div className='from-border h-px flex-1 bg-gradient-to-r to-transparent' />
 			</div>
 
 			{isEmpty && (
-				<div className='text-secondary mt-8 rounded-2xl border border-dashed py-10 text-center text-[13px] opacity-70'>
+				<div className='text-secondary mt-8 rounded-2xl border border-dashed py-10 text-center text-[13px]'>
 					还没有留言，来做第一个吧。
 				</div>
 			)}
@@ -242,7 +242,7 @@ export default function GuestbookPage() {
 								<div className='min-w-0 flex-1'>
 									<div className='flex items-baseline gap-2'>
 										<span className='text-[13px] font-medium'>{m.name}</span>
-										<span className='text-secondary text-[10px] opacity-60'>{timeAgo(m.createdAt)}</span>
+										<span className='text-secondary text-[10px]'>{timeAgo(m.createdAt)}</span>
 									</div>
 									<p className='mt-1 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
 									{m.reply && (
@@ -254,7 +254,7 @@ export default function GuestbookPage() {
 											<div className='text-brand-ink flex items-center gap-1 text-[10px] font-medium'>
 												<CornerDownRight className='h-3 w-3' />
 												站长回复
-												{m.reply.at && <span className='text-secondary ml-1 font-normal opacity-60'>{timeAgo(m.reply.at)}</span>}
+												{m.reply.at && <span className='text-secondary ml-1 font-normal'>{timeAgo(m.reply.at)}</span>}
 											</div>
 											<p className='mt-1 text-[12.5px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
 										</motion.div>
@@ -266,7 +266,7 @@ export default function GuestbookPage() {
 				</AnimatePresence>
 			</div>
 
-			<p className='text-secondary mt-10 text-center text-[11px] opacity-50'>
+			<p className='text-secondary mt-10 text-center text-[11px]'>
 				<Link href='/guestbook/manage' className='hover:text-brand-ink transition-colors'>
 					管理
 				</Link>

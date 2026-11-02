@@ -10,6 +10,7 @@ import { useSize, useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import BackToTop from '@/components/back-to-top'
 import ProseImageEnhancer from '@/components/prose-image-enhancer'
+import TaskListLabels from '@/components/task-list-labels'
 import CodeBlockEnhancer from '@/components/code-block-enhancer'
 import RandomRoam from '@/components/random-roam'
 import MusicCard from '@/components/music-card'
@@ -117,6 +118,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
 			<main id='main-content' className='relative z-10 h-full'>
 				<ProseImageEnhancer />
+				<TaskListLabels />
 				<CodeBlockEnhancer />
 				<NavCard />
 				<RandomRoam />

@@ -20,12 +20,12 @@ export default function SeriesIndexPage() {
 					返回博客
 				</Link>
 				<div className='mt-4'>
-					<div className='text-secondary mb-1.5 flex items-center gap-1.5 text-[11px] tracking-[0.18em] uppercase opacity-70'>
+					<div className='text-brand-ink mb-1.5 flex items-center gap-1.5 text-[10.5px] tracking-[0.3em] uppercase'>
 						<BookMarked className='h-3 w-3' />
 						系列
 					</div>
 					<h1 className='text-[28px] leading-tight font-semibold'>按系列读</h1>
-					<p className='text-secondary mt-2 text-[12.5px] opacity-70'>成组的笔记按章节顺序排好了，从第一篇往下读不会断线。</p>
+					<p className='text-secondary mt-2 text-[12.5px]'>成组的笔记按章节顺序排好了，从第一篇往下读不会断线。</p>
 				</div>
 			</motion.div>
 
@@ -45,7 +45,7 @@ export default function SeriesIndexPage() {
 											{g.name}
 											<ArrowRight className='h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-60' />
 										</div>
-										<div className='text-secondary mt-1.5 truncate text-[11.5px] opacity-70'>
+										<div className='text-secondary mt-1.5 truncate text-[11.5px]'>
 											共 {g.items.length} 篇 · 最近更新 {dayjs(last.date).format('YYYY-MM-DD')}
 										</div>
 									</div>

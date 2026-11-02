@@ -80,7 +80,10 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 		// token.text 是转义后的纯文本（会把 <sup> 显示成字面量），
 		// 走 parseInline 才能拿到行内标记与作者手写的行内 HTML
 		const inner = this.parser.parseInline(token.tokens || [])
-		return `<h${token.depth} id="${id}">${inner}</h${token.depth}>`
+		// 文章的 h1 由页面标题占着，正文里的 # 一律降成 h2：
+		// 否则一篇文会出现 4 个 h1，读屏按标题导航会听到一串一级标题。
+		const depth = Math.min(6, Math.max(2, token.depth))
+		return `<h${depth} id="${id}">${inner}</h${depth}>`
 	}
 
 	renderer.code = (token: Tokens.Code) => {
@@ -203,7 +206,8 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 				// Use the parsed text (markdown syntax like links/code already stripped)
 				const text = token.text
 				const id = slugify(text)
-				toc.push({ id, text, level: token.depth })
+				// 与 renderer.heading 保持同一套降级规则
+				toc.push({ id, text, level: Math.min(3, Math.max(2, token.depth)) })
 			}
 			// Recursively check nested tokens (e.g., in blockquotes, lists)
 			if ('tokens' in token && token.tokens) {

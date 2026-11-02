@@ -68,11 +68,21 @@ export default function Page() {
 	const buttonText = isAuth ? '保存' : '导入密钥'
 
 	return <>
-			{/* 页面语义标题：视觉由卡片承担，这里给读屏和搜索引擎一个 h1 */}
-			<h1 className='sr-only'>我的项目</h1>
 		<input ref={keyInputRef} type='file' aria-label='选择文件' accept='.pem' className='hidden' onChange={async e => { const f = e.target.files?.[0]; if (f) await handleChoosePrivateKey(f); if (e.currentTarget) e.currentTarget.value = '' }} />
 		{isLoading ? <div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>加载项目数据...</div> : (
 			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
+				{/* 页头：沿用首页的刊头语言（小标 + 细线 + 一句人话） */}
+				<header className='mb-8 w-full max-w-[1200px]'>
+					<div className='border-border/60 flex items-center justify-between border-b pb-3'>
+						<span className='text-brand-ink text-[10.5px] tracking-[0.3em] uppercase'>Projects</span>
+						<span className='text-secondary text-[10.5px] tabular-nums'>{projects.length} 个</span>
+					</div>
+					<h1 className='mt-5 text-[27px] leading-[1.3] font-semibold tracking-[-0.015em] max-sm:text-[23px]'>我的项目</h1>
+					<p className='text-secondary mt-2 max-w-[520px] text-[12.5px] leading-[1.9]'>
+						做过的东西，大多是先有需求才动手。能跑起来、自己天天在用，就算成了。
+					</p>
+				</header>
+
 				<div className='grid w-full max-w-[1200px] grid-cols-2 gap-6 max-md:grid-cols-1'>
 					{projects.map((project, i) => <ProjectCard key={project.url} project={project} isEditMode={isEditMode} onUpdate={handleUpdate} onDelete={() => handleDelete(project)} />)}
 				</div>

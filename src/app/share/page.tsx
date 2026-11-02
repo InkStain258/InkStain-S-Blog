@@ -68,8 +68,6 @@ export default function Page() {
 	}, [isEditMode])
 
 	return <>
-			{/* 页面语义标题：视觉由卡片承担，这里给读屏和搜索引擎一个 h1 */}
-			<h1 className='sr-only'>友链</h1>
 		<input ref={keyInputRef} type='file' aria-label='选择文件' accept='.pem' className='hidden' onChange={async e => { const f = e.target.files?.[0]; if (f) await handleChoosePrivateKey(f); if (e.currentTarget) e.currentTarget.value = '' }} />
 		{isLoading ? <div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>加载友链数据...</div> : (
 			<GridView shares={shares} isEditMode={isEditMode} onUpdate={handleUpdate} onDelete={handleDelete} />

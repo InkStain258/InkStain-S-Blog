@@ -89,7 +89,8 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug,
 						</Link>
 					)}
 
-					<div className='text-center text-2xl font-semibold'>{title}</div>
+					{/* 文章的 h1 只能是标题本身，正文标题已在渲染时降到 h2 */}
+					<h1 className='text-center text-2xl font-semibold'>{title}</h1>
 
 					<div className='text-secondary mt-4 flex flex-wrap items-center justify-center gap-3 px-8 text-center text-sm'>
 						{tags.map(t => (

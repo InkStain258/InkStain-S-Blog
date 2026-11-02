@@ -32,7 +32,7 @@ export default function ArchivePage() {
 
 				<div className='mt-4 flex items-end justify-between gap-4'>
 					<div>
-						<div className='text-secondary mb-1.5 text-[11px] tracking-[0.18em] uppercase opacity-70'>归档</div>
+						<div className='text-brand-ink mb-1.5 text-[10.5px] tracking-[0.3em] uppercase'>Archive</div>
 						<h1 className='text-[28px] leading-tight font-semibold'>全部文章</h1>
 					</div>
 					<div className='text-secondary text-right text-xs'>
@@ -64,7 +64,7 @@ export default function ArchivePage() {
 						className='card card-content relative w-full scroll-mt-24 px-6 py-4'>
 						<div className='mb-1 flex items-baseline justify-between'>
 							<h2 className='text-[15px] font-semibold tracking-wide'>{y} 年</h2>
-							<span className='text-secondary text-[11px] opacity-60'>{list.length} 篇</span>
+							<span className='text-secondary text-[11px]'>{list.length} 篇</span>
 						</div>
 						<PostList items={list} />
 					</motion.section>

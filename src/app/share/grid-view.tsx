@@ -26,16 +26,28 @@ export default function GridView({ shares, isEditMode = false, onUpdate, onDelet
 
 	return (
 		<div className='mx-auto w-full max-w-7xl px-6 pt-24 pb-12'>
+			<header className='mb-8'>
+				<div className='border-border/60 flex items-center justify-between border-b pb-3'>
+					<span className='text-brand-ink text-[10.5px] tracking-[0.3em] uppercase'>Links</span>
+					<span className='text-secondary text-[10.5px] tabular-nums'>{shares.length} 个</span>
+				</div>
+				<h1 className='mt-5 text-[27px] leading-[1.3] font-semibold tracking-[-0.015em] max-sm:text-[23px]'>友链</h1>
+				<p className='text-secondary mt-2 max-w-[520px] text-[12.5px] leading-[1.9]'>
+					常去的地方。都是自己真的会点开的站，不是为换链接凑数。
+				</p>
+			</header>
+
 			<div className='mb-8 space-y-4'>
 				<input
 					type='text'
 					placeholder='搜索资源...'
+					aria-label='搜索友链'
 					value={searchTerm}
 					onChange={e => setSearchTerm(e.target.value)}
-					className='focus:ring-brand mx-auto block w-full max-w-md rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:outline-none'
+					className='focus:ring-brand block w-full max-w-md rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:outline-none'
 				/>
 
-				<div className='flex flex-wrap justify-center gap-2'>
+				<div className='flex flex-wrap justify-start gap-2'>
 					<button
 						onClick={() => setSelectedTag('all')}
 						className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
