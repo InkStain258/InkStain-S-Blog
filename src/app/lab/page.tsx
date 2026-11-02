@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight, FlaskConical, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
+import { FlaskConical, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
 import { LAB_TOOLS } from '@/lib/lab-tools'
 
 const LAB_ICONS = {
@@ -48,7 +48,6 @@ export default function LabPage() {
 								</span>
 								<span className='text-[14px] font-medium'>{t.title}</span>
 								<span className='text-secondary ml-auto text-[10px] tracking-wider opacity-60'>{t.tag}</span>
-								<ArrowUpRight className='text-secondary h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-70' />
 							</div>
 							<p className='text-secondary text-[12px] leading-relaxed opacity-75'>{t.desc}</p>
 						</Link>

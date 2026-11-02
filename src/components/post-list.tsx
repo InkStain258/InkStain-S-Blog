@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import { motion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import {  } from 'lucide-react'
 import type { BlogIndexItem } from '@/app/blog/types'
 import EmptyState from '@/components/empty-state'
 
@@ -58,7 +58,6 @@ export default function PostList({ items, showTags = true, prefix, empty = 'è¿™é
 							</span>
 						)}
 
-						<ArrowUpRight className='text-secondary h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-60' />
 					</Link>
 				</motion.div>
 			))}

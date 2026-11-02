@@ -3,7 +3,7 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
-import { ChevronRight, ArrowUpRight, BookMarked, Clock3, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
+import { ChevronRight, BookMarked, Clock3, Clock, Image as ImageIcon, Images, Music, Shapes, Code2, Sparkles, Gamepad2 } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
 import { groupSeries } from '@/lib/series'
 import { plainInline } from '@/lib/utils'
@@ -161,7 +161,6 @@ export default function MagazineHome() {
 											<Icon className='h-3.5 w-3.5' />
 										</span>
 										<span className='min-w-0 flex-1 truncate text-[11.5px] max-sm:text-[12.5px]'>{t.title}</span>
-										<ArrowUpRight className='text-secondary h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60' />
 									</Link>
 								)
 							})}
