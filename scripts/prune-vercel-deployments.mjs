@@ -59,15 +59,17 @@ const main = async () => {
 	}
 
 	all.sort((a, b) => b.createdAt - a.createdAt)
+	// v6 API 的部署标识是 uid（v9 删除接口认 id/uid 都行，但列表里没有 id 字段）
+	const idOf = d => d.uid || d.id
 	const projects = await api(`/v9/projects/${PROJECT_ID}?teamId=${TEAM_ID}`).catch(() => null)
 	const prodId = projects?.targets?.production?.id
 
-	const protectedIds = new Set(all.slice(0, KEEP).map(d => d.id))
+	const protectedIds = new Set(all.slice(0, KEEP).map(idOf))
 	if (prodId) protectedIds.add(prodId)
 
 	const now = Date.now()
 	const candidates = all.filter(d => {
-		if (protectedIds.has(d.id)) return false
+		if (protectedIds.has(idOf(d))) return false
 		if (d.readyState === 'BUILDING' || d.readyState === 'QUEUED' || d.readyState === 'INITIALIZING') return false
 		if (DAYS > 0 && now - d.createdAt < DAYS * 86400_000) return false
 		return true
@@ -88,7 +90,7 @@ const main = async () => {
 	let fail = 0
 	for (const [i, d] of candidates.entries()) {
 		try {
-			await api(`/v9/projects/${PROJECT_ID}/deployments/${d.id}?teamId=${TEAM_ID}`, { method: 'DELETE' })
+			await api(`/v13/deployments/${idOf(d)}?teamId=${TEAM_ID}`, { method: 'DELETE' })
 			ok++
 			if ((i + 1) % 20 === 0) console.log(`  已删 ${ok} 个…`)
 		} catch (e) {

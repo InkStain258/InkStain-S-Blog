@@ -13,7 +13,8 @@
 		"cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
 		"build-search-index": "node scripts/build-search-index.mjs",
 		"prebuild": "node scripts/build-search-index.mjs",
-		"images": "node scripts/build-images.mjs"
+		"images": "node scripts/build-images.mjs",
+		"prune:vercel": "node scripts/prune-vercel-deployments.mjs"
 	},
 	"dependencies": {
 		"@opennextjs/cloudflare": "^1.14.4",
