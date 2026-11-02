@@ -64,7 +64,22 @@ export default function GitalkComments() {
     }
     host.addEventListener('click', intercept, true)
 
+    // 未初始化的文章 Gitalk 会甩一句「未找到相关的 Issues… 请联系 @xxx 初始化创建」，
+    // 对读者是噪音。这里把它换成一句人话，登录按钮保持原样（发第一条评论时 Gitalk 会自己建 Issue）。
+    const softenNoInit = () => {
+      const box = host.querySelector('.gt-no-init') as HTMLElement | null
+      if (!box || box.dataset.softened === '1') return
+      box.dataset.softened = '1'
+      box.innerHTML =
+        '<p class="gt-soften-line">这篇还没有人用 GitHub 号讨论过。</p>' +
+        '<p class="gt-soften-line">登录后发第一条就行，评论区会自动建好对应的话题。</p>'
+    }
+    const mo = new MutationObserver(softenNoInit)
+    mo.observe(host, { childList: true, subtree: true })
+    softenNoInit()
+
     return () => {
+      mo.disconnect()
       host.removeEventListener('click', intercept, true)
       host.innerHTML = ''
     }

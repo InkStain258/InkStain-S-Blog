@@ -451,3 +451,12 @@
 		padding: 8px 16px !important;
 	}
 }
+
+/* 未初始化空态：替换掉 Gitalk 默认那句「请联系 @xxx 初始化创建」 */
+.gt-no-init .gt-soften-line {
+	margin: 0.15rem 0;
+	font-size: 12.5px;
+	line-height: 1.7;
+	color: var(--color-secondary, #6b7280);
+	opacity: 0.85;
+}
