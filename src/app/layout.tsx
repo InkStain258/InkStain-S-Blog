@@ -89,6 +89,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             `,
           }}
         />
+        {/* 全站动态背景：三团缓慢漂移的光斑，玻璃卡片会把它模糊成底纹 */}
+        <div className='site-aurora' aria-hidden='true'>
+          <i />
+          <i />
+          <i />
+        </div>
         <ThemeProvider>
           <Layout>{children}</Layout>
         </ThemeProvider>

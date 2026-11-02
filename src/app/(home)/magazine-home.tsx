@@ -63,13 +63,6 @@ export default function MagazineHome() {
 
 	return (
 		<>
-			{/* 动态背景：三团缓慢漂移的光斑，玻璃卡片会把它模糊成底纹 */}
-			<div className='home-aurora' aria-hidden='true'>
-				<i />
-				<i />
-				<i />
-			</div>
-
 		<div className='relative z-10 mx-auto w-full max-w-[1460px] px-6 pt-24 pb-24 max-sm:px-4 max-sm:pt-24 lg:pl-[330px]'>
 			<div className='max-w-[1040px]'>
 				{/* 刊头 */}
