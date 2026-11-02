@@ -34,6 +34,13 @@
   /* ===== 玻璃材质（亮色）=====
      四件套：填充 / 渐变描边的两端 / 内高光 / 外双层投影。
      元素只声明自己是玻璃第几级，具体光学参数在这里换主题。 */
+  /* 填充改成上亮下暗的两端，模拟「顶部受光」的玻璃面 */
+  --glass-1-top: #ffffffd1;
+  --glass-1-bot: #ffffff9e;
+  --glass-2-top: #ffffffe6;
+  --glass-2-bot: #ffffffc4;
+  --glass-3-top: #fffffff5;
+  --glass-3-bot: #ffffffeb;
   --glass-1-bg: #fff9;
   --glass-2-bg: #ffffffb3;
   --glass-3-bg: #ffffffd9;
@@ -58,6 +65,13 @@
   --ink-article: #1e2a3a88;
 
   /* 玻璃材质（暗色）：描边亮度降下来，光靠内高光一线「刃口」，投影更深 */
+  /* 参照归档卡取色：顶 #333f6b 左右的蓝紫，向下收到 #242c48 */
+  --glass-1-top: rgb(110 132 214 / 0.27);
+  --glass-1-bot: rgb(48 62 122 / 0.14);
+  --glass-2-top: rgb(112 136 222 / 0.35);
+  --glass-2-bot: rgb(52 68 132 / 0.2);
+  --glass-3-top: rgb(18 28 58 / 0.96);
+  --glass-3-bot: rgb(14 22 46 / 0.9);
   --glass-1-bg: #1b275266;
   --glass-2-bg: #1f2d5c8a;
   --glass-3-bg: #101a30f2;

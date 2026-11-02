@@ -248,33 +248,33 @@
 @utility glass-1 {
 	border: 1px solid transparent;
 	background-image:
-		linear-gradient(var(--glass-1-bg), var(--glass-1-bg)),
+		linear-gradient(180deg, var(--glass-1-top) 0%, var(--glass-1-bot) 100%),
 		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
 	background-origin: border-box;
 	background-clip: padding-box, border-box;
 	box-shadow:
 		inset 0 1px 0 var(--glass-hi),
 		var(--glass-shadow-1);
-	backdrop-filter: blur(16px) saturate(1.14);
+	backdrop-filter: blur(14px) saturate(1.18);
 }
 
 @utility glass-2 {
 	border: 1px solid transparent;
 	background-image:
-		linear-gradient(var(--glass-2-bg), var(--glass-2-bg)),
+		linear-gradient(180deg, var(--glass-2-top) 0%, var(--glass-2-bot) 100%),
 		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
 	background-origin: border-box;
 	background-clip: padding-box, border-box;
 	box-shadow:
 		inset 0 1px 0 var(--glass-hi),
 		var(--glass-shadow-2);
-	backdrop-filter: blur(24px) saturate(1.16);
+	backdrop-filter: blur(20px) saturate(1.2);
 }
 
 @utility glass-overlay {
 	border: 1px solid transparent;
 	background-image:
-		linear-gradient(var(--glass-3-bg), var(--glass-3-bg)),
+		linear-gradient(180deg, var(--glass-3-top) 0%, var(--glass-3-bot) 100%),
 		linear-gradient(160deg, var(--glass-edge-a) 0%, var(--glass-edge-b) 55%, var(--glass-edge-b) 100%);
 	background-origin: border-box;
 	background-clip: padding-box, border-box;
@@ -872,6 +872,12 @@ html.sepia {
 
   /* 纸色主题的玻璃：暖白填充、暖灰投影，别用冷灰把纸感冲掉。
      纸面和卡面亮度接近，描边得比亮色主题更实一点，否则卡片边界看不出来。 */
+  --glass-1-top: #fdf9f1f2;
+  --glass-1-bot: #f7efe1d9;
+  --glass-2-top: #fefbf5fa;
+  --glass-2-bot: #faf3e7e6;
+  --glass-3-top: #fdf9f1fd;
+  --glass-3-bot: #fbf5eafa;
   --glass-1-bg: #fbf6eceb;
   --glass-2-bg: #fdf8f0f2;
   --glass-3-bg: #fdf9f1fa;
@@ -1040,6 +1046,11 @@ html.sepia .cursor-glow {
 	.spin-once,
 	.ink-card-in {
 		animation: none !important;
+		/* 这些类都靠 animation-fill-mode: both 把 opacity 从 0 拉到 1。
+		   动画一关，元素就永远停在 opacity: 0（后台标签、省电模式同理），
+		   所以必须把终点状态显式写回来。 */
+		opacity: 1 !important;
+		transform: none !important;
 	}
 	.ink-splash-ring,
 	.ink-splash-bar {
