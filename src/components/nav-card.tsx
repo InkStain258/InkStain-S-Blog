@@ -164,6 +164,7 @@ export default function NavCard() {
 					x={position.x}
 					y={position.y}
 					className={clsx(
+						'z-50',
 						form != 'full' && 'overflow-hidden',
 						form === 'mini' && 'p-3',
 						form === 'icons' && 'flex items-center gap-6 p-3'

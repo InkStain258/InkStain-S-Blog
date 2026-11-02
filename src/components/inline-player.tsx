@@ -100,7 +100,7 @@ export default function InlinePlayer() {
 			<div className='min-w-0 flex-1'>
 				<div className='flex items-baseline gap-2'>
 					<span className='truncate text-[12.5px] font-medium'>{track.title}</span>
-					{track.artist && <span className='text-secondary truncate text-[10.5px] opacity-60'>{track.artist}</span>}
+					{track.artist && <span className='text-secondary truncate text-[10.5px]'>{track.artist}</span>}
 				</div>
 
 				<div
@@ -123,11 +123,11 @@ export default function InlinePlayer() {
 					</div>
 				</div>
 
-				<div className='text-secondary mt-0.5 flex items-center gap-1.5 text-[9.5px] tabular-nums opacity-50'>
+				<div className='text-secondary mt-0.5 flex items-center gap-1.5 text-[9.5px] tabular-nums'>
 					<span>{fmt((progress / 100) * (duration || 0))}</span>
 					<span className='opacity-40'>/</span>
 					<span>{fmt(duration)}</span>
-					<span className='ml-auto opacity-70'>
+					<span className='ml-auto'>
 						{index + 1} / {tracks.length}
 					</span>
 				</div>

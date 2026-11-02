@@ -68,6 +68,8 @@ export default function Page() {
 	const buttonText = isAuth ? '保存' : '导入密钥'
 
 	return <>
+			{/* 页面语义标题：视觉由卡片承担，这里给读屏和搜索引擎一个 h1 */}
+			<h1 className='sr-only'>我的项目</h1>
 		<input ref={keyInputRef} type='file' accept='.pem' className='hidden' onChange={async e => { const f = e.target.files?.[0]; if (f) await handleChoosePrivateKey(f); if (e.currentTarget) e.currentTarget.value = '' }} />
 		{isLoading ? <div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>加载项目数据...</div> : (
 			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>

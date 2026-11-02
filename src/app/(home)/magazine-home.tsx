@@ -72,7 +72,7 @@ export default function MagazineHome() {
 				<header {...fade()} className='ink-fade-up'>
 					<div className='border-border/60 flex items-center justify-between border-b pb-3'>
 						<span className='text-brand-ink text-[10.5px] font-medium tracking-[0.3em] uppercase'>InkStain</span>
-						<span className='text-secondary text-[10.5px] tabular-nums opacity-55'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
+						<span className='text-secondary text-[10.5px] tabular-nums'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
 					</div>
 
 					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[26px]'>
@@ -81,7 +81,7 @@ export default function MagazineHome() {
 						和一些折腾记录。
 					</h1>
 
-					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9] opacity-85'>
+					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9]'>
 						我是 InkStain，在北师大读文学。这里放课堂笔记的整理、读书时的零碎想法，还有折腾这个博客踩过的坑。写得慢，但想清楚了才发。
 					</p>
 
@@ -103,7 +103,7 @@ export default function MagazineHome() {
 						</Link>
 					</div>
 
-					<div className='text-secondary mt-5 flex items-center gap-3 text-[10.5px] opacity-60'>
+					<div className='text-secondary mt-5 flex items-center gap-3 text-[10.5px]'>
 						<span>{items.length} 篇</span>
 						<span className='opacity-30'>/</span>
 						<span>{series.length} 个系列</span>
@@ -135,12 +135,12 @@ export default function MagazineHome() {
 							</div>
 							<div className='mt-4 flex items-center gap-2.5 text-[10.5px]'>
 								{hero.category && <span className='text-brand-ink tracking-wider'>{hero.category}</span>}
-								<span className='text-secondary opacity-45'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
+								<span className='text-secondary'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
 							</div>
 							<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[17px]'>
 								{hero.title}
 							</h2>
-							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8] opacity-75'>{plainInline(hero.summary)}</p>
+							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8]'>{plainInline(hero.summary)}</p>
 						</Link>
 					)}
 
@@ -151,7 +151,7 @@ export default function MagazineHome() {
 								全部 →
 							</Link>
 						</div>
-						<p className='text-secondary mb-3 text-[11px] leading-relaxed opacity-60'>顺手做的小工具，平时自己也在用。</p>
+						<p className='text-secondary mb-3 text-[11px] leading-relaxed'>顺手做的小工具，平时自己也在用。</p>
 
 						<div className='grid grid-cols-2 gap-2'>
 							{LAB_TOOLS.map(t => {
@@ -213,10 +213,10 @@ export default function MagazineHome() {
 								<div className='flex flex-col'>
 									<div className='flex items-center gap-2 text-[10.5px]'>
 										{big.category && <span className='text-brand-ink tracking-wider'>{big.category}</span>}
-										<span className='text-secondary opacity-45'>{dayjs(big.date).format('YYYY-MM-DD')}</span>
+										<span className='text-secondary'>{dayjs(big.date).format('YYYY-MM-DD')}</span>
 									</div>
 									<h3 className='group-hover:text-brand-ink mt-2 text-[16px] leading-[1.5] font-medium transition-colors'>{big.title}</h3>
-									<p className='text-secondary mt-2 line-clamp-4 text-[12px] leading-[1.85] opacity-70'>{plainInline(big.summary)}</p>
+									<p className='text-secondary mt-2 line-clamp-4 text-[12px] leading-[1.85]'>{plainInline(big.summary)}</p>
 									<span className='text-brand-ink mt-auto inline-flex items-center gap-1 pt-3 text-[11px] opacity-0 transition-opacity group-hover:opacity-100'>
 										继续读 <ArrowRight className='h-3 w-3' />
 									</span>
@@ -226,12 +226,12 @@ export default function MagazineHome() {
 							<div className='divide-border/60 divide-y'>
 								{small.map((it, i) => (
 									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group block py-4 first:pt-0'>
-										<div className='text-secondary flex items-center gap-2 text-[10.5px] opacity-55'>
+										<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
 											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
 										</div>
 										<h3 className='group-hover:text-brand-ink mt-1.5 text-[14px] leading-[1.55] font-medium transition-colors'>{it.title}</h3>
-										<p className='text-secondary mt-1 line-clamp-2 text-[11.5px] leading-[1.8] opacity-65'>{plainInline(it.summary)}</p>
+										<p className='text-secondary mt-1 line-clamp-2 text-[11.5px] leading-[1.8]'>{plainInline(it.summary)}</p>
 									</Link>
 								))}
 							</div>
@@ -257,7 +257,7 @@ export default function MagazineHome() {
 										className='group flex items-center justify-between gap-3 border-b border-transparent py-2.5 transition-colors'>
 										<span className='min-w-0'>
 											<span className='group-hover:text-brand-ink block truncate text-[12.5px] font-medium transition-colors'>{g.name}</span>
-											<span className='text-secondary mt-0.5 block text-[10.5px] opacity-55'>
+											<span className='text-secondary mt-0.5 block text-[10.5px]'>
 												{g.items.length} 篇 · 最近 {dayjs(g.items[g.items.length - 1].date).format('M 月 D 日')}
 											</span>
 										</span>
@@ -292,7 +292,7 @@ export default function MagazineHome() {
 									href={`/blog/tag/${encodeURIComponent(t)}`}
 									className='text-secondary hover:border-brand/40 hover:text-brand-ink border-border/50 rounded-full border px-2.5 py-1 text-[10.5px] transition-colors'>
 									{t}
-									<span className='ml-1 opacity-40'>{n}</span>
+									<span className='ml-1'>{n}</span>
 								</Link>
 							))}
 						</div>
