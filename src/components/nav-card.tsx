@@ -67,7 +67,7 @@ const list = [
 		icon: WebsiteOutlineSVG,
 		iconActive: WebsiteFilledSVG,
 		label: '近期关注项目',
-		href: '/bloggers'
+		href: '/starred'
 	},
 	{
 		icon: GuestbookOutline,

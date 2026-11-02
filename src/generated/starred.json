@@ -1,0 +1,227 @@
+{
+	"generatedAt": "2026-11-02",
+	"count": 15,
+	"items": [
+		{
+			"name": "siyuan-note/siyuan",
+			"url": "https://github.com/siyuan-note/siyuan",
+			"desc": "An open-source, privacy-first, self-hosted knowledge workspace where humans and AI agents work together 开源、隐私优先、自托管的知识工作空间，让人与智能体在此协作",
+			"lang": "TypeScript",
+			"stars": 47037,
+			"topics": [
+				"agentic-ai",
+				"ai-agent",
+				"knowledge-base",
+				"local-first",
+				"markdown",
+				"mcp",
+				"note-taking",
+				"self-hosted",
+				"siyuan",
+				"workspace"
+			],
+			"pushed": "2026-11-02"
+		},
+		{
+			"name": "Zitann/HarmonyOS-Haps",
+			"url": "https://github.com/Zitann/HarmonyOS-Haps",
+			"desc": "⚡️鸿蒙Next Hap安装包合集，如果您觉得有帮助，还请点亮一下 Star 🌟 哦~ 万分感谢！",
+			"lang": "Python",
+			"stars": 3780,
+			"topics": [
+				"harmonyos",
+				"harmonyos-next"
+			],
+			"pushed": "2026-11-01"
+		},
+		{
+			"name": "Moekotori/ECHO",
+			"url": "https://github.com/Moekotori/ECHO",
+			"desc": "The Bit-Perfect Bridge to Your Sonic Multiverse.",
+			"lang": "TypeScript",
+			"stars": 1140,
+			"topics": [
+				"asio",
+				"audio",
+				"desktop-music-player",
+				"dsp",
+				"electron",
+				"hi-res-audio",
+				"hifi",
+				"music-player",
+				"musicplayer",
+				"nas",
+				"navidrome",
+				"sdm",
+				"subsonic",
+				"web"
+			],
+			"pushed": "2026-10-31"
+		},
+		{
+			"name": "AlkaidLab/moonlight-harmony",
+			"url": "https://github.com/AlkaidLab/moonlight-harmony",
+			"desc": "Turn your harmony device into a powerful game streaming terminal! Gawr! ✨",
+			"lang": "C++",
+			"stars": 188,
+			"topics": [
+				"gamestreaming",
+				"geforcenow",
+				"moonlight",
+				"remote-desktop",
+				"sunshine"
+			],
+			"pushed": "2026-10-27"
+		},
+		{
+			"name": "maillab/cloud-mail",
+			"url": "https://github.com/maillab/cloud-mail",
+			"desc": "An all-in-one email service platform powered by Cloudflare  | 基于 Cloudflare 的一站式邮箱服务平台  | Cloudflare Email 邮箱 Mail",
+			"lang": "JavaScript",
+			"stars": 15256,
+			"topics": [
+				"cloudflare",
+				"cloudflare-email",
+				"cloudflare-workers",
+				"email",
+				"mail"
+			],
+			"pushed": "2026-10-25"
+		},
+		{
+			"name": "luolangaga/WinLand",
+			"url": "https://github.com/luolangaga/WinLand",
+			"desc": "Windows 灵动岛（Dynamic Island）桌面应用 · WinUI 3 / .NET 10 · 支持插件与插件市场",
+			"lang": "C#",
+			"stars": 76,
+			"topics": [
+				"csharp",
+				"dotnet",
+				"dynamic-island",
+				"windows",
+				"winui3"
+			],
+			"pushed": "2026-10-09"
+		},
+		{
+			"name": "nunchux-ai/nunchaku",
+			"url": "https://github.com/nunchux-ai/nunchaku",
+			"desc": "[ICLR2025 Spotlight] SVDQuant: Absorbing Outliers by Low-Rank Components for 4-Bit Diffusion Models",
+			"lang": "Python",
+			"stars": 3963,
+			"topics": [
+				"comfyui",
+				"diffusion-models",
+				"flux",
+				"genai",
+				"iclr",
+				"iclr2025",
+				"lora",
+				"mlsys",
+				"quantization"
+			],
+			"pushed": "2026-09-06"
+		},
+		{
+			"name": "nunchux-ai/ComfyUI-nunchaku",
+			"url": "https://github.com/nunchux-ai/ComfyUI-nunchaku",
+			"desc": "ComfyUI Plugin of Nunchaku",
+			"lang": "Python",
+			"stars": 2931,
+			"topics": [
+				"comfyui",
+				"diffusion",
+				"flux",
+				"genai",
+				"mlsys",
+				"quantization"
+			],
+			"pushed": "2026-09-06"
+		},
+		{
+			"name": "XiaoChuangll/Uptime-Monitor",
+			"url": "https://github.com/XiaoChuangll/Uptime-Monitor",
+			"desc": "本系统是一个集成了服务监控、音乐点播、信息发布与数据统计的一站式服务平台。基于 Vue 3 + Express + SQLite 开发。",
+			"lang": "Vue",
+			"stars": 35,
+			"topics": [
+				"dashboard",
+				"express",
+				"monitoring-tool",
+				"music-player",
+				"self-hosted",
+				"uptime-heatmap",
+				"uptime-monitor",
+				"vue3",
+				"websocket"
+			],
+			"pushed": "2026-05-26"
+		},
+		{
+			"name": "yinuoguan/nengdou-ai-review-helper-web",
+			"url": "https://github.com/yinuoguan/nengdou-ai-review-helper-web",
+			"desc": "Vue3+Nest.js+Mongdb +Deepseek  专为教育领域设计的智能AI批改作业系统，支持语文英语数学等多科目作业自动批改与反馈，提升教学效率【web端】。",
+			"lang": "Vue",
+			"stars": 192,
+			"topics": [],
+			"pushed": "2026-04-29"
+		},
+		{
+			"name": "LSTM-Kirigaya/slidev-ai",
+			"url": "https://github.com/LSTM-Kirigaya/slidev-ai",
+			"desc": "ai app for slidev",
+			"lang": "Vue",
+			"stars": 284,
+			"topics": [
+				"ai-agent",
+				"llm",
+				"slidev"
+			],
+			"pushed": "2026-01-13"
+		},
+		{
+			"name": "hiroi-sora/Umi-OCR",
+			"url": "https://github.com/hiroi-sora/Umi-OCR",
+			"desc": "OCR software, free and offline. 开源、免费的离线OCR软件。支持截屏/批量导入图片，PDF文档识别，排除水印/页眉页脚，扫描/生成二维码。内置多国语言库。",
+			"lang": "Python",
+			"stars": 48367,
+			"topics": [
+				"ocr",
+				"ocr-python",
+				"paddleocr",
+				"qml",
+				"qt",
+				"screenshot",
+				"umi-ocr"
+			],
+			"pushed": "2025-11-20"
+		},
+		{
+			"name": "HW-whistleblower/True-Story-of-Pangu",
+			"url": "https://github.com/HW-whistleblower/True-Story-of-Pangu",
+			"desc": "诺亚盘古大模型研发背后的真正的心酸与黑暗的故事。",
+			"lang": "",
+			"stars": 11536,
+			"topics": [],
+			"pushed": "2025-07-09"
+		},
+		{
+			"name": "OliverWuXY/AI-DH",
+			"url": "https://github.com/OliverWuXY/AI-DH",
+			"desc": "AI Digital humanities",
+			"lang": "Jupyter Notebook",
+			"stars": 2,
+			"topics": [],
+			"pushed": "2024-11-11"
+		},
+		{
+			"name": "qunshansj/OpenCV-YOLO-Automatic-Grading-System",
+			"url": "https://github.com/qunshansj/OpenCV-YOLO-Automatic-Grading-System",
+			"desc": "基于OpenCV和YOLO的作业自动批改计分系统",
+			"lang": "Python",
+			"stars": 44,
+			"topics": [],
+			"pushed": "2023-11-26"
+		}
+	]
+}
