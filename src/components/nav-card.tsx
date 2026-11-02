@@ -182,7 +182,7 @@ export default function NavCard() {
 						</>
 					)}
 
-					<Link className='flex flex-wrap items-center gap-x-2 gap-y-1' href='/'>
+					<Link className='flex flex-wrap items-center gap-x-2 gap-y-1' href='/' aria-label='回到首页'>
 						<Image
 							src='/images/avatar.png'
 							alt='avatar'

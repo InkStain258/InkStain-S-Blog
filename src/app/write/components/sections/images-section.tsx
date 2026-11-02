@@ -88,7 +88,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 
 			<input
 				ref={fileInputRef}
-				type='file'
+				type='file' aria-label='选择文件'
 				accept='image/*'
 				multiple
 				className='hidden'

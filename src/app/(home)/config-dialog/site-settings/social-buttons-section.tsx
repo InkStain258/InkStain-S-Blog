@@ -175,7 +175,7 @@ export function SocialButtonsSection({ formData, setFormData, socialButtonImageU
 									ref={el => {
 										imageInputRefs.current[button.id] = el
 									}}
-									type='file'
+									type='file' aria-label='选择文件'
 									accept='image/*'
 									className='hidden'
 									onChange={e => handleImageSelect(button.id, e)}

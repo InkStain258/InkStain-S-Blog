@@ -107,7 +107,7 @@ export function ArtImagesSection({ formData, setFormData, artImageUploads, setAr
 
 	return (
 		<div>
-			<input ref={artInputRef} type='file' accept='image/*' multiple className='hidden' onChange={handleArtFilesSelect} />
+			<input ref={artInputRef} type='file' aria-label='选择文件' accept='image/*' multiple className='hidden' onChange={handleArtFilesSelect} />
 			{(formData.artImages?.length ?? 0) === 0 && <p className='mb-2 text-xs text-gray-500'>暂未配置 Art 图片，点击下方「+」添加。</p>}
 			<div className='grid grid-cols-4 gap-3 max-sm:grid-cols-3'>
 				{formData.artImages?.map(item => {

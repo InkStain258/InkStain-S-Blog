@@ -73,7 +73,7 @@ export default function UploadDialog({ onClose, onSubmit }: UploadDialogProps) {
 
 				<div>
 					<label className='text-secondary mb-2 block text-sm font-medium'>选择图片（可多选）</label>
-					<input ref={fileInputRef} type='file' accept='image/*' multiple className='hidden' onChange={handleFileSelect} />
+					<input ref={fileInputRef} type='file' aria-label='选择文件' accept='image/*' multiple className='hidden' onChange={handleFileSelect} />
 
 					{images.length === 0 ? (
 						<div

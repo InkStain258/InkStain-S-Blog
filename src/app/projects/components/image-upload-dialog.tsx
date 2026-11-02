@@ -71,7 +71,7 @@ export default function ImageUploadDialog({ currentImage, onClose, onSubmit }: I
 			<form onSubmit={handleSubmit} className='space-y-4'>
 				<div>
 					<label className='text-secondary mb-2 block text-sm font-medium'>上传图片</label>
-					<input ref={fileInputRef} type='file' accept='image/*' className='hidden' onChange={handleFileSelect} />
+					<input ref={fileInputRef} type='file' aria-label='选择文件' accept='image/*' className='hidden' onChange={handleFileSelect} />
 					<div
 						onClick={() => fileInputRef.current?.click()}
 						className='mx-auto flex h-32 w-32 cursor-pointer items-center justify-center rounded-xl border border-gray-300 bg-secondary/10 transition-colors hover:bg-gray-200'>

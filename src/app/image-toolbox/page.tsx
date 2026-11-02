@@ -318,7 +318,7 @@ export default function Page() {
 					className={`group hover:border-brand/20 card relative flex cursor-pointer flex-col items-center justify-center gap-3 text-center transition-colors hover:bg-white/80 ${
 						isDragging ? 'border-brand bg-white' : ''
 					}`}>
-					<input type='file' accept='image/*' multiple className='hidden' onChange={event => handleFiles(event.target.files)} />
+					<input type='file' aria-label='选择文件' accept='image/*' multiple className='hidden' onChange={event => handleFiles(event.target.files)} />
 					<div className='bg-brand/10 text-brand-ink/60 group-hover:bg-brand/10 flex h-20 w-20 items-center justify-center rounded-full text-3xl transition'>
 						📷
 					</div>

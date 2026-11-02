@@ -50,7 +50,7 @@ export function FaviconAvatarUpload({ faviconItem, setFaviconItem, avatarItem, s
 		<div className='grid grid-cols-2 gap-4'>
 			<div>
 				<label className='mb-2 block text-sm font-medium'>Favicon</label>
-				<input ref={faviconInputRef} type='file' accept='image/*' className='hidden' onChange={handleFaviconFileSelect} />
+				<input ref={faviconInputRef} type='file' aria-label='选择文件' accept='image/*' className='hidden' onChange={handleFaviconFileSelect} />
 				<div className='group relative h-20 w-20 cursor-pointer overflow-hidden rounded-lg border bg-white/60'>
 					{faviconItem?.type === 'file' ? (
 						<img src={faviconItem.previewUrl} alt='favicon preview' className='h-full w-full object-cover' />

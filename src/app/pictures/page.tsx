@@ -221,7 +221,7 @@ export default function Page() {
 		<>
 			<input
 				ref={keyInputRef}
-				type='file'
+				type='file' aria-label='选择文件'
 				accept='.pem'
 				className='hidden'
 				onChange={async e => {

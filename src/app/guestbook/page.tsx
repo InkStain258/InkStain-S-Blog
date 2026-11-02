@@ -150,6 +150,7 @@ export default function GuestbookPage() {
 						value={name}
 						onChange={e => setName(e.target.value)}
 						maxLength={24}
+						aria-label='昵称（可留空）'
 						placeholder='昵称（可留空，默认「匿名」）'
 						className='bg-bg/60 focus:border-brand/50 flex-1 rounded-xl border px-3.5 py-2.5 text-[13px] outline-none transition-colors'
 					/>
@@ -157,6 +158,7 @@ export default function GuestbookPage() {
 						value={contact}
 						onChange={e => setContact(e.target.value)}
 						maxLength={64}
+						aria-label='联系方式（邮箱或主页，可选）'
 						placeholder='邮箱 / 主页（可选，不公开）'
 						className='bg-bg/60 focus:border-brand/50 flex-1 rounded-xl border px-3.5 py-2.5 text-[13px] outline-none transition-colors'
 					/>
@@ -167,6 +169,7 @@ export default function GuestbookPage() {
 						value={content}
 						onChange={e => setContent(e.target.value.slice(0, 600))}
 						rows={4}
+						aria-label='留言内容'
 						placeholder='想说的话…'
 						className='bg-bg/60 focus:border-brand/50 w-full resize-none rounded-xl border px-3.5 py-3 pb-8 text-[13px] leading-relaxed outline-none transition-colors'
 					/>

@@ -122,7 +122,7 @@ export function BackgroundImagesSection({ formData, setFormData, backgroundImage
 					</button>
 				)}
 			</div>
-			<input ref={backgroundInputRef} type='file' accept='image/*' className='hidden' onChange={handleBackgroundFileSelect} />
+			<input ref={backgroundInputRef} type='file' aria-label='选择文件' accept='image/*' className='hidden' onChange={handleBackgroundFileSelect} />
 
 			<div className='grid grid-cols-4 gap-3 max-sm:grid-cols-3'>
 				{((formData.backgroundImages ?? []) as Array<{ id: string; url: string }>)
