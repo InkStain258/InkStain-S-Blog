@@ -122,7 +122,7 @@ export default async function Page() {
 				</div>
 				<h1 className='mt-3 text-[27px] leading-[1.3] font-semibold tracking-[-0.01em] max-sm:text-[24px]'>我的项目</h1>
 				<p className='text-secondary mt-2 max-w-[560px] text-[12.5px] leading-[1.85] max-sm:text-[13px]'>
-					做过的东西，大多是先有需求才动手。能跑起来、自己天天在用，就算成了。纯粹瞎玩，AI伟力罢了，鄙人就是个臭提需求的
+					纯粹瞎玩，AI伟力罢了，鄙人就是个臭提需求的
 				</p>
 			</header>
 

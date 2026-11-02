@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { listMessages, setReply, setStatus } from '@/lib/guestbook'
+import { clientIp, createOwnerReply, getMessage, hashIp, listMessages, setReply, setStatus } from '@/lib/guestbook'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,12 +33,24 @@ export async function POST(req: Request) {
 
 	const id = String(body?.id || '')
 	const action = body?.action
-	if (!id || !['approve', 'reject', 'pending', 'reply'].includes(action)) {
+	if (!id || !['approve', 'reject', 'pending', 'reply', 'owner-reply'].includes(action)) {
 		return NextResponse.json({ ok: false, error: '参数不合法' }, { status: 400 })
 	}
 
 	try {
-		if (action === 'reply') {
+		if (action === 'owner-reply') {
+			// 站长在留言/评论区直接回复：创建一条已通过的子留言，显示为 inkstain + 博主
+			const text = typeof body?.reply === 'string' ? body.reply.trim().slice(0, 500) : ''
+			if (text.length < 1) return NextResponse.json({ ok: false, error: '回复不能为空' }, { status: 400 })
+			const parent = await getMessage(id)
+			if (!parent) return NextResponse.json({ ok: false, error: '要回复的留言不存在' }, { status: 404 })
+			await createOwnerReply({
+				parentId: id,
+				content: text,
+				ipHash: hashIp(clientIp(req.headers)),
+				ua: req.headers.get('user-agent') || ''
+			})
+		} else if (action === 'reply') {
 			const reply = typeof body?.reply === 'string' ? body.reply.trim().slice(0, 500) : ''
 			await setReply(id, reply)
 			// 有回复就意味着要展示出去

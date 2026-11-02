@@ -22,6 +22,7 @@ import { saveBlogEdits } from './services/save-blog-edits'
 import { Check } from 'lucide-react'
 import { BlogCoverHoverPreview, useBlogCoverHover } from './components/blog-cover-hover'
 import { CategoryModal } from './components/category-modal'
+import { pathsFromTree } from '@/lib/categories'
 
 type DisplayMode = 'day' | 'week' | 'month' | 'year' | 'category'
 
@@ -53,8 +54,8 @@ export default function BlogPage() {
 	}, [items, editMode])
 
 	useEffect(() => {
-		setCategoryList(categoriesFromServer || [])
-	}, [categoriesFromServer])
+		setCategoryList(categoryTree.length ? pathsFromTree(categoryTree) : categoriesFromServer || [])
+	}, [categoryTree, categoriesFromServer])
 
 	const displayItems = editMode ? editableItems : items
 
@@ -68,11 +69,13 @@ export default function BlogPage() {
 				const date = dayjs(item.date)
 
 				switch (displayMode) {
-					case 'category':
-						// 多层级分类：这一层先按一级大类归组，子类进大类页再看
-						key = (item.categoryPath && item.categoryPath[0]) || item.category || '未分类'
-						label = key
+					case 'category': {
+						// 多层级分类：直接按「大类/子类」展开成组，不再需要点进去
+						const path = item.categoryPath?.length ? item.categoryPath : item.category ? [item.category] : []
+						key = path.length ? path.join('/') : '未分类'
+						label = path.length ? path.join(' / ') : '未分类'
 						break
+					}
 					case 'day':
 						key = date.format('YYYY-MM-DD')
 						label = date.format('YYYY年MM月DD日')
@@ -215,9 +218,10 @@ export default function BlogPage() {
 		setEditableItems(prev =>
 			prev.map(item => {
 				if (item.slug !== slug) return item
-				const nextCategory = category?.trim()
-				if (!nextCategory) return { ...item, category: undefined }
-				return { ...item, category: nextCategory }
+				const nextCategory = (category || '').trim()
+				if (!nextCategory) return { ...item, category: undefined, categoryPath: undefined }
+				const path = nextCategory.split('/').map(x => x.trim()).filter(Boolean)
+				return { ...item, category: path[path.length - 1], categoryPath: path.length > 1 ? path : undefined }
 			})
 		)
 	}, [])
@@ -250,7 +254,8 @@ export default function BlogPage() {
 	const handleSave = useCallback(async () => {
 		const removedSlugs = items.filter(item => !editableItems.some(editItem => editItem.slug === item.slug)).map(item => item.slug)
 		const normalizedCategoryList = categoryList.map(c => c.trim()).filter(Boolean)
-		const categoryListChanged = JSON.stringify(normalizedCategoryList) !== JSON.stringify((categoriesFromServer || []).map(c => c.trim()).filter(Boolean))
+		const serverPaths = categoryTree.length ? pathsFromTree(categoryTree) : (categoriesFromServer || []).map(c => c.trim()).filter(Boolean)
+		const categoryListChanged = JSON.stringify(normalizedCategoryList) !== JSON.stringify(serverPaths)
 		const categoryAssignmentChanged = items.some(origin => {
 			const next = editableItems.find(editItem => editItem.slug === origin.slug)
 			const originCategory = origin.category || ''
@@ -276,7 +281,7 @@ export default function BlogPage() {
 		} finally {
 			setSaving(false)
 		}
-	}, [items, editableItems, categoryList, categoriesFromServer])
+	}, [items, editableItems, categoryList, categoriesFromServer, categoryTree])
 
 	const handleSaveClick = useCallback(() => {
 		if (!isAuth) {
@@ -403,7 +408,16 @@ export default function BlogPage() {
 							className='card card-content relative w-full max-w-[840px] space-y-6'>
 							<div className='mb-3 flex items-center justify-between gap-3 text-base'>
 								<div className='flex items-center gap-3'>
-									<div className='font-medium'>{getGroupLabel(groupKey)}</div>
+									<div className='flex flex-wrap items-baseline gap-1.5 font-medium'>
+										{getGroupLabel(groupKey)
+											.split(' / ')
+											.map((seg, si, arr) => (
+												<span key={seg} className={si < arr.length - 1 ? 'text-secondary text-[11.5px]' : ''}>
+													{seg}
+													{si < arr.length - 1 ? ' /' : ''}
+												</span>
+											))}
+									</div>
 									<div className='h-2 w-2 rounded-full bg-[#D9D9D9]'></div>
 									<div className='text-secondary text-sm'>{group.items.length} 篇文章</div>
 								</div>

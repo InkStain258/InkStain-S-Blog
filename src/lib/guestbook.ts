@@ -26,6 +26,10 @@ export type GuestMessage = {
 	status: GuestStatus
 	/** 站长的回复，回复后与留言一起展示 */
 	reply?: { content: string; at: string }
+	/** 这条是回复哪一条（楼中楼） */
+	parentId?: string
+	/** 站长本人发言 */
+	isOwner?: boolean
 }
 
 export type SubmitInput = {
@@ -36,6 +40,10 @@ export type SubmitInput = {
 	content: string
 	ipHash: string
 	ua?: string
+	/** 回复某条留言/评论 */
+	parentId?: string
+	/** 站长发言（跳过审核，显示「博主」角标） */
+	owner?: boolean
 }
 
 /** 文件驱动额外记录的字段，绝不返回给前端 */
@@ -80,7 +88,9 @@ function encodeBody(input: SubmitInput): string {
 		contact: input.contact || '',
 		at: new Date().toISOString(),
 		ip: input.ipHash,
-		ua: (input.ua || '').slice(0, 160)
+		ua: (input.ua || '').slice(0, 160),
+		...(input.parentId ? { parentId: input.parentId } : {}),
+		...(input.owner ? { owner: true } : {})
 	}
 	return `<!--gb:${JSON.stringify(meta)}-->\n\n${input.content}\n`
 }
@@ -109,7 +119,9 @@ function decodeIssue(issue: any): GuestMessage | null {
 		content,
 		createdAt: meta.at || issue.created_at,
 		status: labels.includes(LABEL_APPROVED) ? 'approved' : 'pending',
-		reply: meta.reply?.content ? { content: String(meta.reply.content), at: String(meta.reply.at || '') } : undefined
+		reply: meta.reply?.content ? { content: String(meta.reply.content), at: String(meta.reply.at || '') } : undefined,
+		parentId: meta.parentId ? String(meta.parentId) : undefined,
+		isOwner: Boolean(meta.owner)
 	}
 }
 
@@ -192,7 +204,7 @@ export async function createMessage(input: SubmitInput): Promise<GuestMessage> {
 					? `[评论] ${input.slug} · ${input.name} · ${new Date().toISOString().slice(0, 10)}`
 					: `[留言] ${input.name} · ${new Date().toISOString().slice(0, 10)}`,
 			body: encodeBody(input),
-			labels: [LABEL_ALL, LABEL_PENDING]
+			labels: input.owner ? [LABEL_ALL, LABEL_APPROVED] : [LABEL_ALL, LABEL_PENDING]
 		})
 	})
 	if (!res.ok) {
@@ -326,4 +338,66 @@ ${plain}
 ` })
 	})
 	if (!patch.ok) throw new Error(`GitHub ${patch.status}`)
+}
+
+
+/* ---------------------------- 楼中楼 / 站长 / 记忆 ---------------------------- */
+
+/** 取一条（含未审核），用于校验回复目标 */
+export async function getMessage(id: string): Promise<GuestMessage | null> {
+	if (useLocalDriver()) {
+		const hit = readLocal().find(m => m.id === id)
+		if (!hit) return null
+		const { _ip, ...rest } = hit
+		return rest
+	}
+	const res = await fetch(`https://api.github.com/repos/${REPO}/issues/${id}`, {
+		headers: ghHeaders(),
+		cache: 'no-store'
+	})
+	if (!res.ok) return null
+	return decodeIssue(await res.json())
+}
+
+/** 站长回复：直接创建一条已通过的留言，meta 里带 owner 与 parentId */
+export async function createOwnerReply(input: {
+	parentId: string
+	content: string
+	ipHash: string
+	ua?: string
+}): Promise<GuestMessage> {
+	const parent = await getMessage(input.parentId)
+	if (!parent) throw new Error('要回复的留言不存在')
+	return createMessage({
+		kind: parent.kind || 'gb',
+		slug: parent.slug,
+		name: 'inkstain',
+		content: input.content,
+		ipHash: input.ipHash,
+		ua: input.ua,
+		parentId: input.parentId,
+		owner: true
+	})
+}
+
+/** 同一 IP 上一次用的昵称（留言板/评论共用），用于下次预填 */
+export async function lastNameByIp(ipHash: string): Promise<string> {
+	if (!ipHash) return ''
+
+	if (useLocalDriver()) {
+		const hit = readLocal()
+			.filter(m => m._ip === ipHash)
+			.sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
+		const name = hit?.name?.trim() || ''
+		return name === '匿名' ? '' : name
+	}
+
+	// 一次请求拿全部 issue，避免逐条查 IP
+	const issues = await ghList('all')
+	const hit = issues
+		.map(issue => ({ msg: decodeIssue(issue), ip: decodeIp(issue).ipHash }))
+		.filter(x => x.msg && x.ip === ipHash)
+		.sort((a, b) => (b.msg!.createdAt || '').localeCompare(a.msg!.createdAt || ''))[0]
+	const name = hit?.msg?.name?.trim() || ''
+	return name === '匿名' ? '' : name
 }

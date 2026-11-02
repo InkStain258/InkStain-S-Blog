@@ -60,6 +60,7 @@ export async function POST(req: Request) {
 	const content = clean(body?.content, 800)
 	const name = clean(body?.name, 24) || '匿名'
 	const contact = clean(body?.contact, 64)
+	const parentId = clean(body?.parentId, 32)
 
 	if (content.length < 2) return NextResponse.json({ ok: false, error: '内容太短了' }, { status: 400 })
 	if ((content.match(/https?:\/\//g) || []).length > 3) {
@@ -89,7 +90,8 @@ export async function POST(req: Request) {
 			contact,
 			content,
 			ipHash,
-			ua: req.headers.get('user-agent') || ''
+			ua: req.headers.get('user-agent') || '',
+			parentId: parentId || undefined
 		})
 		return NextResponse.json({ ok: true, message: '评论已提交，审核通过后会显示在这里' })
 	} catch (e: any) {

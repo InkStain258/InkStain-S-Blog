@@ -3,6 +3,7 @@ import { GITHUB_CONFIG } from '@/consts'
 import { getAuthToken } from '@/lib/auth'
 import { createBlob, createCommit, createTree, getRef, listRepoFilesRecursive, toBase64Utf8, type TreeItem, updateRef } from '@/lib/github-client'
 import type { BlogIndexItem } from '@/lib/blog-index'
+import { buildTree, leafOf } from '@/lib/categories'
 
 export async function saveBlogEdits(originalItems: BlogIndexItem[], nextItems: BlogIndexItem[], categories: string[]): Promise<void> {
 	const removedSlugs = originalItems.filter(item => !nextItems.some(next => next.slug === item.slug)).map(item => item.slug)
@@ -44,7 +45,10 @@ export async function saveBlogEdits(originalItems: BlogIndexItem[], nextItems: B
 
 	toast.info('正在更新分类...')
 	const uniqueCategories = Array.from(new Set(categories.map(c => c.trim()).filter(Boolean)))
-	const categoriesJson = JSON.stringify({ categories: uniqueCategories }, null, 2)
+	// 分类允许 `大类/子类`（最多三级）：同时写 tree（给新 UI）与 categories（叶子名，兼容老代码）
+	const tree = buildTree(uniqueCategories)
+	const leaves = Array.from(new Set(uniqueCategories.map(leafOf)))
+	const categoriesJson = JSON.stringify({ tree, categories: leaves, paths: uniqueCategories }, null, 2)
 	const categoriesBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(categoriesJson), 'base64')
 	treeItems.push({
 		path: 'public/blogs/categories.json',

@@ -53,6 +53,7 @@ export async function POST(req: Request) {
 	const content = clean(body?.content, 600)
 	const name = clean(body?.name, 24) || '匿名'
 	const contact = clean(body?.contact, 64)
+	const parentId = clean(body?.parentId, 32)
 
 	if (content.length < 2) return NextResponse.json({ ok: false, error: '留言内容太短了' }, { status: 400 })
 	if (content.length > 600) return NextResponse.json({ ok: false, error: '留言最多 600 字' }, { status: 400 })
@@ -78,7 +79,7 @@ export async function POST(req: Request) {
 			return NextResponse.json({ ok: false, error: `提交太快了，${wait} 秒后再试` }, { status: 429 })
 		}
 
-		await createMessage({ name, contact, content, ipHash, ua: req.headers.get('user-agent') || '' })
+		await createMessage({ name, contact, content, ipHash, ua: req.headers.get('user-agent') || '', parentId: parentId || undefined })
 		return NextResponse.json({ ok: true, message: '留言已提交，审核通过后会出现在这里' })
 	} catch (e: any) {
 		return NextResponse.json({ ok: false, error: `提交失败：${e?.message || '未知错误'}` }, { status: 500 })

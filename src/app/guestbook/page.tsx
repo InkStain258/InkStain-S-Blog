@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import Link from 'next/link'
-import { Send, Loader2, MessageSquareQuote, Clock3, ShieldCheck, Sparkles, CornerDownRight } from 'lucide-react'
+import { Send, Loader2, MessageSquareQuote, Clock3, ShieldCheck, Sparkles, CornerDownRight, Crown } from 'lucide-react'
 import { toast } from 'sonner'
 import { INIT_DELAY } from '@/consts'
 
@@ -15,6 +15,8 @@ type GuestMessage = {
 	createdAt: string
 	status: 'pending' | 'approved'
 	reply?: { content: string; at: string }
+	parentId?: string
+	isOwner?: boolean
 }
 
 function timeAgo(iso: string) {
@@ -39,6 +41,12 @@ function avatarColor(name: string) {
 	return PALETTE[h % PALETTE.length]
 }
 
+const ADMIN_KEY = 'inkstain:admin_key'
+
+function OwnerBadge() {
+	return <span className='bg-brand/12 text-brand-ink rounded-full px-1.5 py-[1px] text-[9.5px] font-medium tracking-wide'>博主</span>
+}
+
 export default function GuestbookPage() {
 	const [list, setList] = useState<GuestMessage[]>([])
 	const [loading, setLoading] = useState(true)
@@ -48,6 +56,10 @@ export default function GuestbookPage() {
 	const [contact, setContact] = useState('')
 	const [content, setContent] = useState('')
 	const [cooldown, setCooldown] = useState(0)
+	const [replyTo, setReplyTo] = useState<string | null>(null)
+	const [replyText, setReplyText] = useState('')
+	const [replySending, setReplySending] = useState(false)
+	const [adminKey, setAdminKey] = useState('')
 
 	const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -66,6 +78,19 @@ export default function GuestbookPage() {
 
 	useEffect(() => {
 		load()
+		// 记住上次的昵称（按 IP）
+		fetch('/api/guestbook/me')
+			.then(r => r.json())
+			.then(d => {
+				if (typeof d?.name === 'string' && d.name) setName(prev => prev || d.name)
+			})
+			.catch(() => {})
+		try {
+			const k = sessionStorage.getItem(ADMIN_KEY)
+			if (k) setAdminKey(k)
+		} catch {
+			/* ignore */
+		}
 		return () => {
 			if (timerRef.current) clearInterval(timerRef.current)
 		}
@@ -115,8 +140,87 @@ export default function GuestbookPage() {
 		}
 	}
 
+	const sendReply = async (parentId: string) => {
+		const text = replyText.trim()
+		if (replySending) return
+		if (text.length < 1) {
+			toast.error('回复点什么吧')
+			return
+		}
+		setReplySending(true)
+		try {
+			if (adminKey) {
+				const r = await fetch('/api/guestbook/moderate', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+					body: JSON.stringify({ id: parentId, action: 'owner-reply', reply: text })
+				})
+				const d = await r.json()
+				if (!r.ok || !d.ok) throw new Error(d?.error || '发布失败')
+				toast.success('已作为博主发布')
+				await load()
+			} else {
+				const r = await fetch('/api/guestbook', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ name: name.trim(), contact: contact.trim(), content: text, parentId, website: '' })
+				})
+				const d = await r.json()
+				if (!r.ok || !d.ok) throw new Error(d?.error || '提交失败')
+				toast.success('回复已提交，审核通过后显示')
+			}
+			setReplyText('')
+			setReplyTo(null)
+		} catch (e: any) {
+			toast.error(e?.message || '发送失败')
+		} finally {
+			setReplySending(false)
+		}
+	}
+
+	const unlockAdmin = () => {
+		const key = window.prompt('输入博主口令（只存在本标签页）')
+		if (!key) return
+		setAdminKey(key)
+		try {
+			sessionStorage.setItem(ADMIN_KEY, key)
+		} catch {
+			/* ignore */
+		}
+		toast.success('已解锁博主身份，回复会直接发布并标注')
+	}
+
+	const roots = useMemo(() => list.filter(m => !m.parentId), [list])
+	const childrenOf = (id: string) => list.filter(m => m.parentId === id).sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+
 	const total = list.length
 	const isEmpty = !loading && total === 0
+
+	const renderBody = (m: GuestMessage) => (
+		<>
+			<div className='flex items-baseline gap-2'>
+				<span className='text-[13px] font-medium'>{m.isOwner ? 'inkstain' : m.name}</span>
+				{m.isOwner && <OwnerBadge />}
+				<span className='text-secondary text-[10px]'>{timeAgo(m.createdAt)}</span>
+			</div>
+			<p className='mt-1 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
+			{m.reply && (
+				<motion.div
+					initial={{ opacity: 0, y: -4 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.08 }}
+					className='border-brand/40 bg-brand/[0.06] mt-2.5 rounded-r-xl border-l-2 px-3 py-2'>
+					<div className='text-brand-ink flex items-center gap-1 text-[10px] font-medium'>
+						<CornerDownRight className='h-3 w-3' />
+						inkstain
+						<OwnerBadge />
+						{m.reply.at && <span className='text-secondary ml-1 font-normal'>{timeAgo(m.reply.at)}</span>}
+					</div>
+					<p className='mt-1 text-[12.5px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
+				</motion.div>
+			)}
+		</>
+	)
 
 	return (
 		<div className='mx-auto w-full max-w-[860px] px-6 pt-28 pb-16 max-sm:px-4'>
@@ -132,11 +236,7 @@ export default function GuestbookPage() {
 				<h1 className='text-2xl font-semibold tracking-tight'>
 					留<span className='text-linear'>言</span>板
 				</h1>
-				<p className='text-secondary mx-auto mt-2 max-w-[440px] text-[13px] leading-relaxed'>
-					说点什么都可以——建议、吐槽、想看的选题，或者只是打个招呼。
-					<br />
-					提交后我会人工过一遍，合适的会贴在下面。
-				</p>
+				<p className='text-secondary mx-auto mt-2 max-w-[440px] text-[13px] leading-relaxed'>聊聊嘛</p>
 			</motion.header>
 
 			{/* 表单 */}
@@ -144,7 +244,7 @@ export default function GuestbookPage() {
 				initial={{ opacity: 0, y: 14 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: INIT_DELAY + 0.08 }}
-				className='bg-card mt-8 rounded-[28px] border p-5 elev-1 backdrop-blur-md'>
+				className='bg-card elev-1 mt-8 rounded-[28px] border p-5 backdrop-blur-md'>
 				<div className='flex flex-col gap-3 sm:flex-row'>
 					<input
 						value={name}
@@ -194,7 +294,7 @@ export default function GuestbookPage() {
 					<button
 						onClick={submit}
 						disabled={sending || cooldown > 0 || !configured}
-						className='bg-brand hover:bg-brand/90 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white elev-1 transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-45'>
+						className='bg-brand hover:bg-brand/90 elev-1 inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-medium text-white transition-all active:scale-95 disabled:cursor-not-allowed disabled:opacity-45'>
 						{sending ? <Loader2 className='h-3.5 w-3.5 animate-spin' /> : <Send className='h-3.5 w-3.5' />}
 						提交留言
 					</button>
@@ -225,51 +325,97 @@ export default function GuestbookPage() {
 
 			<div className='mt-4 grid gap-3'>
 				<AnimatePresence initial={false}>
-					{list.map((m, i) => (
-						<motion.article
-							key={m.id}
-							initial={{ opacity: 0, y: 12 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -8 }}
-							transition={{ delay: Math.min(i * 0.04, 0.3) }}
-							className='bg-card group hover:border-brand/30 rounded-2xl border p-4 transition-colors'>
-							<div className='flex items-start gap-3'>
-								<span
-									className='grid h-9 w-9 shrink-0 place-items-center rounded-full text-[13px] font-semibold text-white elev-1'
-									style={{ backgroundColor: avatarColor(m.name) }}>
-									{m.name.slice(0, 1).toUpperCase()}
-								</span>
-								<div className='min-w-0 flex-1'>
-									<div className='flex items-baseline gap-2'>
-										<span className='text-[13px] font-medium'>{m.name}</span>
-										<span className='text-secondary text-[10px]'>{timeAgo(m.createdAt)}</span>
-									</div>
-									<p className='mt-1 text-[13px] leading-relaxed break-words whitespace-pre-wrap'>{m.content}</p>
-									{m.reply && (
-										<motion.div
-											initial={{ opacity: 0, y: -4 }}
-											animate={{ opacity: 1, y: 0 }}
-											transition={{ delay: 0.08 }}
-											className='border-brand/40 bg-brand/[0.06] mt-2.5 rounded-r-xl border-l-2 px-3 py-2'>
-											<div className='text-brand-ink flex items-center gap-1 text-[10px] font-medium'>
-												<CornerDownRight className='h-3 w-3' />
-												站长回复
-												{m.reply.at && <span className='text-secondary ml-1 font-normal'>{timeAgo(m.reply.at)}</span>}
+					{roots.map((m, i) => {
+						const replies = childrenOf(m.id)
+						return (
+							<motion.article
+								key={m.id}
+								initial={{ opacity: 0, y: 12 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -8 }}
+								transition={{ delay: Math.min(i * 0.04, 0.3) }}
+								className='bg-card group hover:border-brand/30 rounded-2xl border p-4 transition-colors'>
+								<div className='flex items-start gap-3'>
+									<span
+										className='elev-1 grid h-9 w-9 shrink-0 place-items-center rounded-full text-[13px] font-semibold text-white'
+										style={{ backgroundColor: m.isOwner ? '#2fcbe7' : avatarColor(m.name) }}>
+										{(m.isOwner ? 'i' : m.name.slice(0, 1)).toUpperCase()}
+									</span>
+									<div className='min-w-0 flex-1'>
+										{renderBody(m)}
+
+										{replies.length > 0 && (
+											<div className='border-border/60 mt-2.5 space-y-2 border-l pl-3'>
+												{replies.map(r => (
+													<div key={r.id} className='rounded-xl bg-black/[0.02] px-3 py-2 dark:bg-white/[0.02]'>
+														<div className='flex items-baseline gap-2'>
+															<span className='text-[12px] font-medium'>{r.isOwner ? 'inkstain' : r.name}</span>
+															{r.isOwner && <OwnerBadge />}
+															<span className='text-secondary text-[10px]'>{timeAgo(r.createdAt)}</span>
+														</div>
+														<p className='mt-1 text-[12.5px] leading-relaxed break-words whitespace-pre-wrap'>{r.content}</p>
+													</div>
+												))}
 											</div>
-											<p className='mt-1 text-[12.5px] leading-relaxed break-words whitespace-pre-wrap'>{m.reply.content}</p>
-										</motion.div>
-									)}
+										)}
+
+										<div className='mt-2.5 flex items-center gap-3'>
+											<button
+												type='button'
+												onClick={() => {
+													setReplyTo(replyTo === m.id ? null : m.id)
+													setReplyText('')
+												}}
+												className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
+												{replyTo === m.id ? '取消' : '回复'}
+											</button>
+											{adminKey && (
+												<span className='text-brand-ink flex items-center gap-1 text-[10px]'>
+													<Crown className='h-3 w-3' />
+													站长身份已解锁
+												</span>
+											)}
+										</div>
+
+										{replyTo === m.id && (
+											<div className='mt-2'>
+												<textarea
+													value={replyText}
+													onChange={e => setReplyText(e.target.value)}
+													rows={2}
+													maxLength={500}
+													aria-label='回复内容'
+													placeholder={adminKey ? '以 inkstain 身份回复，发布后立即显示' : '回复这条（审核后显示）'}
+													className='bg-bg/60 focus:border-brand/50 w-full resize-y rounded-xl border px-3 py-2 text-[12.5px] leading-relaxed outline-none'
+												/>
+												<div className='mt-1.5 flex justify-end'>
+													<button
+														type='button'
+														onClick={() => sendReply(m.id)}
+														disabled={replySending}
+														className='bg-brand inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-medium text-white disabled:opacity-60'>
+														{replySending ? <Loader2 className='h-3 w-3 animate-spin' /> : <Send className='h-3 w-3' />}
+														{adminKey ? '以博主发布' : '回复'}
+													</button>
+												</div>
+											</div>
+										)}
+									</div>
 								</div>
-							</div>
-						</motion.article>
-					))}
+							</motion.article>
+						)
+					})}
 				</AnimatePresence>
 			</div>
 
-			<p className='text-secondary mt-10 text-center text-[11px]'>
+			<p className='text-secondary mt-10 flex items-center justify-center gap-3 text-[11px]'>
 				<Link href='/guestbook/manage' className='hover:text-brand-ink transition-colors'>
 					管理
 				</Link>
+				<span className='opacity-30'>·</span>
+				<button type='button' onClick={unlockAdmin} className='hover:text-brand-ink transition-colors'>
+					{adminKey ? '站长身份已解锁' : '我是站长'}
+				</button>
 			</p>
 		</div>
 	)
