@@ -76,13 +76,13 @@ export default function MagazineHome() {
 					</div>
 
 					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[26px]'>
-						读书笔记，
+						把想说的话，
 						<br />
-						和一些折腾记录。
+						说清楚。
 					</h1>
 
 					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9]'>
-						我是 InkStain，在北师大读文学。这里放课堂笔记的整理、读书时的零碎想法，还有折腾这个博客踩过的坑。写得慢，但想清楚了才发。
+						有些念头在脑子里转了很久，落到纸上才发现根本没想明白。于是我读一点、写一点，试着把话说清楚。不成体系，但都是真想过的。
 					</p>
 
 					<div className='mt-6 flex flex-wrap items-center gap-3'>

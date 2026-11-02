@@ -137,10 +137,12 @@ export default function NavCard() {
 		}
 	}, [form, center, styles, hiCardStyles, magazine])
 
-	const size = useMemo(() => {
+	const size = useMemo<{ width: number; height?: number }>(() => {
 		if (form === 'mini') return { width: 64, height: 64 }
 		else if (form === 'icons') return { width: 404, height: 64 }
-		else return { width: styles.width, height: styles.height }
+		// 竖向导航的高度交给内容自己决定：
+		// 列表项会变（这一轮加了「首页」），写死高度就会让最后一项掉到玻璃底板外面。
+		return { width: styles.width }
 	}, [form, styles])
 
 	useEffect(() => {
@@ -195,7 +197,7 @@ export default function NavCard() {
 
 					{(form === 'full' || form === 'icons') && (
 						<>
-							{form !== 'icons' && <div className='text-secondary mt-4 text-xs tracking-wider uppercase'>General</div>}
+							{form !== 'icons' && <div className='text-secondary mt-4 pl-5 text-xs tracking-wider uppercase'>General</div>}
 
 							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-4 space-y-0')}>
 								{/* 悬停高亮：原来用 motion 的 spring 滑块，改成 CSS 过渡的绝对定位块。
