@@ -41,6 +41,12 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
+  // 手机端必须按设备宽度排版，且**不禁止缩放**（WCAG 1.4.4）。
+  // 原来 layout/head.tsx 里手写过一份 user-scalable=no 的 viewport，
+  // 和这里这份同时输出，浏览器取第一个 → 用户连双指放大都被禁掉。
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#fbf8f2' },
     { media: '(prefers-color-scheme: dark)', color: '#0e1526' }

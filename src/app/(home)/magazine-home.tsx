@@ -66,22 +66,22 @@ export default function MagazineHome() {
 	const fade = (delay = 0) => ({ style: { animationDelay: `${delay}s` } })
 
 	return (
-		<div className='mx-auto w-full max-w-[1460px] px-6 pt-24 max-sm:pt-20 pb-24 max-sm:px-4 lg:pl-[330px]'>
+		<div className='mx-auto w-full max-w-[1460px] px-6 pt-24 pb-24 max-sm:px-4 max-sm:pt-24 lg:pl-[330px]'>
 			<div className='max-w-[1040px]'>
 				{/* 刊头 */}
 				<header {...fade()} className='ink-fade-up'>
 					<div className='border-border/60 flex items-center justify-between border-b pb-3'>
 						<span className='text-brand-ink text-[10.5px] font-medium tracking-[0.3em] uppercase'>InkStain</span>
-						<span className='text-secondary text-[10.5px] tabular-nums'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
+						<span className='text-secondary text-[10.5px] tabular-nums max-sm:text-[11px]'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
 					</div>
 
-					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[26px]'>
+					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[29px]'>
 						把想说的话，
 						<br />
 						说清楚。
 					</h1>
 
-					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9]'>
+					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9] max-sm:text-[13.5px] max-sm:leading-[1.95]'>
 						有些念头在脑子里转了很久，落到纸上才发现根本没想明白。于是我读一点、写一点，试着把话说清楚。不成体系，但都是真想过的。
 					</p>
 
@@ -119,7 +119,7 @@ export default function MagazineHome() {
 				<div className='mt-12 grid gap-8 lg:grid-cols-[1.32fr_1fr]'>
 					{hero && (
 						<Link href={`/blog/${hero.slug}`} {...fade(0.05)} className='ink-fade-up group block'>
-							<div className='glass-1 glass-gloss relative aspect-[16/10] overflow-hidden rounded-xl'>
+							<div className='glass-1 glass-gloss relative aspect-[16/10] overflow-hidden rounded-xl max-sm:aspect-[4/3]'>
 								{hero.cover ? (
 									<SmartImage
 										src={hero.cover.startsWith('http') ? hero.cover : `${origin}${hero.cover}`}
@@ -137,10 +137,10 @@ export default function MagazineHome() {
 								{hero.category && <span className='text-brand-ink tracking-wider'>{hero.category}</span>}
 								<span className='text-secondary'>{dayjs(hero.date).format('YYYY-MM-DD')}</span>
 							</div>
-							<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[17px]'>
+							<h2 className='group-hover:text-brand-ink mt-2 text-[19px] leading-[1.45] font-semibold tracking-[-0.01em] transition-colors max-sm:text-[18px]'>
 								{hero.title}
 							</h2>
-							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8]'>{plainInline(hero.summary)}</p>
+							<p className='text-secondary mt-2 line-clamp-2 text-[12.5px] leading-[1.8] max-sm:text-[13px]'>{plainInline(hero.summary)}</p>
 						</Link>
 					)}
 
@@ -164,7 +164,7 @@ export default function MagazineHome() {
 										<span className='bg-brand/10 text-brand-ink grid h-7 w-7 shrink-0 place-items-center rounded-lg'>
 											<Icon className='h-3.5 w-3.5' />
 										</span>
-										<span className='min-w-0 flex-1 truncate text-[11.5px]'>{t.title}</span>
+										<span className='min-w-0 flex-1 truncate text-[11.5px] max-sm:text-[12.5px]'>{t.title}</span>
 										<ArrowUpRight className='text-secondary h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60' />
 									</Link>
 								)
@@ -185,7 +185,7 @@ export default function MagazineHome() {
 
 				{/* 最近写的 */}
 				{big && (
-					<section className='mt-16'>
+					<section className='mt-16 max-sm:mt-12'>
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[14px] font-semibold tracking-wide'>最近写的</h2>
 							<Link href='/blog' className='text-secondary hover:text-brand-ink text-[11px] transition-colors'>
@@ -215,7 +215,7 @@ export default function MagazineHome() {
 										{big.category && <span className='text-brand-ink tracking-wider'>{big.category}</span>}
 										<span className='text-secondary'>{dayjs(big.date).format('YYYY-MM-DD')}</span>
 									</div>
-									<h3 className='group-hover:text-brand-ink mt-2 text-[16px] leading-[1.5] font-medium transition-colors'>{big.title}</h3>
+									<h3 className='group-hover:text-brand-ink mt-2 text-[16px] leading-[1.5] font-medium transition-colors max-sm:text-[16.5px]'>{big.title}</h3>
 									<p className='text-secondary mt-2 line-clamp-4 text-[12px] leading-[1.85]'>{plainInline(big.summary)}</p>
 									<span className='text-brand-ink mt-auto inline-flex items-center gap-1 pt-3 text-[11px] opacity-0 transition-opacity group-hover:opacity-100'>
 										继续读 <ArrowRight className='h-3 w-3' />
@@ -230,8 +230,8 @@ export default function MagazineHome() {
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
 											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
 										</div>
-										<h3 className='group-hover:text-brand-ink mt-1.5 text-[14px] leading-[1.55] font-medium transition-colors'>{it.title}</h3>
-										<p className='text-secondary mt-1 line-clamp-2 text-[11.5px] leading-[1.8]'>{plainInline(it.summary)}</p>
+										<h3 className='group-hover:text-brand-ink mt-1.5 text-[14px] leading-[1.55] font-medium transition-colors max-sm:text-[15px]'>{it.title}</h3>
+										<p className='text-secondary mt-1 line-clamp-2 text-[11.5px] leading-[1.8] max-sm:text-[12.5px]'>{plainInline(it.summary)}</p>
 									</Link>
 								))}
 							</div>
@@ -240,7 +240,7 @@ export default function MagazineHome() {
 				)}
 
 				{/* 系列 / 再往前 */}
-				<div className='mt-16 grid gap-9 lg:grid-cols-[0.82fr_1.18fr]'>
+				<div className='mt-16 grid gap-9 max-sm:mt-12 lg:grid-cols-[0.82fr_1.18fr]'>
 					{series.length > 0 && (
 						<section>
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>

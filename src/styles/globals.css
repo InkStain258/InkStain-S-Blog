@@ -1137,3 +1137,19 @@ a.glass-2:active {
 		max-width: 100%;
 	}
 }
+
+/* ------------------------------------------------------------------
+ * 手机安全区（ink-safe-area）
+ *
+ * viewport-fit=cover 之后内容会铺到刘海与 home indicator 底下，
+ * 这里给页面上下留出系统手势区，避免文字被遮住。
+ * ------------------------------------------------------------------ */
+@supports (padding: env(safe-area-inset-bottom)) {
+	body {
+		padding-left: env(safe-area-inset-left);
+		padding-right: env(safe-area-inset-right);
+	}
+	#main-content {
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+}
