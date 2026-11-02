@@ -20,9 +20,6 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
-      framer-motion:
-        specifier: ^12.42.2
-        version: 12.42.2(react-dom@19.2.0(react@19.2.1))(react@19.2.1)
       gitalk:
         specifier: ^1.8.0
         version: 1.8.0(react-dom@19.2.0(react@19.2.1))(react@19.2.1)
@@ -65,12 +62,6 @@ importers:
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
-      tailwindcss-animate:
-        specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.1.16)
-      ts-debounce:
-        specifier: ^4.0.0
-        version: 4.0.0
       zustand:
         specifier: ^5.0.8
         version: 5.0.8(@types/react@19.2.2)(react@19.2.1)(use-sync-external-store@1.6.0(react@19.2.1))
@@ -4209,11 +4200,6 @@ packages:
   tailwind-merge@3.3.1:
     resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
 
-  tailwindcss-animate@1.0.7:
-    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-
   tailwindcss@4.1.16:
     resolution: {integrity: sha512-pONL5awpaQX4LN5eiv7moSiSPd/DLDzKVRJz8Q9PgzmAdd1R4307GQS2ZpfiN7ZmekdQrfhZZiSE5jkLR4WNaA==}
 
@@ -4239,9 +4225,6 @@ packages:
 
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
-
-  ts-debounce@4.0.0:
-    resolution: {integrity: sha512-+1iDGY6NmOGidq7i7xZGA4cm8DAa6fqdYcvO5Z6yBevH++Bdo9Qt/mN0TzHUgcCcKv1gmh9+W5dHqz8pMWbCbg==}
 
   ts-tqdm@0.8.6:
     resolution: {integrity: sha512-3X3M1PZcHtgQbnwizL+xU8CAgbYbeLHrrDwL9xxcZZrV5J+e7loJm1XrXozHjSkl44J0Zg0SgA8rXbh83kCkcQ==}
@@ -9590,10 +9573,6 @@ snapshots:
 
   tailwind-merge@3.3.1: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@4.1.16):
-    dependencies:
-      tailwindcss: 4.1.16
-
   tailwindcss@4.1.16: {}
 
   tapable@2.3.0: {}
@@ -9614,8 +9593,6 @@ snapshots:
   tr46@0.0.3: {}
 
   trim-lines@3.0.1: {}
-
-  ts-debounce@4.0.0: {}
 
   ts-tqdm@0.8.6: {}
 
