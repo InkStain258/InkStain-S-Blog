@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react'
  * 所以玻璃卡片（backdrop-filter）会把它们一起糊成底纹，不会压在正文上。
  *
  * 性能与可访问性：
- * - 粒子数按视口面积算，上限 46，手机大概 20 个
+ * - 粒子数按视口面积算，上限 96，手机大概 34 个
  * - devicePixelRatio 封顶 2，避免 3x 屏上画布过大
  * - prefers-reduced-motion: reduce 直接不启动
  * - 页面隐藏（visibilitychange）时暂停 rAF
@@ -54,7 +54,7 @@ export default function SiteParticles() {
 			return {
 				x: Math.random() * w,
 				y: initial ? Math.random() * h : -20 - Math.random() * 120,
-				r: 2.2 + Math.random() * 4.6,
+				r: 1.7 + Math.random() * 3.9,
 				vx: -0.18 + Math.random() * 0.36,
 				vy: 0.28 + Math.random() * 0.62,
 				rot: Math.random() * Math.PI,
@@ -75,7 +75,7 @@ export default function SiteParticles() {
 			canvas.style.height = `${h}px`
 			ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-			const count = Math.round(Math.min(46, Math.max(18, (w * h) / 42000)))
+			const count = Math.round(Math.min(96, Math.max(34, (w * h) / 21000)))
 			petals.length = 0
 			for (let i = 0; i < count; i++) petals.push(spawnPetal(true))
 			stars.length = 0
@@ -145,7 +145,7 @@ export default function SiteParticles() {
 			}
 
 			// 流星：平均每 6–14 秒一颗，越窄的屏幕越少
-			if (Math.random() < 0.0022) spawnStar()
+			if (Math.random() < 0.0042) spawnStar()
 			for (let i = stars.length - 1; i >= 0; i--) {
 				const s = stars[i]
 				s.x += s.vx
