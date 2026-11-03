@@ -31,9 +31,11 @@ export default function MagazineHome() {
 
 	const sorted = useMemo(() => [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [items])
 	const hero = sorted[0]
-	const big = sorted[1]
-	const small = sorted.slice(2, 4)
-	const rest = sorted.slice(4, 14)
+	// 主区头条下方补一条「接下来」的横卡带，把右栏的高度填平
+	const quick = sorted.slice(1, 5)
+	const big = sorted[5]
+	const small = sorted.slice(6, 8)
+	const rest = sorted.slice(8, 18)
 	// 系列按一级大类归拢，首页直接展示「大类 → 子系列」两层
 	const seriesGroups = useMemo(() => {
 		const map = new Map<string, ReturnType<typeof groupSeries>>()
@@ -48,10 +50,9 @@ export default function MagazineHome() {
 	const tags = useMemo(() => {
 		const m = new Map<string, number>()
 		for (const it of items) for (const t of it.tags || []) m.set(t, (m.get(t) ?? 0) + 1)
-		return [...m.entries()]
-			.filter(([, n]) => n >= 2)
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, 12)
+		// 只保留出现 ≥2 次的话只剩两个标签，底部会空成一条线；
+		// 全量按频次排，重复的话题自然排在前面。
+		return [...m.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
 	}, [items])
 
 	// 统计面板：标签总数、分类数、最近 12 个月的写作节奏
@@ -150,8 +151,9 @@ export default function MagazineHome() {
 					</div>
 				</header>
 
-				{/* 头条 + 实验室 */}
-				<div className='mt-12 grid gap-8 lg:grid-cols-[1.32fr_1fr]'>
+				{/* 头条 + 右栏 */}
+				<div className='mt-14 grid items-start gap-8 max-sm:mt-10 lg:grid-cols-[minmax(0,1fr)_380px]'>
+					<div className='min-w-0'>
 					{hero && (
 						<Link href={`/blog/${hero.slug}`} {...fade(0.05)} className='ink-fade-up group block'>
 							<div className='glass-1 glass-gloss relative aspect-[16/10] overflow-hidden rounded-xl max-sm:aspect-[4/3]'>
@@ -180,6 +182,42 @@ export default function MagazineHome() {
 							</div>
 						</Link>
 					)}
+
+					<div className='mt-3 space-y-2'>
+						{quick.map((it, i) => (
+							<Link
+								key={it.slug}
+								href={`/blog/${it.slug}`}
+								{...fade(0.08 + i * 0.03)}
+								className='ink-fade-up group glass-1 hover:border-brand/40 flex items-center gap-3 rounded-xl p-2.5 transition-colors'>
+								<div className='h-16 w-16 shrink-0 overflow-hidden rounded-lg'>
+									{it.cover ? (
+										<SmartImage
+											src={it.cover.startsWith('http') ? it.cover : `${origin}${it.cover}`}
+											slug={it.slug}
+											alt={it.title}
+											sizes='64px'
+											className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
+										/>
+									) : (
+										<div className='from-brand/15 to-brand-secondary/15 h-full w-full bg-gradient-to-br' />
+									)}
+								</div>
+								<div className='min-w-0 flex-1'>
+									<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
+										<span className='handwriting tabular-nums'>{dayjs(it.date).format('MM-DD')}</span>
+										{it.category && <span className='text-brand-ink/80 truncate'>{it.category}</span>}
+										{it.words ? <span className='shrink-0 tabular-nums'>{it.words.toLocaleString('zh-CN')} 字</span> : null}
+									</div>
+									<h3 className='group-hover:text-brand-ink mt-1 truncate text-[14px] font-medium transition-colors max-sm:text-[14.5px]'>
+										{it.title}
+									</h3>
+									<p className='text-secondary mt-0.5 line-clamp-1 text-[11.5px] leading-relaxed'>{plainInline(it.summary)}</p>
+								</div>
+							</Link>
+						))}
+					</div>
+					</div>
 
 					<aside {...fade(0.12)} className='ink-fade-up'>
 						<div className='mb-3 flex items-baseline justify-between'>
@@ -245,12 +283,34 @@ export default function MagazineHome() {
 							</div>
 							<InlinePlayer />
 						</div>
+
+						<div className='mt-5'>
+							<div className='mb-2 flex items-baseline justify-between'>
+								<h2 className='text-[13px] font-semibold tracking-wide'>逛逛</h2>
+							</div>
+							<div className='grid grid-cols-2 gap-2'>
+								{[
+									{ href: '/archive', t: '归档', d: '按时间' },
+									{ href: '/series', t: '系列', d: '按主题' },
+									{ href: '/projects', t: '项目', d: 'GitHub' },
+									{ href: '/guestbook', t: '留言板', d: '随便聊聊' }
+								].map(x => (
+									<Link
+										key={x.href}
+										href={x.href}
+										className='glass-1 hover:border-brand/40 group rounded-lg px-3 py-2.5 transition-colors'>
+										<div className='group-hover:text-brand-ink text-[12px] transition-colors'>{x.t}</div>
+										<div className='text-secondary mt-0.5 text-[10px]'>{x.d}</div>
+									</Link>
+								))}
+							</div>
+						</div>
 					</aside>
 				</div>
 
 				{/* 最近写的 */}
 				{big && (
-					<section className='mt-16 max-sm:mt-12'>
+					<section className='mt-14 max-sm:mt-10'>
 						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
 							<h2 className='text-[16px] font-semibold tracking-tight'>最近写的</h2>
 							<Link href='/blog' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
@@ -258,7 +318,7 @@ export default function MagazineHome() {
 							</Link>
 						</div>
 
-						<div className='grid gap-8 lg:grid-cols-[1.35fr_1fr]'>
+						<div className='grid gap-8 lg:grid-cols-[minmax(0,1fr)_380px]'>
 							<Link href={`/blog/${big.slug}`} {...fade(0.05)} className='ink-fade-up group grid gap-4 sm:grid-cols-[0.85fr_1fr]'>
 								<div className='glass-1 overflow-hidden rounded-xl'>
 									<div className='aspect-[4/3] sm:aspect-[3/4]'>
@@ -288,9 +348,9 @@ export default function MagazineHome() {
 								</div>
 							</Link>
 
-							<div className='space-y-2'>
+							<div className='flex h-full flex-col gap-2'>
 								{small.map((it, i) => (
-									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group glass-1 hover:border-brand/40 block rounded-xl px-3.5 py-3 transition-colors'>
+									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group glass-1 hover:border-brand/40 flex flex-1 flex-col rounded-xl px-3.5 py-3 transition-colors'>
 										<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
 											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
@@ -305,7 +365,7 @@ export default function MagazineHome() {
 				)}
 
 				{/* 系列 / 再往前 */}
-				<div className='mt-16 grid gap-9 max-sm:mt-12 lg:grid-cols-[0.82fr_1.18fr]'>
+				<div className='mt-14 grid items-start gap-8 max-sm:mt-10 lg:grid-cols-[minmax(0,1fr)_380px]'>
 					{seriesGroups.length > 0 && (
 						<section>
 							<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
@@ -363,9 +423,10 @@ export default function MagazineHome() {
 
 				{/* 标签 */}
 				{tags.length > 0 && (
-					<section className='mt-14'>
-						<div className='border-border/60 mb-4 border-b pb-2.5'>
-							<h2 className='text-[16px] font-semibold tracking-tight'>常写的话题</h2>
+					<section className='mt-14 max-sm:mt-10'>
+						<div className='border-border/60 mb-4 flex items-baseline justify-between border-b pb-2.5'>
+							<h2 className='text-[16px] font-semibold tracking-tight'>话题</h2>
+							<span className='text-secondary text-[10.5px] tabular-nums'>{tags.length} 个</span>
 						</div>
 						<div className='flex flex-wrap gap-1.5'>
 							{tags.map(([t, n]) => (
@@ -374,12 +435,35 @@ export default function MagazineHome() {
 									href={`/blog/tag/${encodeURIComponent(t)}`}
 									className='glass-1 text-secondary hover:border-brand/40 hover:text-brand-ink rounded-full px-2.5 py-1 text-[10.5px] transition-colors'>
 									{t}
-									<span className='ml-1'>{n}</span>
+									{n > 1 && <span className='text-secondary/60 ml-1 text-[9px] tabular-nums'>{n}</span>}
 								</Link>
 							))}
 						</div>
 					</section>
 				)}
+
+				<div className='border-border/60 mt-14 flex flex-wrap items-center justify-between gap-4 border-t pt-6 max-sm:mt-10'>
+					<div className='text-secondary text-[11.5px]'>订阅，或者随便逛逛</div>
+					<div className='flex flex-wrap items-center gap-2'>
+						<a
+							href='/rss.xml'
+							className='glass-1 hover:border-brand/40 text-secondary hover:text-brand-ink rounded-full px-3 py-1.5 text-[11px] transition-colors'>
+							RSS
+						</a>
+						<a
+							href='https://github.com/InkStain258'
+							target='_blank'
+							rel='noreferrer'
+							className='glass-1 hover:border-brand/40 text-secondary hover:text-brand-ink rounded-full px-3 py-1.5 text-[11px] transition-colors'>
+							GitHub
+						</a>
+						<Link
+							href='/about'
+							className='glass-1 hover:border-brand/40 text-secondary hover:text-brand-ink rounded-full px-3 py-1.5 text-[11px] transition-colors'>
+							关于本站
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 		</>
