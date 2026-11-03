@@ -6,6 +6,29 @@
 
 @plugin 'tailwindcss-animate';
 
+/* ---------- 标题字体：霞鹜文楷（子集化 924 KB，只含站内用字 + GB2312 一级字库） ---------- */
+@font-face {
+	font-family: 'LXGW WenKai';
+	src: url('/fonts/lxgw-wenkai.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+:root {
+	--font-display: 'LXGW WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'Songti SC', serif;
+}
+
+/* 标题走楷体：正文仍用系统黑体，避免小字号笔画糊成一片 */
+h1,
+h2,
+h3,
+.font-display {
+	font-family: var(--font-display);
+	letter-spacing: 0.012em;
+}
+
+
 @utility scrollbar-none {
 	scrollbar-width: none;
 	&::-webkit-scrollbar {
@@ -251,8 +274,7 @@
 /* 手写/楷体感：日期、数字、装饰用。优先霞鹜文楷（若本机有），
    退回系统楷体 —— 不额外加载任何字体文件。 */
 @utility handwriting {
-	font-family:
-		'LXGW WenKai', 'LXGWWenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'AR PL UKai CN', 'Songti SC', serif;
+	font-family: var(--font-display);
 	font-variant-numeric: tabular-nums;
 	letter-spacing: 0.015em;
 }

@@ -12,8 +12,8 @@
 
   --font-averia: 'Averia Gruesa Libre', sans-serif;
   --font-sans:
-    'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, BlinkMacSystemFont, 'Helvetica Neue',
-    'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+    'LXGW WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'PingFang SC', -apple-system, system-ui, 'Segoe UI', Roboto,
+    'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
 }
 
 :root {
