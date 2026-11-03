@@ -248,6 +248,15 @@
 /* 和「全部文章」那类内容卡（.card）同一套材质：
    bg-card 实底 + 1px 边框 + 内高光 + 外投影 + 8px 模糊。
    之前那套渐变描边 + 30px 模糊反而让深浅不可控。 */
+/* 手写/楷体感：日期、数字、装饰用。优先霞鹜文楷（若本机有），
+   退回系统楷体 —— 不额外加载任何字体文件。 */
+@utility handwriting {
+	font-family:
+		'LXGW WenKai', 'LXGWWenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'AR PL UKai CN', 'Songti SC', serif;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.015em;
+}
+
 @utility glass-1 {
 	@apply bg-card border;
 	box-shadow:

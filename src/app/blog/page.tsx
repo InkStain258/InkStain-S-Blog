@@ -17,6 +17,7 @@ import BilibiliSVG from '@/svgs/哔哩哔哩.svg'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { readFileAsText } from '@/lib/file-utils'
+import { plainInline } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import { saveBlogEdits } from './services/save-blog-edits'
 import { Check } from 'lucide-react'
@@ -461,10 +462,12 @@ export default function BlogPage() {
 										)
 									})()}
 							</div>
-							<div>
+							<div className='space-y-2'>
 								{group.items.map(it => {
 									const hasRead = isRead(it.slug)
 									const isSelected = selectedSlugs.has(it.slug)
+									const words = (it as { words?: number }).words || 0
+									const minutes = Math.max(1, Math.ceil(words / 400))
 									return (
 										<Link
 											onMouseEnter={() => onCoverLinkMouseEnter(it.cover)}
@@ -473,48 +476,47 @@ export default function BlogPage() {
 											key={it.slug}
 											onClick={event => handleItemClick(event, it.slug)}
 											className={cn(
-												'group flex min-h-10 items-center gap-3 py-3 transition-all',
+												'group glass-1 relative block rounded-xl px-4 py-3.5 transition-all',
 												editMode
-													? cn(
-															'rounded-lg border px-3',
-															isSelected ? 'border-brand/60 bg-brand/5' : 'hover:border-brand/40 border-transparent hover:bg-white/60'
-														)
-													: 'cursor-pointer'
+													? cn('border', isSelected ? 'border-brand/60 bg-brand/5' : 'hover:border-brand/40')
+													: 'hover:border-brand/40'
 											)}>
-											{editMode && (
-												<span
-													className={cn(
-														'flex h-4 w-4 items-center justify-center rounded-full border text-[10px] font-semibold',
-														isSelected ? 'border-brand bg-brand text-white' : 'border-[#D9D9D9] text-transparent'
-													)}>
-													<Check />
+											<div className='flex items-center gap-2'>
+												{editMode && (
+													<span
+														className={cn(
+															'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-semibold',
+															isSelected ? 'border-brand bg-brand text-white' : 'border-[#D9D9D9] text-transparent'
+														)}>
+														<Check />
+													</span>
+												)}
+												<span className='handwriting text-secondary text-[11.5px] tracking-wide tabular-nums'>
+													{dayjs(it.date).format('MM-DD')}
 												</span>
-											)}
-											<span className='text-secondary w-[44px] shrink-0 text-sm font-medium'>{dayjs(it.date).format('MM-DD')}</span>
+												{hasRead && <span className='text-secondary/60 text-[10.5px]'>已读</span>}
+											</div>
 
-											<div className='relative flex h-2 w-2 items-center justify-center'>
-												<div className='bg-secondary group-hover:bg-brand h-[5px] w-[5px] rounded-full transition-all group-hover:h-4'></div>
-												<ShortLineSVG className='absolute bottom-4' />
-											</div>
-											<div
-												className={cn(
-													'flex-1 truncate text-sm font-medium transition-all',
-													editMode ? null : 'group-hover:text-brand-ink group-hover:translate-x-2'
-												)}>
+											<div className='mt-1.5 text-[16.5px] leading-snug font-semibold tracking-tight transition-colors group-hover:text-brand-ink'>
 												{it.title || it.slug}
-												{hasRead && <span className='text-secondary ml-2 text-xs'>[已阅读]</span>}
 											</div>
-											<div className='flex flex-wrap items-center gap-2 max-sm:hidden'>
+
+											{it.summary && (
+												<p className='text-secondary mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed'>{plainInline(it.summary)}</p>
+											)}
+
+											<div className='text-secondary mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]'>
+												{words > 0 && <span className='tabular-nums'>{words.toLocaleString('zh-CN')} 字</span>}
+												{words > 0 && <span className='tabular-nums'>约 {minutes} 分钟</span>}
 												{(it.tags || []).map(t => (
-													<span key={t} className='text-secondary text-sm'>
+													<span key={t} className='text-brand-ink/60'>
 														#{t}
 													</span>
 												))}
 											</div>
 										</Link>
 									)
-								})}
-							</div>
+								})}							</div>
 						</motion.div>
 						</Fragment>
 					)

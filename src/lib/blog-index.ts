@@ -57,3 +57,14 @@ export async function removeBlogsFromIndex(token: string, owner: string, repo: s
 export async function removeBlogFromIndex(token: string, owner: string, repo: string, slug: string, branch: string): Promise<string> {
 	return removeBlogsFromIndex(token, owner, repo, [slug], branch)
 }
+
+/** 正文正文字数（剥离 markdown 语法与空白），用于列表页显示「字数 / 阅读时长」 */
+export function countWords(md: string): number {
+	const plain = md
+		.replace(/```[\s\S]*?```/g, '')
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+		.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+		.replace(/[#>*_`~\-|\[\]()]/g, '')
+		.replace(/\s/g, '')
+	return plain.length
+}

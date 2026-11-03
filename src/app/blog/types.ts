@@ -8,6 +8,7 @@ export type BlogIndexItem = {
 	hidden?: boolean
 	category?: string
 	categoryPath?: string[]
+	words?: number
 }
 
 export type BlogConfig = {

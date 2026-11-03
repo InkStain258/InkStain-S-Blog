@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
 import { ChevronRight, BookMarked, Clock3, PenLine } from 'lucide-react'
 import { useBlogIndex } from '@/hooks/use-blog-index'
@@ -10,6 +11,7 @@ import { plainInline } from '@/lib/utils'
 import PostList from '@/components/post-list'
 import { SmartImage } from '@/components/smart-image'
 import InlinePlayer from '@/components/inline-player'
+import MonthCalendar from '@/components/month-calendar'
 
 const origin = ''
 
@@ -21,6 +23,11 @@ const origin = ''
  */
 export default function MagazineHome() {
 	const { items, loading } = useBlogIndex()
+	const router = useRouter()
+	const goToDay = (day: string) => {
+		const hit = items.find(it => dayjs(it.date).format('YYYY-MM-DD') === day)
+		if (hit) router.push(`/blog/${hit.slug}`)
+	}
 
 	const sorted = useMemo(() => [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [items])
 	const hero = sorted[0]
@@ -217,6 +224,16 @@ export default function MagazineHome() {
 								<span>{monthly[0]?.label}</span>
 								<span>{monthly[11]?.label}</span>
 							</div>
+						</div>
+
+						<div className='mt-5'>
+							<div className='mb-2 flex items-baseline justify-between'>
+								<h2 className='text-[13px] font-semibold tracking-wide'>发文日历</h2>
+								<Link href='/archive' className='glass-1 text-secondary hover:text-brand-ink rounded-full px-2.5 py-1 text-[11px] transition-colors'>
+									归档
+								</Link>
+							</div>
+							<MonthCalendar dates={items.map(it => it.date)} onPick={goToDay} />
 						</div>
 
 						<div className='mt-5'>

@@ -1,6 +1,6 @@
 import { toBase64Utf8, getRef, createTree, createCommit, updateRef, createBlob, type TreeItem } from '@/lib/github-client'
 import { fileToBase64NoPrefix, hashFileSHA256 } from '@/lib/file-utils'
-import { prepareBlogsIndex } from '@/lib/blog-index'
+import { prepareBlogsIndex, countWords } from '@/lib/blog-index'
 import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
 import type { ImageItem } from '../types'
@@ -151,7 +151,8 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 			summary: form.summary,
 			cover: coverPath,
 			hidden: form.hidden,
-			category: form.category
+			category: form.category,
+			words: countWords(form.md)
 		},
 		GITHUB_CONFIG.BRANCH
 	)
