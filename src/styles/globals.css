@@ -1196,6 +1196,14 @@ a.glass-2:active {
 /* ===== 首页动态背景：三团缓慢漂移的光斑 =====
    用 transform 动画（GPU 合成），不动 background-position，避免每帧重绘；
    prefers-reduced-motion 下完全静止，光斑仍在但不动。 */
+/* 花瓣与流星：canvas 画在极光同一层，玻璃卡片会把它糊成底纹 */
+.site-particles {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+}
+
 .site-aurora {
   position: fixed;
   inset: 0;

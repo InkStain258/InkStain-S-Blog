@@ -6,6 +6,7 @@ import Layout from '@/layout'
 import Head from '@/layout/head'
 import siteContent from '@/config/site-content.json'
 import { ThemeProvider } from '@/hooks/use-theme'
+import SiteParticles from '@/components/site-particles'
 
 const {
   meta: { title, description },
@@ -95,6 +96,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <i />
           <i />
         </div>
+        <SiteParticles />
         <ThemeProvider>
           <Layout>{children}</Layout>
         </ThemeProvider>
