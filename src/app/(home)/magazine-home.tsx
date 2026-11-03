@@ -105,13 +105,14 @@ export default function MagazineHome() {
 						<span className='text-secondary text-[10.5px] tabular-nums max-sm:text-[11px]'>{dayjs().format('YYYY 年 M 月 D 日')}</span>
 					</div>
 
-					<h1 className='mt-6 max-w-[640px] text-[34px] leading-[1.22] font-semibold tracking-[-0.015em] max-sm:text-[29px]'>
-						赋术予文，
+					<h1 className='mt-7 text-[40px] leading-[1.34] tracking-[0.14em] max-sm:text-[31px] max-sm:tracking-[0.1em]'>
+						赋术予文
 						<br />
 						泼墨为痕
 					</h1>
+					<div aria-hidden className='from-brand/80 via-brand/35 to-brand/0 mt-5 h-px w-28 bg-gradient-to-r max-sm:w-20' />
 
-					<p className='text-secondary mt-4 max-w-[520px] text-[13px] leading-[1.9] max-sm:text-[13.5px] max-sm:leading-[1.95]'>
+					<p className='text-secondary mt-5 max-w-[560px] text-[14px] leading-[2] max-sm:text-[13.5px] max-sm:leading-[1.95]'>
 						原想着给未来脑腐的自己留下一片清醒的慰藉，实际上只是一个可怜虫找的一片栖身之所罢。
 					</p>
 

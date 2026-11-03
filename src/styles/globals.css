@@ -25,7 +25,9 @@ h2,
 h3,
 .font-display {
 	font-family: var(--font-display);
-	letter-spacing: 0.012em;
+	/* 霞鹜文楷只有 400 一档；font-semibold(600) 会让浏览器合成假粗体，
+	   笔画发胖发糊。压到 500，浏览器就老老实实用 400 的字形。 */
+	font-weight: 500;
 }
 
 
