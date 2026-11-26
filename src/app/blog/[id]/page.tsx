@@ -11,6 +11,7 @@ import { useReadArticles } from '@/hooks/use-read-articles'
 import LiquidGrass from '@/components/liquid-grass'
 import dynamic from 'next/dynamic'
 import LazyMount from '@/components/lazy-mount'
+import SeriesNav from '@/components/series-nav'
 
 const GitalkComments = dynamic(() => import('@/components/gitalk-comments'), { ssr: false })
 const ArticleComments = dynamic(() => import('@/components/article-comments'), { ssr: false })
@@ -100,6 +101,9 @@ export default function Page() {
 			</motion.button>
 
 			{slug === 'liquid-grass' && <LiquidGrass />}
+
+			{/* 系列上下文：读到第几篇、上一篇下一篇。不在任何系列里的文章不渲染 */}
+			<SeriesNav slug={slug} />
 
 			{/* 匿名留言在前：不用登录，绝大多数读者走这条 */}
 			<ArticleComments slug={slug} />
