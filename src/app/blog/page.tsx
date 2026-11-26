@@ -426,7 +426,7 @@ export default function BlogPage() {
 							{showRoot && (
 								<div className='mt-2 w-full max-w-[840px]'>
 									<h2 className='text-[17px] font-semibold tracking-tight'>{rootName}</h2>
-									<div className='text-secondary mt-1 text-[11px] tabular-nums'>
+									<div className='text-secondary mt-1 text-[11.5px] tabular-nums'>
 										{stat?.count ?? group.items.length} 篇 · {stat?.subs ?? 1} 个分类
 									</div>
 								</div>
@@ -497,15 +497,15 @@ export default function BlogPage() {
 												{hasRead && <span className='text-secondary/60 text-[10.5px]'>已读</span>}
 											</div>
 
-											<div className='mt-1.5 text-[16.5px] leading-snug font-semibold tracking-tight transition-colors group-hover:text-brand-ink'>
+											<div className='mt-1.5 text-[17px] leading-snug font-semibold tracking-tight transition-colors group-hover:text-brand-ink'>
 												{it.title || it.slug}
 											</div>
 
 											{it.summary && (
-												<p className='text-secondary mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed'>{plainInline(it.summary)}</p>
+												<p className='text-secondary mt-1.5 line-clamp-2 text-[13px] leading-relaxed'>{plainInline(it.summary)}</p>
 											)}
 
-											<div className='text-secondary mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]'>
+											<div className='text-secondary mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px]'>
 												{words > 0 && <span className='tabular-nums'>{words.toLocaleString('zh-CN')} 字</span>}
 												{words > 0 && <span className='tabular-nums'>约 {minutes} 分钟</span>}
 												{(it.tags || []).map(t => (

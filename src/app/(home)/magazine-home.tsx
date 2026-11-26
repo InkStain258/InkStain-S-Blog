@@ -206,15 +206,15 @@ export default function MagazineHome() {
 									)}
 								</div>
 								<div className='min-w-0 flex-1'>
-									<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
+									<div className='text-secondary flex items-center gap-2 text-[11px]'>
 										<span className='handwriting tabular-nums'>{dayjs(it.date).format('MM-DD')}</span>
 										{it.category && <span className='text-brand-ink/80 truncate'>{it.category}</span>}
 										{it.words ? <span className='shrink-0 tabular-nums'>{it.words.toLocaleString('zh-CN')} 字</span> : null}
 									</div>
-									<h3 className='group-hover:text-brand-ink mt-1 truncate text-[14px] font-medium transition-colors max-sm:text-[14.5px]'>
+									<h3 className='group-hover:text-brand-ink mt-1 truncate text-[15px] font-medium transition-colors max-sm:text-[15px]'>
 										{it.title}
 									</h3>
-									<p className='text-secondary mt-0.5 line-clamp-1 text-[11.5px] leading-relaxed'>{plainInline(it.summary)}</p>
+									<p className='text-secondary mt-0.5 line-clamp-1 text-[12.5px] leading-relaxed'>{plainInline(it.summary)}</p>
 								</div>
 							</Link>
 						))}
@@ -353,7 +353,7 @@ export default function MagazineHome() {
 							<div className='flex h-full flex-col gap-2'>
 								{small.map((it, i) => (
 									<Link key={it.slug} href={`/blog/${it.slug}`} {...fade(0.1 + i * 0.05)} className='ink-fade-up group glass-1 hover:border-brand/40 flex flex-1 flex-col rounded-xl px-3.5 py-3 transition-colors'>
-										<div className='text-secondary flex items-center gap-2 text-[10.5px]'>
+										<div className='text-secondary flex items-center gap-2 text-[11px]'>
 											<span>{dayjs(it.date).format('YYYY-MM-DD')}</span>
 											{it.category && <span className='text-brand-ink opacity-90'>{it.category}</span>}
 										</div>

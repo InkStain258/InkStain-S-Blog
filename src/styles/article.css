@@ -1,9 +1,10 @@
 .prose {
-	line-height: 1.8;
+	/* 楷体笔画细，15px/1.8 在小屏糊成一片；放到 16px 并把行距拉松 */
+	line-height: 1.95;
 	color: inherit;
 	word-break: break-word;
-	letter-spacing: 0.03em;
-	font-size: 15px;
+	letter-spacing: 0.02em;
+	font-size: 16px;
 	width: 100%;
 	overflow: hidden;
 }
@@ -12,7 +13,8 @@
 .prose h1,
 .prose h2,
 .prose h3 {
-	font-weight: 700;
+	/* 霞鹜文楷只有 400，700 会合成假粗体 */
+	font-weight: 500;
 	line-height: 1.25;
 	margin-top: 2em;
 	margin-bottom: 1.5em;

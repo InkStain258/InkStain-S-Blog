@@ -21,6 +21,7 @@ import ThemeToggle from '@/components/theme-toggle'
 import ReadingProgress from '@/components/reading-progress'
 import ImageLightbox from '@/components/image-lightbox'
 import SiteFooter from './site-footer'
+import MobileTabbar from '@/components/mobile-tabbar'
 import SearchDialog from '@/components/search-dialog'
 import ReadingPrefs from '@/components/reading-prefs'
 import { useTheme } from '@/hooks/use-theme'
@@ -108,7 +109,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			{/* min-h-full 而不是 h-full：内容比视口高时，main 要能被撑开，
 			    否则页面高度锁在 100vh，滚动落到 body 上，window.scrollY 永远是 0
 			    —— 阅读进度条、回到顶部、滚动联动全部失效（手机上尤其明显）。 */}
-			<main id='main-content' className='relative z-10 min-h-full'>
+			<main id='main-content' className='relative z-10 min-h-full pb-20 sm:pb-0'>
 				<ProseImageEnhancer />
 				<TaskListLabels />
 				<CodeBlockEnhancer />
@@ -124,6 +125,7 @@ export default function Layout({ children }: PropsWithChildren) {
 				)}
 			</main>
 
+			<MobileTabbar />
 			<SearchDialog />
 			<ReadingPrefs />
 			<BackToTop />

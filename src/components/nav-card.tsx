@@ -201,7 +201,7 @@ export default function NavCard() {
 						<>
 							{form !== 'icons' && <div className='text-secondary mt-4 pl-5 text-xs tracking-wider uppercase'>General</div>}
 
-							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-3 space-y-0 max-sm:gap-1.5')}>
+							<div className={cn('relative mt-2 space-y-1', form === 'icons' && 'mt-0 flex items-center gap-3 space-y-0 max-sm:hidden')}>
 								{/* 悬停高亮：原来用 motion 的 spring 滑块，改成 CSS 过渡的绝对定位块。
 								    竖直列表是等高的，translate 到 hoveredIndex × 行高即可，观感一致但不下载动画库。 */}
 								<div

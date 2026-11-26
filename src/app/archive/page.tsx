@@ -23,7 +23,8 @@ export default function ArchivePage() {
 	const total = items.length
 
 	return (
-		<div className='mx-auto w-full max-w-[800px] px-6 pt-28 pb-24 max-sm:px-4'>
+		<div className='mx-auto w-full max-w-[1460px] px-6 pt-28 pb-24 max-sm:px-4 lg:pl-[330px]'>
+			<div className='max-w-[760px]'>
 			<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}>
 				<Link href='/blog' className='text-secondary hover:text-brand-ink inline-flex items-center gap-1.5 text-xs transition-colors'>
 					<ChevronLeft className='h-3.5 w-3.5' />
@@ -33,11 +34,11 @@ export default function ArchivePage() {
 				<div className='mt-4 flex items-end justify-between gap-4'>
 					<div>
 						<div className='text-brand-ink mb-1.5 text-[10.5px] tracking-[0.3em] uppercase'>Archive</div>
-						<h1 className='text-[28px] leading-tight font-semibold'>全部文章</h1>
+						<h1 className='text-[32px] leading-tight font-semibold'>全部文章</h1>
 					</div>
 					<div className='text-secondary text-right text-xs'>
 						<div className='text-brand-ink text-2xl leading-none font-semibold tabular-nums'>{loading && !total ? '—' : total}</div>
-						<div className='mt-1 opacity-60'>篇 · {years.length} 年</div>
+						<div className='text-secondary mt-1'>篇 · 跨 {years.length} 年</div>
 					</div>
 				</div>
 
@@ -53,7 +54,7 @@ export default function ArchivePage() {
 				)}
 			</motion.div>
 
-			<div className='mt-8 space-y-6'>
+			<div className='mt-9 space-y-6'>
 				{years.map(([y, list], yi) => (
 					<motion.section
 						key={y}
@@ -63,7 +64,7 @@ export default function ArchivePage() {
 						transition={{ delay: 0.06 + yi * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
 						className='card card-content relative w-full scroll-mt-24 px-6 py-4'>
 						<div className='mb-1 flex items-baseline justify-between'>
-							<h2 className='text-[15px] font-semibold tracking-wide'>{y} 年</h2>
+							<h2 className='text-[17px] font-semibold tracking-wide'>{y} 年</h2>
 							<span className='text-secondary text-[11px]'>{list.length} 篇</span>
 						</div>
 						<PostList items={list} />
@@ -73,6 +74,7 @@ export default function ArchivePage() {
 				{!loading && !total && (
 					<div className='text-secondary py-16 text-center text-sm'>还没有文章</div>
 				)}
+			</div>
 			</div>
 		</div>
 	)

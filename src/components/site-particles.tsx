@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react'
  * 所以玻璃卡片（backdrop-filter）会把它们一起糊成底纹，不会压在正文上。
  *
  * 性能与可访问性：
- * - 粒子数按视口面积算，上限 96，手机大概 34 个
+ * - 粒子数按视口面积算，上限 72，手机大概 28 个
  * - devicePixelRatio 封顶 2，避免 3x 屏上画布过大
  * - prefers-reduced-motion: reduce 直接不启动
  * - 页面隐藏（visibilitychange）时暂停 rAF
@@ -75,7 +75,7 @@ export default function SiteParticles() {
 			canvas.style.height = `${h}px`
 			ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-			const count = Math.round(Math.min(96, Math.max(34, (w * h) / 21000)))
+			const count = Math.round(Math.min(72, Math.max(28, (w * h) / 31000)))
 			petals.length = 0
 			for (let i = 0; i < count; i++) petals.push(spawnPetal(true))
 			stars.length = 0
