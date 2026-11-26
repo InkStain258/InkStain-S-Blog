@@ -108,10 +108,20 @@ export default function Page() {
 			{/* 匿名留言在前：不用登录，绝大多数读者走这条 */}
 			<ArticleComments slug={slug} />
 
-			{/* GitHub 账号讨论在后：这包 160KB(gzip)，滚到附近才下载 */}
-			<LazyMount>
-				<GitalkComments />
-			</LazyMount>
+			{/* GitHub 账号讨论：默认折叠。
+			    一来它这包 160KB(gzip)，二来匿名留言已经覆盖大多数读者，
+			    放在展开 160KB 会让「读完想留一句」的人先被登录墙劝退。 */}
+			<details className='mx-auto mt-10 w-full max-w-[760px] px-6 max-sm:px-4'>
+				<summary className='text-secondary hover:text-brand-ink cursor-pointer text-[12.5px] transition-colors select-none'>
+					用 GitHub 账号讨论
+					<span className='text-secondary/60 ml-2 text-[11px]'>需要登录 · 走 Issues</span>
+				</summary>
+				<div className='mt-4'>
+					<LazyMount>
+						<GitalkComments />
+					</LazyMount>
+				</div>
+			</details>
 		</>
 	)
 }
