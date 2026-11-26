@@ -185,7 +185,13 @@ export default function SearchDialog() {
 							{!loading && !!hits.length && (
 								<div className='text-secondary flex items-center justify-between border-t px-4 py-2 text-[10.5px] opacity-55'>
 									<span>{hits.length} 条结果</span>
-									<span className='tabular-nums'>{took !== null ? `${took}ms` : ''}</span>
+									<div className='flex items-center gap-3'>
+										<span className='tabular-nums'>{took !== null ? `${took}ms` : ''}</span>
+										{/* 用 a 而不是 Link：整页跳转即可，弹窗随页面卸载 */}
+										<a href={`/search?q=${encodeURIComponent(q)}`} className='hover:text-brand-ink underline-offset-2 transition-colors hover:underline'>
+											全部结果
+										</a>
+									</div>
 								</div>
 							)}
 					</div>

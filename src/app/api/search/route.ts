@@ -115,6 +115,6 @@ export async function GET(request: Request) {
 
 	return NextResponse.json(
 		{ q: raw, total: hits.length, hits: hits.slice(0, LIMIT), took: Date.now() - started },
-		{ headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600' } }
+		{ headers: { 'Cache-Control': 'private, max-age=30, no-store' } }
 	)
 }
