@@ -28,9 +28,6 @@ import { usePathname } from 'next/navigation'
 
 // 纯氛围装饰：拆成独立 chunk，等浏览器空闲再挂载，不占首屏
 const ClickEffect = dynamic(() => import('@/components/click-effect'), { ssr: false })
-const Fireflies = dynamic(() => import('@/components/fireflies'), { ssr: false })
-const SakuraPetals = dynamic(() => import('@/components/sakura-petals'), { ssr: false })
-const DanmakuBackground = dynamic(() => import('@/components/danmaku-bg'), { ssr: false })
 const CursorGlow = dynamic(() => import('@/components/cursor-glow'), { ssr: false })
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -39,10 +36,7 @@ export default function Layout({ children }: PropsWithChildren) {
 	const { cardStyles, siteContent, regenerateKey } = useConfigStore()
 	// 装饰层开关（站点设置 → 首页外观），缺省按旧的「全开」逻辑之外保守取值
 	const deco = (siteContent as any).decorations ?? {}
-	const wantSakura = deco.sakura ?? false
-	const wantFireflies = deco.fireflies ?? false
-	const wantDanmaku = deco.danmaku ?? false
-	const wantGlow = deco.glow ?? true
+				const wantGlow = deco.glow ?? true
 	const wantClick = deco.click ?? true
 	const { maxSM } = useSize()
 	const { theme } = useTheme()
@@ -84,11 +78,6 @@ export default function Layout({ children }: PropsWithChildren) {
 			<ImageLightbox />
 			{idle && wantGlow && <CursorGlow />}
 
-			{/* Sakura only in light mode; Fireflies only in dark mode */}
-			{idle && wantSakura && <SakuraPetals />}
-			{idle && wantFireflies && <Fireflies />}
-
-			{idle && wantDanmaku && <DanmakuBackground />}
 
 			<Toaster
 				position='bottom-right'

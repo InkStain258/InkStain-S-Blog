@@ -30,7 +30,7 @@ export default function CursorGlow() {
 		const onMove = (e: MouseEvent) => {
 			tx = e.clientX
 			ty = e.clientY
-			el.style.opacity = '1'
+			el.style.opacity = '0.62'
 		}
 
 		const loop = () => {
@@ -57,7 +57,7 @@ export default function CursorGlow() {
 			style={{
 				width: SIZE,
 				height: SIZE,
-				background: 'radial-gradient(circle, color-mix(in srgb, var(--color-brand) 38%, transparent) 0%, transparent 62%)',
+				background: 'radial-gradient(circle, color-mix(in srgb, var(--color-brand) 16%, transparent) 0%, transparent 62%)',
 				willChange: 'transform',
 				transition: 'opacity 600ms ease'
 			}}

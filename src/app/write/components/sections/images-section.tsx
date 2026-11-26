@@ -51,9 +51,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 					图片管理
 					{fileImages.length > 0 && <span className='text-secondary ml-2 text-[11px]'>共 {formatBytes(totalBytes)}</span>}
 				</h2>
-				<Link href='/image-toolbox' target='_blank' className='text-xs hover:underline'>
-					压缩工具
-				</Link>
+				
 			</div>
 
 			<div className='mt-3 flex items-center gap-2'>

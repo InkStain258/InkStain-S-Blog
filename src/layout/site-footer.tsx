@@ -30,7 +30,6 @@ const NAV_LINKS = [
 	{ href: '/share', label: '友链' },
 	{ href: '/guestbook', label: '留言板' },
 	{ href: '/pictures', label: '图集' },
-	{ href: '/lab', label: '实验室' },
 	{ href: '/about', label: '关于' }
 ]
 

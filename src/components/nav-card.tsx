@@ -75,12 +75,7 @@ const list = [
 		label: '留言板',
 		href: '/guestbook'
 	},
-	{
-		icon: FlaskConical,
-		iconActive: FlaskConical,
-		label: '实验室',
-		href: '/lab'
-	}
+	
 ]
 
 const extraSize = 8

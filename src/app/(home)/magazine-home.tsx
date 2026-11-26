@@ -12,6 +12,7 @@ import PostList from '@/components/post-list'
 import { SmartImage } from '@/components/smart-image'
 import InlinePlayer from '@/components/inline-player'
 import MonthCalendar from '@/components/month-calendar'
+import pictures from '@/app/pictures/list.json'
 
 const origin = ''
 
@@ -442,6 +443,32 @@ export default function MagazineHome() {
 						</div>
 					</section>
 				)}
+
+
+					<section className='mt-14 max-sm:mt-10'>
+						<div className='border-border/60 mb-5 flex items-baseline justify-between border-b pb-2.5'>
+							<h2 className='text-[16px] font-semibold tracking-tight'>相册</h2>
+							<Link href='/pictures' className='text-secondary hover:text-brand-ink text-[10.5px] tabular-nums transition-colors'>
+								全部 {pictures.length} 张
+							</Link>
+						</div>
+						<div className='grid grid-cols-4 gap-2 max-sm:grid-cols-3'>
+							{(pictures as Array<{ id: string; description?: string; images: string[] }>).slice(0, 8).map(pic => (
+								<Link
+									key={pic.id}
+									href='/pictures'
+									aria-label={pic.description || '相册'}
+									className='border-border/50 group relative aspect-square overflow-hidden rounded-xl border'>
+									<SmartImage
+										src={pic.images[0]}
+										alt={pic.description || '相册'}
+										sizes='(max-width: 640px) 33vw, 200px'
+										className='h-full w-full object-cover transition-transform duration-500 group-hover:scale-105'
+									/>
+								</Link>
+							))}
+						</div>
+					</section>
 
 				<div className='border-border/60 mt-14 flex flex-wrap items-center justify-between gap-4 border-t pt-6 max-sm:mt-10'>
 					<div className='text-secondary text-[11.5px]'>订阅，或者随便逛逛</div>

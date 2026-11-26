@@ -20,19 +20,19 @@ export default function ClickEffect() {
     resize()
 
     const handleClick = (e: MouseEvent) => {
-      ripples.push({ x: e.clientX, y: e.clientY, r: 0, opacity: 0.5, velocity: 2.5 })
+      ripples.push({ x: e.clientX, y: e.clientY, r: 0, opacity: 0.28, velocity: 2.2 })
     }
     window.addEventListener('click', handleClick)
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.shadowBlur = 12
-      ctx.shadowColor = 'rgba(47,203,231,0.4)'
+      ctx.shadowColor = 'rgba(47,203,231,0.18)'
       for (let i = ripples.length - 1; i >= 0; i--) {
         const r = ripples[i]
         r.r += r.velocity
         r.velocity *= 0.96
-        r.opacity -= 0.012
+        r.opacity -= 0.016
         if (r.opacity <= 0) { ripples.splice(i, 1); continue }
         ctx.beginPath()
         ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2)
